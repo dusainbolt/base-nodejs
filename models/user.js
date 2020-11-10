@@ -1,7 +1,7 @@
 const constants = require(`../constants/constants.js`);
 const jwt = require(`jsonwebtoken`);
 
-let obj_schema = new _mongoose.Schema({
+const obj_schema = new _mongoose.Schema({
     email: { type: String, required: true, unique: true },
     // userName: { type: String, required: true, unique: true },
     password: { type: String, required: true },
@@ -25,10 +25,9 @@ let obj_schema = new _mongoose.Schema({
     status: { type: Number, default: constants.USER.STATUS.ACTIVE },
 }, { id: false, versionKey: 'v' });
 
-obj_schema.methods.generateAuthToken = async () => {
+obj_schema.methods.generateAuthToken = async function() {
     // Generate an auth token for the user
     const user = this;
-    console.log("==================>", user);
     const token = jwt.sign(
         {
             _id: user._id,

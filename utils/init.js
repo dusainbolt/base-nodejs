@@ -40,7 +40,6 @@ class Init {
     async create_user(genders) {
         try {
             if (!genders || !genders.length) return;
-
             let users = await user_model.find({});
             if (users.length === 0) {
                 let data_user = [];

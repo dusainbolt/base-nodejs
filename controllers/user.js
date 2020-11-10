@@ -3,6 +3,7 @@ const validate_helper = require(`../utils/validate.js`);
 const user_model = require(`../models/user.js`);
 const jwt = require(`jsonwebtoken`);
 const moment = require(`moment`);
+const bcrypt = require('bcryptjs')
 
 class User {
     constructor() {
@@ -57,19 +58,16 @@ class User {
             _redis.get(channel_key, async (err, reply) => {
                 const receiver_register = JSON.parse(reply);
                 if (err) {
-                    return res.send(
-                        helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_ERROR, _res.MESSAGE.REDIS_ERROR)
-                    );
+                    return res.send(helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_ERROR, _res.MESSAGE.REDIS_ERROR));
                 } else if (!receiver_register) {
                     return res.send(helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_REGISTER_NOT_FOUND, _res.MESSAGE.REGISTER_NOT_FOUND));
                 } else if (parseInt(code) === receiver_register.code) {
                     const user_register = await user_model.create({
                         ...receiver_register,
-                        userName: email,
+                        password: await bcrypt.hash(receiver_register.password, _config.BCRYPT.SALT),
                     });
                     _redis.del(channel_key, (err, response) => {
-                        if (response === 1) _log.err(`Deleted key success: `, err);
-                        // else _log.err(`Deleted error: `, err);
+                        if (err && response !== 1) _log.err(`Deleted key error: `, err);
                     });
                     return res.send(helper.render_response_success(req, user_register, _res.MESSAGE.REGISTER_SUCCESS));
                 } else {
@@ -87,27 +85,15 @@ class User {
             _log.log(`Body`, req.body);
             await validate_helper.get_validate_login().validate(req.body);
             const {email, password} = req.body;
-            const user = await user_model.findOne({email, password});
-
-            if (!user) {
+            const user = await user_model.findOne({email});
+            const isPasswordMatch = await bcrypt.compare(password, user.password);
+            if (!user || !isPasswordMatch) {
                 _log.log(_res.MESSAGE.ACCOUNT_INVALID);
-                return res.send(helper.render_response_success(req, null,  _res.MESSAGE.ACCOUNT_INVALID));
+                return res.send(helper.render_response_success(req, null, _res.MESSAGE.ACCOUNT_INVALID));
             }
-            console.log("user instance: =======> ", user);
             const token = await user.generateAuthToken();
-            // const token = jwt.sign(
-            //     {
-            //         _id: user._id,
-            //         firstName: user.firstName,
-            //         name: user.name,
-            //     },
-            //     _config.JWT.PRIVATE_KEY,
-            //     {
-            //         expiresIn: _config.JWT.AGE,
-            //     }
-            // );
             _log.log(_res.MESSAGE.SUCCESS);
-            return res.send(helper.render_response_success(req, {user, token},  _res.MESSAGE.SUCCESS));
+            return res.send(helper.render_response_success(req, {user, token}, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`login`, e);
             return res.send(helper.render_response_error(req, e));

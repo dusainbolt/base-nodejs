@@ -1,5 +1,6 @@
 const crypto_js = require(`crypto-js`);
 const moment = require(`moment`);
+const jwt = require(`jsonwebtoken`);
 
 /**
  * Set auth
@@ -13,12 +14,10 @@ const setAuth = (req, res, next) => {
         let {headers, method, url} = req;
         let ip = req.connection.remoteAddress;
         _log.log(ip + ` ` + method + ' ' + url);
-
         if (skipPage(req.path)) return next();
-        if (process.env.NODE_ENV === 'local') return next();
 
+        // if (process.env.NODE_ENV === 'local') return next();
         let {referer, hash_key, timestamp} = headers;
-
         //Check timestamps
         let timestamp_server = moment().valueOf();
         _log.log('timestamp_server', timestamp_server);
@@ -33,6 +32,7 @@ const setAuth = (req, res, next) => {
 
         //Check hash_key
         let input = _config.APP_KEY + `_` + timestamp + `_` + url;
+        console.log("---------->INPUT", input, url);
         let hash_key_server = crypto_js.MD5(input).toString();
         _log.log(`hash_key_server`, hash_key_server);
         if (hash_key_server !== hash_key) {
@@ -44,6 +44,10 @@ const setAuth = (req, res, next) => {
             })
         }
 
+        const token = req.header('Authorization').replace('Bearer ', '');
+        _log.log('token_server', token);
+        const data = jwt.verify(token, _config.JWT.PRIVATE_KEY);
+        console.log("-==========>", data);
         // return res.send({
         //     status : _res.STATUS.ERROR,
         //     message: _res.MESSAGE.AUTH.FAIL,
@@ -52,6 +56,7 @@ const setAuth = (req, res, next) => {
         // })
         return next();
     } catch (e) {
+        _log.log('authentication error:', e.name);
         return res.send({
             status: _res.STATUS.ERROR,
             message: e.toString(),
@@ -68,8 +73,10 @@ const setAuth = (req, res, next) => {
 const skipPage = (path) => {
     let pages = [
         '/',
-        '/login',
-        '/password-recovery'
+        '/user/login',
+        '/user/password-recovery',
+        '/user/registration',
+        '/user/verify_code'
     ];
     return pages.indexOf(path) !== -1
 };

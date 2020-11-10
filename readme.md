@@ -62,5 +62,5 @@
         + VD: Trong example.js có method _day_la_api => POST: localhost:port/example/day_la_api
         + VD: Trong user.js có method _login => POST: localhost:port/user/login
     
-- create_at: 27/10/20 - thinhdev.
-- update_at: 31/10/20 - thinhdev
+- create_at: 27/10/20 - dusainbolt.
+- update_at: 31/10/20 - dusainbolt

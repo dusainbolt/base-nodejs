@@ -16,6 +16,7 @@ const set_router = (server, io) => {
 
                 let obj = new obj_controller();
                 let methods = get_methods(obj);
+                // console.log("obj:", obj, "methods: ", methods, "controller_name: ", controller_name);
                 methods.map(method => {
                     let end_point = ``;
                     if (method === `_test`) {
