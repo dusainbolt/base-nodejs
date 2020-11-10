@@ -1,0 +1,36 @@
+<div style="background-color:#d2d2d2;font-family:arial,sans-serif;padding:0;line-height:24px;margin:0;width: 100%;height: 100%;display: flex;align-items: center;justify-content: center;">
+    <div class="accuracy-code"
+         style="max-width:640px;border-radius:10px;overflow:hidden;width: 640px;margin: auto; margin-top: 12px; margin-bottom: 12px; background: #fff;padding: 16px; top:30px">
+        <div class="wrap-header">
+            <div class="wrap-info">
+                <div class="logo-lgbt" style="margin: auto;text-align: center; top:10px">
+                    <img src="https://s1.imghub.io/DhlK2.jpg" alt="#"
+                         style="width: 20%;height: auto;object-fit: cover;">
+                    <p style="font-size: 24px;
+                    font-weight: bold;
+                    color: #750487;margin-top: 12px;">LGBT VIỆT NAM</p>
+
+                </div>
+            </div>
+        </div>
+        <p style="padding-top: 16px;font-weight: initial;">Mã xác thực của bạn là</p>
+
+        <div class="accuracy-body" style="margin-bottom: 6px; margin-top: 0px;">
+            <div class="wrap-code" style="text-align: center;">
+                <div class="__code" style="border: 1px solid #d8d8d8;
+                border-radius: 4px;
+                padding: 24px;">
+                    <div class="verifi-code"
+                         style="display: flex;align-items: center; width: max-content; margin: 12px auto 0;">
+                        {{#each array_code_verify}}
+                            <span style="display:inline-block;width: 35px;height: 40px; padding-top: 13px; background: #d8d8d8;opacity: .5;margin: 0px 6px;">
+                                {{this}}
+                            </span>
+                        {{/each}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="font-size: 12px; font-style: italic; float: right;">Mã sẽ hết hiệu lực sau {{time_out}}</p>
+    </div>
+</div>
