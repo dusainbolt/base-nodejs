@@ -1,6 +1,7 @@
 const crypto_js = require(`crypto-js`);
 const moment = require(`moment`);
 const jwt = require(`jsonwebtoken`);
+const user_model = require(`../models/user`);
 
 /**
  * Set auth
@@ -9,7 +10,7 @@ const jwt = require(`jsonwebtoken`);
  * @param next
  * @returns {void|*}
  */
-const setAuth = (req, res, next) => {
+const setAuth = async (req, res, next) => {
     try {
         let {headers, method, url} = req;
         let ip = req.connection.remoteAddress;
@@ -26,7 +27,6 @@ const setAuth = (req, res, next) => {
                 status: _res.STATUS.ERROR,
                 message: _res.MESSAGE.AUTH.TIMESTAMPS_INVALID,
                 error_code: _res.ERROR_CODE.AUTH.TIMESTAMPS_INVALID,
-                data: null,
             })
         }
 
@@ -40,27 +40,24 @@ const setAuth = (req, res, next) => {
                 status: _res.STATUS.ERROR,
                 message: _res.MESSAGE.AUTH.HASH_KEY_INVALID,
                 error_code: _res.ERROR_CODE.AUTH.HASH_KEY_INVALID,
-                data: null,
             })
         }
-
-        const token = req.header('Authorization').replace('Bearer ', '');
+        const author = req.header('Authorization');
+        const token = author ? author.replace('Bearer ', '') : "";
         _log.log('token_server', token);
         const data = jwt.verify(token, _config.JWT.PRIVATE_KEY);
-        console.log("-==========>", data);
-        // return res.send({
-        //     status : _res.STATUS.ERROR,
-        //     message: _res.MESSAGE.AUTH.FAIL,
-        //     error_code: _res.ERROR_CODE.AUTH.FAIL,
-        //     data: null,
-        // })
+        const user = await user_model.findOne({ _id: data._id, 'tokens.token': token });
+        if (!user) {
+            return res.status(401).send({ error: 'Not authorized to access this resource' })
+        }
+        req.token = token;
+        req.user = user;
         return next();
     } catch (e) {
         _log.log('authentication error:', e.name);
-        return res.send({
+        return res.status(401).send({
             status: _res.STATUS.ERROR,
             message: e.toString(),
-            data: null,
         })
     }
 };

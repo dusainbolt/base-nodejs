@@ -1,7 +1,6 @@
 const helper = require(`../utils/helper.js`);
 const validate_helper = require(`../utils/validate.js`);
 const user_model = require(`../models/user.js`);
-const jwt = require(`jsonwebtoken`);
 const moment = require(`moment`);
 const bcrypt = require('bcryptjs')
 
@@ -96,6 +95,30 @@ class User {
             return res.send(helper.render_response_success(req, {user, token}, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`login`, e);
+            return res.send(helper.render_response_error(req, e));
+        }
+    }
+
+    async _logout(req, res){
+        try {
+            req.user.tokens = req.user.tokens.filter((token) => {
+                return token.token !== req.token;
+            })
+            await req.user.save();
+            return res.send(helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`logout`, e);
+            return res.send(helper.render_response_error(req, e));
+        }
+    }
+
+    async _logout_all(req, res){
+        try {
+            req.user.tokens.splice(0, req.user.tokens.length);
+            await req.user.save();
+            return res.send(helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`logout`, e);
             return res.send(helper.render_response_error(req, e));
         }
     }
