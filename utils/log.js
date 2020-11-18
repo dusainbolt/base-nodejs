@@ -7,6 +7,11 @@ const moment = require(`moment`);
  */
 let writeLogToFile = (data) => {
     try {
+
+        const dir = './logs';
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
         let fileName = __dirname + '/../logs/' + moment().format("YYYY_MM_DD_HH") + '.log';
         data = moment().format(`HH:mm:ss.SSS DD/MM/YY `) + data;
         console.log(data);

@@ -1,13 +1,14 @@
 const mongoose = require(`mongoose`);
 
-let uri_connect = 'mongodb://'
+let uri_connect = `mongodb${_config.MONGODB.SRV ? "+srv" : ""}://`
     + _config.MONGODB.USERNAME + ':'
-    + _config.MONGODB.PASSWORD + '@'
-    + _config.MONGODB.HOST + ':'
-    + _config.MONGODB.PORT + '/'
-    + _config.MONGODB.NAME;
-
+    + _config.MONGODB.PASSWORD + "@"
+    + _config.MONGODB.HOST + `${!_config.MONGODB.SRV ? `:${_config.MONGODB.PORT}` : ''}`
+    + '/' + _config.MONGODB.NAME + _config.MONGODB.SRV;
+console.log(uri_connect);
 mongoose.Promise = global.Promise;
+// mongodb+srv://dusainbolt:<password>@cluster0.hxmc8.mongodb.net/<dbname>?retryWrites=true&w=majority
+// mongodb+srv://dusainbolt:du@dev1234@cluster0.hxmc8.mongodb.net/sainbolt-app
 mongoose.connect(uri_connect, {
     useCreateIndex: true,
     useNewUrlParser: true,

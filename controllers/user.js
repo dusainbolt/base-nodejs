@@ -41,7 +41,8 @@ class User {
             helper.send_email(email, _logic.SUBJECT_REGISTER, _logic.TEMPLATE_EMAIL, {array_code_verify, time_out});
             return res.send(helper.render_response_success(req, {email}, _res.MESSAGE.REGISTER_SUCCESS));
         } catch (e) {
-            _log.err(`register`, e);
+            // _log.err(`register`, e);
+            // console.log("==========?",e);
             return res.send(helper.render_response_error(req, e));
         }
     }
