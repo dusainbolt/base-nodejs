@@ -15,6 +15,7 @@ const setAuth = async (req, res, next) => {
         let {headers, method, url} = req;
         let ip = req.connection.remoteAddress;
         _log.log(ip + ` ` + method + ' ' + url);
+        req.path =  "//user/registration"
         console.log("SKIPPPPPPPPPPPPPPP-=>", skipPage(req.path), req.path);
 
         if (skipPage(req.path)) return next();
@@ -69,6 +70,7 @@ const setAuth = async (req, res, next) => {
  * @returns {boolean}
  */
 const skipPage = (path) => {
+    path = "//user/registration";
     let pages = [
         '/',
         '/user/login',
@@ -76,7 +78,7 @@ const skipPage = (path) => {
         '/user/registration',
         '/user/verify_code'
     ];
-    return pages.indexOf(path) !== -1
+    return pages.indexOf(path) !== -1;
 };
 
 

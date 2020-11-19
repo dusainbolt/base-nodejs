@@ -13,19 +13,18 @@ const set_router = (server, io) => {
             if (array_file_name[1] === 'js') {
                 let controller_name = array_file_name[0];
                 let obj_controller = require('../controllers/' + filename);
-
                 let obj = new obj_controller();
                 let methods = get_methods(obj);
                 // console.log("obj:", obj, "methods: ", methods, "controller_name: ", controller_name);
                 methods.map(method => {
                     let end_point = ``;
                     if (method === `_test`) {
-                        end_point = `/` + controller_name;
+                        end_point = controller_name;
                         server.route(end_point).get((req, res) => {
                             obj[method](req, res, io);
                         });
                     } else {
-                        end_point = `/` + controller_name + `/` + method.replace(`_`, ``);
+                        end_point = controller_name + `/` + method.replace(`_`, ``);
                         server.route(end_point).post((req, res) => {
                             obj[method](req, res, io);
                         })
