@@ -15,8 +15,9 @@ const setAuth = async (req, res, next) => {
         let {headers, method, url} = req;
         let ip = req.connection.remoteAddress;
         _log.log(ip + ` ` + method + ' ' + url);
-        if (skipPage(req.path)) return next();
+        console.log("SKIPPPPPPPPPPPPPPP-=>", skipPage(req.path), req.path);
 
+        if (skipPage(req.path)) return next();
         // if (process.env.NODE_ENV === 'local') return next();
         let {referer, hash_key, timestamp} = headers;
         //Check timestamps
