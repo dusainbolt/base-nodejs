@@ -1,5 +1,4 @@
 #Bỏ qua
 /node_modules/
 /logs
-/config/local_config.js
 package-lock.json
