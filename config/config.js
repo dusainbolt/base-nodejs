@@ -8,7 +8,7 @@ switch (process.env.NODE_ENV) {
         break;
     case `dev`:
         data_config = {
-            SERVER_PORT: `6630`,
+            SERVER_PORT: `5000`,
             APP_KEY: `ag123FSG$#6546`,
             MONGODB: {
                 HOST: `cluster0.hxmc8.mongodb.net`,
