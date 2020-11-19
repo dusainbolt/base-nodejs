@@ -60,7 +60,7 @@ const start_server = () => {
         server.set('views', 'views');
         server.set('view engine', 'ejs');
 
-        server.listen(_config.SERVER_PORT, () => {
+        server.listen(_config.SERVER_PORT, _config.SERVER_PORT_DEFAULT, 0,() => {
             let http = require('http').Server(server);
             let io = socket_io(http, {transports: ['websocket', 'polling']});
 
