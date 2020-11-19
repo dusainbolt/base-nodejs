@@ -3,3 +3,4 @@
 /logs
 /config/local_config.js
 package-lock.json
+.env
