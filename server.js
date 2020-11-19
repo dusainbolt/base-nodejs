@@ -23,7 +23,7 @@ const mongodb = require(`./connection/mongodb.js`);
 const path = require(`path`);
 const locale = require(`yup/lib/setLocale`);
 const socket_io = require(`socket.io`);
-
+const PORT = process.env.PORT || _config.SERVER_PORT;
 _redis.on(`error`, (error) => {
     _log.err('redis connect fail', error.toString());
 });
@@ -60,7 +60,7 @@ const start_server = () => {
         server.set('views', 'views');
         server.set('view engine', 'ejs');
 
-        server.listen(process.env.PORT || _config.SERVER_PORT, () => {
+        server.listen(PORT, () => {
             let http = require('http').Server(server);
             let io = socket_io(http, {transports: ['websocket', 'polling']});
 
@@ -74,7 +74,7 @@ const start_server = () => {
                     error_code: _res.ERROR_CODE.NOT_FOUND
                 })
             });
-            _log.log(`Server is running port: ` + _config.SERVER_PORT);
+            _log.log(`Server is running port: ` + PORT);
         });
     } catch (e) {
         _log.err('startServer fail!', e.toString());
