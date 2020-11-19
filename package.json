@@ -4,10 +4,11 @@
     "description": "This is BackEnd project LBGT VietNam",
     "main": "server.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "node server.js"
     },
     "keywords": [],
-    "author": "Dinh Thanh Thinh",
+    "author": "Du Sainbolt",
     "license": "free",
     "dependencies": {
         "bcryptjs": "^2.4.3",
@@ -29,5 +30,8 @@
         "redis": "^3.0.2",
         "socket.io": "^2.3.0",
         "yup": "^0.29.3"
+    },
+    "engines": {
+        "node": "10.x"
     }
 }
