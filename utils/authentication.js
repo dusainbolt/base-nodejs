@@ -74,7 +74,9 @@ const skipPage = (path) => {
         '/user/login',
         '/user/password-recovery',
         '/user/registration',
-        '/user/verify_code'
+        '/user/verify_code',
+        '/course/register',
+        '/course/verify_code'
     ];
     if(path.indexOf("//") !== -1){
         path = path.replace("//", "/");
