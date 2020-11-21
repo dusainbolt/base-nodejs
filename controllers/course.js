@@ -15,7 +15,7 @@ class Course {
             const code = helper.render_verify_code();
             //set info register to redis
             const register_data = JSON.stringify({...req.body, code});
-            _redis.select(_logic.DBO_REGISTER_COURSE);
+            _redis.select(_logic.DBO_REGISTER);
             _redis.set(`${_logic.SUB_REGISTER_COURSE}${email}`, register_data, _logic.REDIS_EXPIRES, _logic.TIME_OUT_REGISTER);
             // convert code & send email to user
             const array_code_verify = code.toString().split("");
@@ -36,7 +36,7 @@ class Course {
             await validate_helper.get_validate_verify_code(user_model).validate(req.body);
             // goi data tu redis va xu ly
             const channel_key = `${_logic.SUB_REGISTER_COURSE}${email}`;
-            _redis.select(_logic.DBO_REGISTER_COURSE);
+            _redis.select(_logic.DBO_REGISTER);
             _redis.get(channel_key, async (err, reply) => {
                 const receiver_register = JSON.parse(reply);
                 if (err) {
@@ -48,7 +48,9 @@ class Course {
                         ...receiver_register,
                         password: await bcrypt.hash("du@dev1234", _config.BCRYPT.SALT),
                     });
-                    _redis.del(channel_key);
+                    _redis.del(channel_key, (err, response) => {
+                        if (err && response !== 1) _log.err(`Deleted key error: `, err);
+                    });
                     return res.send(helper.render_response_success(req, user_register, _res.MESSAGE.REGISTER_SUCCESS));
                 } else {
                     return res.send(helper.render_response_error(req, null, _res.ERROR_CODE.VERIFY_CODE_INVALID, _res.MESSAGE.VERIFY_CODE_INVALID));
