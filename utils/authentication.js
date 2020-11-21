@@ -78,9 +78,6 @@ const skipPage = (path) => {
         '/course/register',
         '/course/verify_code'
     ];
-    if(path.indexOf("//") !== -1){
-        path = path.replace("//", "/");
-    }
     return pages.indexOf(path) !== -1;
 };
 

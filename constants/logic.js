@@ -4,7 +4,6 @@ module.exports = {
     END_CODE: 999999,
     SUB_REGISTER: "__register_",
     DBO_REGISTER: 0,
-    DBO_REGISTER_COURSE: 1,
     SUB_REGISTER_COURSE: "__register_course",
     MAIL_TO_DEFAULT: "dulh181199@gmail.com",
     MAIL_SUBJECT_DEFAULT: "EMAIL INVALID",
