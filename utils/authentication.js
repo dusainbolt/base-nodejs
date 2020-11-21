@@ -76,6 +76,9 @@ const skipPage = (path) => {
         '/user/registration',
         '/user/verify_code'
     ];
+    if(path.indexOf("//") !== -1){
+        path = path.replace("//", "/");
+    }
     return pages.indexOf(path) !== -1;
 };
 

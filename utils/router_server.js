@@ -11,7 +11,7 @@ const set_router = (server, io) => {
         fs.readdirSync(path.join(__dirname, '../controllers')).map(filename => {
             let array_file_name = filename.split(`.`);
             if (array_file_name[1] === 'js') {
-                let controller_name = array_file_name[0].replace("/", "");
+                let controller_name = array_file_name[0];
                 let obj_controller = require('../controllers/' + filename);
                 let obj = new obj_controller();
                 let methods = get_methods(obj);
