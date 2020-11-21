@@ -48,9 +48,7 @@ class Course {
                         ...receiver_register,
                         password: await bcrypt.hash("du@dev1234", _config.BCRYPT.SALT),
                     });
-                    _redis.del(channel_key, (err, response) => {
-                        if (err && response !== 1) _log.err(`Deleted key error: `, err);
-                    });
+                    _redis.del(channel_key);
                     return res.send(helper.render_response_success(req, user_register, _res.MESSAGE.REGISTER_SUCCESS));
                 } else {
                     return res.send(helper.render_response_error(req, null, _res.ERROR_CODE.VERIFY_CODE_INVALID, _res.MESSAGE.VERIFY_CODE_INVALID));
