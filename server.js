@@ -45,7 +45,6 @@ const start_server = () => {
 
         server.use('/favicon.ico', express.static(path.join(__dirname, 'assets/icons/favicon.ico')));
         server.use('/images', express.static(path.join(__dirname, 'assets/images')));
-
         // for parsing application/json
         server.use(body_parser.json());
 

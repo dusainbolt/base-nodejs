@@ -12,11 +12,15 @@ const user_model = require(`../models/user`);
  */
 const setAuth = async (req, res, next) => {
     try {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Allow-Headers', _config.ALLOW_HEADER);
+
         let {headers, method, url} = req;
         let ip = req.connection.remoteAddress;
+
         _log.log(ip + ` ` + method + ' ' + url);
-        if (process.env.NODE_ENV === 'local') return next();
-        let {referer, hash_key, timestamp} = headers;
+        // if (process.env.NODE_ENV === 'local') return next();
+        let {authorization, hash_key, timestamp} = headers;
         //Check timestamps
         let timestamp_server = moment().valueOf();
         _log.log('timestamp_server', timestamp_server);
@@ -44,8 +48,7 @@ const setAuth = async (req, res, next) => {
         // check authen token
         if (skipPage(req.path)) return next();
 
-        const author = req.header('Authorization');
-        const token = author ? author.replace('Bearer ', '') : "";
+        const token = authorization ? authorization.replace('Bearer ', '') : "";
         _log.log('token_server', token);
         const data = jwt.verify(token, _config.JWT.PRIVATE_KEY);
         const user = await user_model.findOne({_id: data._id, 'tokens.token': token});

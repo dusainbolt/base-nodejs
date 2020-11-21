@@ -1,6 +1,6 @@
 module.exports = {
     SERVER_PORT: `6630`,
-    APP_KEY: `ag123FSG$#6546`,
+    APP_KEY: `ag123FSG!@#6546`,
     MONGODB: {
         HOST: `localhost`,
         PORT: `27017`,
@@ -34,5 +34,6 @@ module.exports = {
     BCRYPT: {
         SALT: 10
     },
+    ALLOW_HEADER: `Origin, X-Requested-With, Content-Type, Accept, timestamp, Authorization, hash_key`,
     SIZE_FILE_LIMIT: `15mb`,
 };

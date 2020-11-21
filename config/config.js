@@ -5,7 +5,7 @@ let data_config = {};
 let dev_config = {
     SERVER_PORT: `6630`,
     SERVER_PORT_DEFAULT: `0.0.0.0`,
-    APP_KEY: `ag123FSG$#6546`,
+    APP_KEY: `ag123FSG!@#6546`,
     MONGODB: {
         HOST: `cluster0.hxmc8.mongodb.net`,
         PORT: `27017`,
@@ -41,6 +41,7 @@ let dev_config = {
     BCRYPT: {
         SALT: 10
     },
+    ALLOW_HEADER: `Origin, X-Requested-With, Content-Type, Accept, timestamp, Authorization, hash_key`,
     SIZE_FILE_LIMIT: `15mb`,
 };
 switch (process.env.NODE_ENV) {
