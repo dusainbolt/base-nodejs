@@ -6,15 +6,26 @@ class Validate {
     */
     static get_validate_register(user_model) {
         return _yup.object().shape({
-            firstName: _yup.string().required().min(2).max(11),
-            name: _yup.string().required().min(2).max(11),
+            fullName: _yup.string().required().min(2).max(50),
             email: _yup.string().required().email()
                 .test('duplicate_email', _res.ERROR_CODE.DUPLICATE_EMAIL,
                     async (email) => await user_model.findOne({email}) === null),
-            password: _yup.string().required().min(6).max(21),
-            genderId: _yup.string().required()
-                .test('invalid-genderId', _res.ERROR_CODE.INVALID_GENDER_ID,
-                    (genderId) => _mongoose.Types.ObjectId.isValid(genderId)),
+            gender: _yup.number().required().max(3),
+            job:_yup.string().required().max(100),
+            jobAddress: _yup.string().required().max(100),
+            birthday: _yup.number().required(),
+            facebook: _yup.string().required().url().max(255),
+            country: _yup.string().required().max(100),
+            phoneNumber: _yup.string().max(13),
+            frequency: _yup.number().max(2),
+            durationTime: _yup.number().max(2),
+            targetTop: _yup.number().max(2),
+            wishJob: _yup.number().max(2),
+            completeExercise: _yup.number().max(2),
+            outCondition: _yup.number().max(2),
+            nowSkill: _yup.string().required(),
+            mission: _yup.string().required(),
+
         });
     };
     /**

@@ -16,6 +16,7 @@ module.exports = {
         DEACTIVATE: 0, //Ngừng hoạt động
         ACTIVE: 1, // Hoạt động
         TEMPORARY: 2, //Khóa tạm thời
+        REJECT: 4, //Tu choi
     },
 
 

@@ -15,11 +15,10 @@ const setAuth = async (req, res, next) => {
         let {headers, method, url} = req;
         let ip = req.connection.remoteAddress;
         _log.log(ip + ` ` + method + ' ' + url);
-        req.path =  "//user/registration"
-        console.log("SKIPPPPPPPPPPPPPPP-=>", skipPage(req.path), req.path);
+        console.log("SKIP-=>", skipPage(req.path), req.path);
 
         if (skipPage(req.path)) return next();
-        // if (process.env.NODE_ENV === 'local') return next();
+        if (process.env.NODE_ENV === 'local') return next();
         let {referer, hash_key, timestamp} = headers;
         //Check timestamps
         let timestamp_server = moment().valueOf();
@@ -70,7 +69,6 @@ const setAuth = async (req, res, next) => {
  * @returns {boolean}
  */
 const skipPage = (path) => {
-    path = "//user/registration";
     let pages = [
         '/',
         '/user/login',

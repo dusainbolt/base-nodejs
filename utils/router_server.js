@@ -19,12 +19,12 @@ const set_router = (server, io) => {
                 methods.map(method => {
                     let end_point = ``;
                     if (method === `_test`) {
-                        end_point = controller_name;
+                        end_point = '/' + controller_name;
                         server.route(end_point).get((req, res) => {
                             obj[method](req, res, io);
                         });
                     } else {
-                        end_point = controller_name + `/` + method.replace(`_`, ``);
+                        end_point = '/' + controller_name + `/` + method.replace(`_`, ``);
                         server.route(end_point).post((req, res) => {
                             obj[method](req, res, io);
                         })
