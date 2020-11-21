@@ -10,7 +10,7 @@ class Example {
             return res.send({
                 status: _res.STATUS.SUCCESS,
                 message: _res.MESSAGE.SUCCESS,
-                data: helper.encode_data(req, data),
+                data: helper.encode_data(req, {data}),
             })
         } catch (e) {
             _log.err(`_test`, e);

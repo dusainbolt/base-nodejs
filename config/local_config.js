@@ -25,7 +25,7 @@ module.exports = {
         PORT: 587,
         USERNAME: 'appdu.hotro@gmail.com',
         PASSWORD: 'ylnkfupxfeynqprv',
-        FROM_NAME: 'App Du Hỗ Trợ',
+        FROM_NAME: 'Sainbolt App',
     },
     JWT: {
         PRIVATE_KEY: `key_123543%G)G`,

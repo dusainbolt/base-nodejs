@@ -72,6 +72,7 @@ const setAuth = async (req, res, next) => {
 const skipPage = (path) => {
     let pages = [
         '/',
+        '/test',
         '/user/login',
         '/user/password-recovery',
         '/user/registration',

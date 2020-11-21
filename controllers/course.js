@@ -44,10 +44,7 @@ class Course {
                 } else if (!receiver_register) {
                     return res.send(helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_REGISTER_NOT_FOUND, _res.MESSAGE.REGISTER_NOT_FOUND));
                 } else if (parseInt(code) === receiver_register.code) {
-                    const user_register = await user_model.create({
-                        ...receiver_register,
-                        password: await bcrypt.hash("du@dev1234", _config.BCRYPT.SALT),
-                    });
+                    const user_register = await user_model.create(receiver_register);
                     _redis.del(channel_key, (err, response) => {
                         if (err && response !== 1) _log.err(`Deleted key error: `, err);
                     });

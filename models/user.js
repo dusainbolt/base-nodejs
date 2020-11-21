@@ -3,7 +3,7 @@ const jwt = require(`jsonwebtoken`);
 
 const obj_schema = new _mongoose.Schema({
     email: {type: String, required: true, unique: true},
-    password: {type: String, required: true},
+    password: {type: String, default: null},
     status: {type: Number, default: constants.USER.STATUS.ACTIVE},
     fullName: {type: String, required: true},
     job: {type: String, required: true},

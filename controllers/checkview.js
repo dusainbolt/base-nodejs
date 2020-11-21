@@ -11,7 +11,7 @@ class CheckView {
             _log.log(`begin checkview`);
             const verify_code =  helper.render_verify_code().toString();
             const array_code_verify = verify_code.split('');
-            return res.render('page1', {array_code_verify});
+            return res.render('template', {array_code_verify});
         } catch (e) {
             _log.err(`checkview`, e);
             return res.send({
