@@ -15,9 +15,6 @@ const setAuth = async (req, res, next) => {
         let {headers, method, url} = req;
         let ip = req.connection.remoteAddress;
         _log.log(ip + ` ` + method + ' ' + url);
-        console.log("SKIP-=>", skipPage(req.path), req.path);
-
-        if (skipPage(req.path)) return next();
         if (process.env.NODE_ENV === 'local') return next();
         let {referer, hash_key, timestamp} = headers;
         //Check timestamps
@@ -43,13 +40,17 @@ const setAuth = async (req, res, next) => {
                 error_code: _res.ERROR_CODE.AUTH.HASH_KEY_INVALID,
             })
         }
+
+        // check authen token
+        if (skipPage(req.path)) return next();
+
         const author = req.header('Authorization');
         const token = author ? author.replace('Bearer ', '') : "";
         _log.log('token_server', token);
         const data = jwt.verify(token, _config.JWT.PRIVATE_KEY);
-        const user = await user_model.findOne({ _id: data._id, 'tokens.token': token });
+        const user = await user_model.findOne({_id: data._id, 'tokens.token': token});
         if (!user) {
-            return res.status(401).send({ error: 'Not authorized to access this resource' })
+            return res.status(401).send({error: 'Not authorized to access this resource'})
         }
         req.token = token;
         req.user = user;
