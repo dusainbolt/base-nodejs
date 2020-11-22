@@ -15,7 +15,7 @@ class Validate {
             jobAddress: _yup.string().required().max(50),
             birthday: _yup.number().required(),
             facebook: _yup.string().required().url(),
-            country: _yup.string().required().max(100),
+            country: _yup.string().required().max(50),
             phoneNumber: _yup.string().max(13),
             frequency: _yup.number().max(3),
             durationTime: _yup.number().max(3),

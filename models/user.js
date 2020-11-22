@@ -12,7 +12,7 @@ const obj_schema = new _mongoose.Schema({
     birthday: {type: Number, required: false},
     facebook: {type: String, required: true},
     country: {type: String, required: true},
-    phoneNumber: {type: String, required: true},
+    phoneNumber: {type: String, default: null},
     avatar: {type: String, default: null},
     cover: {type: String, default: null},
     description: {type: String, default: null},
