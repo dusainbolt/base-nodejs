@@ -9,7 +9,20 @@ const bcrypt = require('bcryptjs');
 class Course {
     constructor() {
     }
-    async _register(req, res){
+
+    async _get_list_user(req, res) {
+        try {
+            _log.log(`Body`, req.body);
+            const listUserCourse = await user_model.find({role: _contains.USER.ROLE.USER_COURSE}, _contains.USER.PARAMS_COURSE_LIST);
+
+            return res.send(helper.render_response_success(req, listUserCourse, _res.MESSAGE.REGISTER_SUCCESS));
+        } catch (e) {
+            _log.err(`register`, e);
+            return res.send(helper.render_response_error(req, e));
+        }
+    }
+
+    async _register(req, res) {
         try {
             _log.log(`Body`, req.body);
             await validate_helper.get_validate_register(user_model).validate(req.body);
@@ -49,15 +62,20 @@ class Course {
                     const user_register = await user_model.create({
                         ...receiver_register,
                         password: await bcrypt.hash(passwordBirthday, _config.BCRYPT.SALT),
+                        role: _contains.USER.ROLE.USER_COURSE,
+                        status: _contains.USER.STATUS.COURSE_RQ,
                     });
-                    const course_rq =await course_rq_model.create({
+                    const course_rq = await course_rq_model.create({
                         ...receiver_register,
                         userId: user_register._id,
                     });
                     _redis.del(channel_key, (err, response) => {
                         if (err && response !== 1) _log.err(`Deleted key error: `, err);
                     });
-                    return res.send(helper.render_response_success(req, {course_rq, user_register}, _res.MESSAGE.REGISTER_SUCCESS));
+                    return res.send(helper.render_response_success(req, {
+                        course_rq,
+                        user_register
+                    }, _res.MESSAGE.REGISTER_SUCCESS));
                 } else {
                     return res.send(helper.render_response_error(req, null, _res.ERROR_CODE.VERIFY_CODE_INVALID, _res.MESSAGE.VERIFY_CODE_INVALID));
                 }
@@ -68,4 +86,5 @@ class Course {
         }
     }
 }
+
 module.exports = Course;

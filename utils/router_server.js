@@ -18,8 +18,8 @@ const set_router = (server, io) => {
                 // console.log("obj:", obj, "methods: ", methods, "controller_name: ", controller_name);
                 methods.map(method => {
                     let end_point = ``;
-                    if (method === `_test`) {
-                        end_point = '/' + controller_name;
+                    if (method.indexOf(`_get`) !== -1) {
+                        end_point = '/' + controller_name + "/"  + method.replace(`_get_`,``);
                         server.route(end_point).get((req, res) => {
                             obj[method](req, res, io);
                         });
