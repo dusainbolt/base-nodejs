@@ -20,7 +20,7 @@ const obj_schema = new _mongoose.Schema({
     tokens: [{
         token: {
             type: String,
-        }
+        },
     }],
     created: {type: Date, default: Date.now},
     updated: {type: Date, default: null},

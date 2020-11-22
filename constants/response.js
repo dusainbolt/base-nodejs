@@ -29,6 +29,7 @@ module.exports = {
         REDIS_ERROR: 7, // loi redis
         REDIS_REGISTER_NOT_FOUND: 8, // khong tim thay email hoac het time 5p
         VERIFY_CODE_INVALID: 9,
+        INVALID_EMAIL: 10, // loi trung email
         AUTH: {
             FAIL: 1,
             TIMESTAMPS_INVALID: 2,

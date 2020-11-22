@@ -42,9 +42,11 @@ class Validate {
     /**
      * Phục vụ dang nhap - Login
      */
-    static get_validate_login() {
+    static get_validate_login(user_model) {
         return _yup.object().shape({
-            email: _yup.string().required().email(),
+            email: _yup.string().required().email()
+                .test('invalid', _res.ERROR_CODE.INVALID_EMAIL,
+                    async (email) => await user_model.findOne({email}) !== null),
             password: _yup.string().required().min(6).max(21),
         });
     };
