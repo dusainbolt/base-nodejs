@@ -13,4 +13,5 @@ module.exports = {
     TIME_OUT_REGISTER: 300, // 5p
     REDIS_EXPIRES: "EX",
     FORMAT_24H_TIME: "HH:mm:ss",
+
 };

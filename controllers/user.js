@@ -86,7 +86,10 @@ class User {
             await validate_helper.get_validate_login().validate(req.body);
             const {email, password} = req.body;
             const user = await user_model.findOne({email});
+
             const isPasswordMatch = await bcrypt.compare(password, user.password);
+            console.log(isPasswordMatch);
+
             if (!user || !isPasswordMatch) {
                 _log.log(_res.MESSAGE.ACCOUNT_INVALID);
                 return res.send(helper.render_response_success(req, null, _res.MESSAGE.ACCOUNT_INVALID));

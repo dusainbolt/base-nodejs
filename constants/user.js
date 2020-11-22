@@ -1,12 +1,4 @@
 module.exports = {
-    DATA_DEFAULT: [
-        { email: `nguyenvanaa@gmail.com`, password: `123456789A`, firstName: `Nguyễn Văn`, name: `AA` },
-        { email: `nguyenvanbb@gmail.com`, password: `123456789B`, firstName: `Nguyễn Văn`, name: `BB` },
-        { email: `nguyenvancc@gmail.com`, password: `123456789C`, firstName: `Nguyễn Văn`, name: `CC` },
-        { email: `hoangthidd@gmail.com`, password: `123456789D`, firstName: `Hoàng Thị`, name: `DD` },
-        { email: `hoangthiee@gmail.com`, password: `123456789E`, firstName: `Hoàng Thị`, name: `EE` },
-        { email: `hoangthiff@gmail.com`, password: `123456789F`, firstName: `Hoàng Thị`, name: `FF` },
-    ],
     TYPE: {
         UNKNOWN: 0,//Chưa xác định
         WIFE: 1,//Người vợ (Công)
@@ -18,6 +10,11 @@ module.exports = {
         TEMPORARY: 2, //Khóa tạm thời
         REJECT: 4, //Tu choi
     },
-
-
+    ROLE: {
+        ADMIN_APP: "ADMIN_APP",
+        USER_COURSE: "USER_COURSE",
+    },
+    DATA_DEFAULT: [
+        { email: `dulh181199@gmail.com`, password: `du@dev1234`, fullName: `Du Sainbolt`, role: "ADMIN_APP" },
+    ],
 };

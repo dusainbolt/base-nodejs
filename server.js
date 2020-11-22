@@ -30,7 +30,7 @@ _redis.on(`error`, (error) => {
 
 mongodb.once('open', async (e) => {
     _log.log(`MongoDB connected: ` + _config.MONGODB.HOST + `:` + _config.MONGODB.PORT);
-    // await new init().create_data_default();
+    await new init().create_data_default();
     start_server();
 });
 

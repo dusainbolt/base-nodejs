@@ -1,6 +1,8 @@
-const helper = require(`../utils/helper.js`);
-const validate_helper = require(`../utils/validate.js`);
-const user_model = require(`../models/user.js`);
+const helper = require(`../utils/helper`);
+const validate_helper = require(`../utils/validate`);
+const user_model = require(`../models/user`);
+const course_rq_model = require(`../models/course_rq`);
+
 const moment = require(`moment`);
 const bcrypt = require('bcryptjs');
 
@@ -23,8 +25,7 @@ class Course {
             helper.send_email(email, _logic.SUBJECT_REGISTER, _logic.TEMPLATE_EMAIL, {array_code_verify, time_out});
             return res.send(helper.render_response_success(req, {email}, _res.MESSAGE.REGISTER_SUCCESS));
         } catch (e) {
-            // _log.err(`register`, e);
-            // console.log("==========?",e);
+            _log.err(`register`, e);
             return res.send(helper.render_response_error(req, e));
         }
     }
@@ -44,11 +45,19 @@ class Course {
                 } else if (!receiver_register) {
                     return res.send(helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_REGISTER_NOT_FOUND, _res.MESSAGE.REGISTER_NOT_FOUND));
                 } else if (parseInt(code) === receiver_register.code) {
-                    const user_register = await user_model.create(receiver_register);
+                    const passwordBirthday = moment.unix(receiver_register.birthday).format("DD/MM/YYYY");
+                    const user_register = await user_model.create({
+                        ...receiver_register,
+                        password: await bcrypt.hash(passwordBirthday, _config.BCRYPT.SALT),
+                    });
+                    const course_rq =await course_rq_model.create({
+                        ...receiver_register,
+                        userId: user_register._id,
+                    });
                     _redis.del(channel_key, (err, response) => {
                         if (err && response !== 1) _log.err(`Deleted key error: `, err);
                     });
-                    return res.send(helper.render_response_success(req, user_register, _res.MESSAGE.REGISTER_SUCCESS));
+                    return res.send(helper.render_response_success(req, {course_rq, user_register}, _res.MESSAGE.REGISTER_SUCCESS));
                 } else {
                     return res.send(helper.render_response_error(req, null, _res.ERROR_CODE.VERIFY_CODE_INVALID, _res.MESSAGE.VERIFY_CODE_INVALID));
                 }
