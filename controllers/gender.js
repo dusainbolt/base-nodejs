@@ -8,7 +8,7 @@ class Gender {
 
     _test(req, res) {
         try {
-            // _log.log(`_test done`);
+            _log.log(`_test done`);
             return res.send({
                 status: _res.STATUS.SUCCESS,
                 message: _res.MESSAGE.SUCCESS,
