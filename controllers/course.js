@@ -25,10 +25,17 @@ class Course {
     async _get_list_user(req, res) {
         try {
             _log.log(`params`, req.query);
-            const listUserCourse = await user_model
+             await user_model
                 .find({role: _contains.USER.ROLE.USER_COURSE}, _contains.USER.PARAMS_COURSE_LIST)
-                .populate('course_rq').exec();
-            return res.send(helper.render_response_success(req, listUserCourse, _res.MESSAGE.SUCCESS));
+                .sort({created: -1}).exec(async (err, listUser) => {
+                    const dataCourse = await Promise.all(listUser.map((user) => {
+                        return course_rq_model.findOne({userId: user._id}, {status: 1})
+                    }));
+                     const dataResult= listUser.map((user, index) => {
+                         return {...user._doc, statusCourse: dataCourse[index].status};
+                     });
+                    return res.send(helper.render_response_success(req, dataResult, _res.MESSAGE.SUCCESS));
+                });
         } catch (e) {
             _log.err(`_get_list_user`, e);
             return res.send(helper.render_response_error(req, e));
@@ -76,7 +83,6 @@ class Course {
                         ...receiver_register,
                         password: await bcrypt.hash(passwordBirthday, _config.BCRYPT.SALT),
                         role: _contains.USER.ROLE.USER_COURSE,
-                        status: _contains.USER.STATUS.COURSE_RQ,
                     });
                     const course_rq = await course_rq_model.create({
                         ...receiver_register,

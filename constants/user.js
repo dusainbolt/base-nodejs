@@ -20,7 +20,6 @@ module.exports = {
     ],
     PARAMS_COURSE_LIST: {
         job: 1,
-        status: 1,
         jobAddress: 1,
         gender: 1,
         birthday: 1,
