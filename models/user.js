@@ -24,6 +24,7 @@ const obj_schema = new _mongoose.Schema({
     }],
     created: {type: Date, default: Date.now},
     updated: {type: Date, default: null},
+    // course: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'course_rq' }]
     // job: { type: _mongoose.Schema.Types.ObjectId, ref: 'gender', required: true },
 }, {id: false, versionKey: 'v'});
 

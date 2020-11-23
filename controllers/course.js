@@ -10,14 +10,27 @@ class Course {
     constructor() {
     }
 
+    async _get_detail(req, res) {
+        try {
+            _log.log(`params`, req.query);
+            await validate_helper.get_validate_course_detail().validate(req.query);
+            const courseDetail = await course_rq_model.findOne({userId: req.query.userId});
+            return res.send(helper.render_response_success(req, courseDetail, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`get_detail_course`, e);
+            return res.send(helper.render_response_error(req, e));
+        }
+    }
+
     async _get_list_user(req, res) {
         try {
-            _log.log(`Body`, req.body);
-            const listUserCourse = await user_model.find({role: _contains.USER.ROLE.USER_COURSE}, _contains.USER.PARAMS_COURSE_LIST);
-
-            return res.send(helper.render_response_success(req, listUserCourse, _res.MESSAGE.REGISTER_SUCCESS));
+            _log.log(`params`, req.query);
+            const listUserCourse = await user_model
+                .find({role: _contains.USER.ROLE.USER_COURSE}, _contains.USER.PARAMS_COURSE_LIST)
+                .populate('course_rq').exec();
+            return res.send(helper.render_response_success(req, listUserCourse, _res.MESSAGE.SUCCESS));
         } catch (e) {
-            _log.err(`register`, e);
+            _log.err(`_get_list_user`, e);
             return res.send(helper.render_response_error(req, e));
         }
     }

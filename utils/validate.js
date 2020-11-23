@@ -59,6 +59,13 @@ class Validate {
             status: _yup.number().required()
         });
     }
+    static get_validate_course_detail() {
+        return _yup.object().shape({
+            userId: _yup.string().required()
+                .test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                     (userId) => _mongoose.Types.ObjectId.isValid(userId)),
+        });
+    }
 }
 
 module.exports = Validate;

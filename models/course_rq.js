@@ -1,5 +1,7 @@
+
 const obj_schema = new _mongoose.Schema({
     userId: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+    status: { type: Number, default: _contains.COURSE.STATUS.PENDING },
     frequency: {type: Number, required: true},
     durationTime: {type: Number, required: true},
     targetTop: {type: Number, required: true},

@@ -31,8 +31,8 @@ const setAuth = async (req, res, next) => {
                 error_code: _res.ERROR_CODE.AUTH.TIMESTAMPS_INVALID,
             })
         }
-
         //Check hash_key
+        url = url.indexOf("?") !== -1 ? url.substring(0, url.indexOf("?")) : url;
         let input = _config.APP_KEY + `_` + timestamp + `_` + url;
         console.log("---------->INPUT", input, url);
         let hash_key_server = crypto_js.MD5(input).toString();

@@ -5,6 +5,7 @@ const pair_request = require('./pair_request.js');
 const room = require('./room.js');
 const story = require('./story.js');
 const relationship = require('./relationship.js');
+const course_rq = require('./course_rq.js');
 
 module.exports = {
     RESPONSE: response,
@@ -14,4 +15,5 @@ module.exports = {
     ROOM: room,
     STORY: story,
     RELATIONSHIP: relationship,
+    COURSE: course_rq,
 };

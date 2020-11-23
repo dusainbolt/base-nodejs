@@ -4,7 +4,7 @@ class Example {
     constructor() {
     }
 
-    _test(req, res) {
+    _get_(req, res) {
         try {
             let data = `Welcome`;
             return res.send({

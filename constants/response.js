@@ -23,7 +23,7 @@ module.exports = {
     //ERROR_CODE bao gồm cả các value ở VALIDATE phía dưới
     ERROR_CODE: {
         NOT_FOUND: 404,
-        INVALID_GENDER_ID: 4, // loi genderId
+        INVALID_OBJECT_ID: 4, // loi OBJECT ID
         INVALID_ERROR: 5, // loi khong xac dinh
         DUPLICATE_EMAIL: 6, // loi trung email
         REDIS_ERROR: 7, // loi redis
