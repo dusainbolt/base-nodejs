@@ -35,7 +35,7 @@ class Course {
     async _register(req, res) {
         try {
             _log.log(`Body`, req.body);
-            return res.send(helper.render_response_error(req, null, _res.ERROR_CODE.REGISTER_CLOSE, _res.MESSAGE.REGISTER_CLOSE));
+            return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REGISTER_CLOSE, _res.MESSAGE.REGISTER_CLOSE));
 //             await validate_helper.get_validate_register(user_model).validate(req.body);
 //             const {email} = req.body;
 //             const code = _helper.render_verify_code();
@@ -67,7 +67,7 @@ class Course {
                 if (err) {
                     return res.send(_helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_ERROR, _res.MESSAGE.REDIS_ERROR));
                 } else if (!receiver_register) {
-                    return res.send(helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_REGISTER_NOT_FOUND, _res.MESSAGE.REGISTER_NOT_FOUND));
+                    return res.send(_helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_REGISTER_NOT_FOUND, _res.MESSAGE.REGISTER_NOT_FOUND));
                 } else if (parseInt(code) === receiver_register.code) {
                     const passwordBirthday = moment.unix(receiver_register.birthday).format("DD/MM/YYYY");
                     const user_register = await user_model.create({
