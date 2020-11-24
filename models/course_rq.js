@@ -9,7 +9,14 @@ const obj_schema = new _mongoose.Schema({
     outCondition: {type: Number, default: null},
     nowSkill: {type: String,default: null },
     mission: {type: String, default: null},
-    type: {type: Number, default: null}
+    type: {type: Number, default: null},
+    created: {type: Date, default: Date.now},
+    updated: {type: Date, default: null},
 },{id: false, versionKey: 'v'});
+
+obj_schema.index({user: 1});
+obj_schema.set('toJSON', {getters: true});
+obj_schema.set('toObject', {getters: true});
+obj_schema.plugin(_mongoose_pageinate);
 
 module.exports = _mongoose.model('course_rq', obj_schema);

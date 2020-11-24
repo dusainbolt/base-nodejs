@@ -5,6 +5,7 @@ module.exports = {
             APPROVE: 1,//Dong y
             PENDING: 3
         },
+        PRAMS_COURSE_USER: {status: 1},
     },
     USER: {
         TYPE: {

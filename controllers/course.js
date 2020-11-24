@@ -10,7 +10,7 @@ class Course {
         try {
             _log.log(`params`, req.query);
             await validate_helper.get_validate_course_detail().validate(req.query);
-            const courseDetail = await course_rq_model.find({user: req.query.userId});
+            const courseDetail = await course_rq_model.findOne({user: req.query.userId});
             return res.send(_helper.render_response_success(req, courseDetail, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`get_detail_course`, e);
@@ -21,9 +21,19 @@ class Course {
     async _get_list_user(req, res) {
         try {
             _log.log(`params`, req.query);
-            const dataCourse = await user_model
-               .find({role: _contains.USER.ROLE.USER_COURSE}, _contains.USER.PARAMS_COURSE_LIST)
-               .sort({created: -1}).populate({ path: 'courseRequest', select: 'status'},);
+            const { sortType, sortBy, pageSize, pageNum } = req.query;
+            const sort_type = sortType ? sortType : _logic.ASC;
+            const sort_by = sortBy ? sortBy : _logic.SORT_CREATE;
+            const page_size = pageSize ? pageSize : _logic.PAGE_SIZE;
+            const count_skip = pageNum ? pageNum * page_size : _logic.PAGE_SKIP;
+            const options = {
+                offset:   parseInt(count_skip),
+                limit:    parseInt(page_size),
+                select: _contains.COURSE.PRAMS_COURSE_USER,
+                sort: {[sort_by]: _logic[sort_type]},
+                populate: { path: 'user', select:  _contains.USER.PARAMS_COURSE_LIST},
+            }
+            const dataCourse = await course_rq_model.paginate({}, options);
             return res.send(_helper.render_response_success(req, dataCourse, _res.MESSAGE.SUCCESS));
 
         } catch (e) {
