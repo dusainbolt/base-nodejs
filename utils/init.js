@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs');
-const constants = require(`../constants/constants.js`);
 const user_model = require(`../models/user.js`);
 
 class Init {
@@ -41,15 +40,15 @@ class Init {
             let users = await user_model.find({});
             if (users.length === 0) {
                 let data_user = [];
-                for (let item of constants.USER.DATA_DEFAULT) {
+                for (let item of _contains.USER.DATA_DEFAULT) {
                     // gender_random = genders[Math.floor(Math.random() * genders.length)];
                     item.password = await bcrypt.hash(item.password, _config.BCRYPT.SALT);
                     // item.genderId = gender_random._id;
                     data_user.push(item);
                 }
                 users = await user_model.insertMany(data_user);
-                // users = await  user_model.create({...constants.USER.DATA_DEFAULT,
-                //     password: await bcrypt.hash(constants.USER.DATA_DEFAULT.password, _config.BCRYPT.SALT),
+                // users = await  user_model.create({..._contains.USER.DATA_DEFAULT,
+                //     password: await bcrypt.hash(_contains.USER.DATA_DEFAULT.password, _config.BCRYPT.SALT),
                 // });
             }
             return users;

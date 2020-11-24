@@ -1,7 +1,5 @@
-const helper = require(`../utils/helper.js`);
 const validate_helper = require(`../utils/validate.js`);
 const user_model = require(`../models/user.js`);
-const moment = require(`moment`);
 const bcrypt = require('bcryptjs')
 
 class User {
@@ -13,11 +11,11 @@ class User {
             return res.send({
                 status: _res.STATUS.SUCCESS,
                 message: _res.MESSAGE.SUCCESS,
-                data: helper.encode_data(req, data),
+                data: _helper.encode_data(req, data),
             });
         } catch (e) {
             _log.err(`_test`, e);
-            return res.send(helper.render_response_error(req, e));
+            return res.send(_helper.render_response_error(req, e));
         }
     }
 
@@ -30,14 +28,14 @@ class User {
             const isPasswordMatch = await bcrypt.compare(password, user.password);
             if (!isPasswordMatch) {
                 _log.log(_res.MESSAGE.ACCOUNT_INVALID);
-                return res.send(helper.render_response_error(req, null, _res.ERROR_CODE.INVALID_EMAIL, _res.MESSAGE.ACCOUNT_INVALID));
+                return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.INVALID_EMAIL, _res.MESSAGE.ACCOUNT_INVALID));
             }
             const token = await user.generateAuthToken();
             _log.log(_res.MESSAGE.SUCCESS);
-            return res.send(helper.render_response_success(req, {user, token}, _res.MESSAGE.SUCCESS));
+            return res.send(_helper.render_response_success(req, {user, token}, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`login`, e);
-            return res.send(helper.render_response_error(req, e));
+            return res.send(_helper.render_response_error(req, e));
         }
     }
 
@@ -47,10 +45,10 @@ class User {
                 return token.token !== req.token;
             })
             await req.user.save();
-            return res.send(helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
+            return res.send(_helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`logout`, e);
-            return res.send(helper.render_response_error(req, e));
+            return res.send(_helper.render_response_error(req, e));
         }
     }
 
@@ -58,10 +56,10 @@ class User {
         try {
             req.user.tokens.splice(0, req.user.tokens.length);
             await req.user.save();
-            return res.send(helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
+            return res.send(_helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`logout`, e);
-            return res.send(helper.render_response_error(req, e));
+            return res.send(_helper.render_response_error(req, e));
         }
     }
 }

@@ -1,15 +1,15 @@
-
 const obj_schema = new _mongoose.Schema({
-    userId: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+    user: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
     status: { type: Number, default: _contains.COURSE.STATUS.PENDING },
-    frequency: {type: Number, required: true},
-    durationTime: {type: Number, required: true},
-    targetTop: {type: Number, required: true},
-    wishJob: {type: Number, required: true},
-    completeExercise: {type: Number, required: true},
-    outCondition: {type: Number, required: true},
-    nowSkill: {type: String, required: true},
-    mission: {type: String, required: true},
+    frequency: {type: Number, default: null},
+    durationTime: {type: Number, default: null},
+    targetTop: {type: Number, default: null},
+    wishJob: {type: Number, default: null},
+    completeExercise: {type: Number, default: null},
+    outCondition: {type: Number, default: null},
+    nowSkill: {type: String,default: null },
+    mission: {type: String, default: null},
+    type: {type: Number, default: null}
 },{id: false, versionKey: 'v'});
 
 module.exports = _mongoose.model('course_rq', obj_schema);

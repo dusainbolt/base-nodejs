@@ -1,6 +1,5 @@
 const crypto_js = require(`crypto-js`);
 const mailer = require('../connection/email');
-const course_rq_model = require(`../models/course_rq`);
 
 class Helper {
 

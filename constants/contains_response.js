@@ -14,6 +14,7 @@ module.exports = {
         REDIS_ERROR: "Redis error",
         REGISTER_NOT_FOUND: "Email end time or invalid",
         VERIFY_CODE_INVALID: "Verify code invalid",
+        REGISTER_CLOSE: "End Time Register",
         AUTH: {
             FAIL: `Authentication failed`,
             TIMESTAMPS_INVALID: `Timestamps invalid`,
@@ -30,6 +31,7 @@ module.exports = {
         REDIS_REGISTER_NOT_FOUND: 8, // khong tim thay email hoac het time 5p
         VERIFY_CODE_INVALID: 9,
         INVALID_EMAIL: 10, // loi trung email
+        REGISTER_CLOSE: 11, //
         AUTH: {
             FAIL: 1,
             TIMESTAMPS_INVALID: 2,

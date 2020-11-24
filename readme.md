@@ -61,6 +61,16 @@
     - Tất cả các API đều là dùng phương thức POST.
         + VD: Trong example.js có method _day_la_api => POST: localhost:port/example/day_la_api
         + VD: Trong user.js có method _login => POST: localhost:port/user/login
-    
+   
+### BU database
+mongodump --db sainbolt-app --out=sainbolt_app_local_24_11_2020
+mongodump mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt  --out=sainbolt_app_server_24_11_2020
+mongorestore <path dump>
+mongorestore mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt  --out=sainbolt_app_server_24_11_2020
+
+ 
+### update many <Rename>
+const courseDetail = await course_rq_model.updateMany({},{ $rename: { "userId": "user" } } )
 - create_at: 27/10/20 - dusainbolt.
 - update_at: 31/10/20 - dusainbolt
+mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt

@@ -7,9 +7,10 @@ global._mongoose = require(`mongoose`);
 global._redis = require(`./connection/redis.js`);
 global._elastic = require(`./connection/elastic.js`);
 global._yup = require(`yup`);
-global._res = require(`./constants/response.js`);
-global._logic = require(`./constants/logic.js`);
-global._contains = require(`./constants/constants.js`);
+global._res = require(`./constants/contains_response`);
+global._logic = require(`./constants/contains_logic.js`);
+global._contains = require(`./constants/contains_model.js`);
+global._helper = require(`./utils/helper.js`);
 
 const express = require(`express`);
 const server = express();

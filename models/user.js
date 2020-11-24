@@ -1,10 +1,9 @@
-const constants = require(`../constants/constants.js`);
 const jwt = require(`jsonwebtoken`);
 
 const obj_schema = new _mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, default: null},
-    status: {type: Number, default: constants.USER.STATUS.ACTIVE},
+    status: {type: Number, default: _contains.USER.STATUS.ACTIVE},
     fullName: {type: String, required: true},
     job: {type: String, default: null},
     jobAddress: {type: String, default: null},
@@ -17,6 +16,7 @@ const obj_schema = new _mongoose.Schema({
     cover: {type: String, default: null},
     description: {type: String, default: null},
     role: {type: String, default: null},
+    courseRequest: { type: _mongoose.Schema.Types.ObjectId, ref: 'course_rq', default: null },
     tokens: [{
         token: {
             type: String,
@@ -24,8 +24,6 @@ const obj_schema = new _mongoose.Schema({
     }],
     created: {type: Date, default: Date.now},
     updated: {type: Date, default: null},
-    // course: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'course_rq' }]
-    // job: { type: _mongoose.Schema.Types.ObjectId, ref: 'gender', required: true },
 }, {id: false, versionKey: 'v'});
 
 obj_schema.methods.generateAuthToken = async function () {

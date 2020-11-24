@@ -1,5 +1,3 @@
-const constants = require(`../constants/constants.js`);
-
 class Validate {
     /**
     * Phục vụ _registration

@@ -4,9 +4,9 @@ module.exports = {
     MONGODB: {
         HOST: `localhost`,
         PORT: `27017`,
-        USERNAME: `lgbt_user`,
+        USERNAME: `du_sainbolt`,
         PASSWORD: `12345678`,
-        NAME: `lgbt_vietnam`,
+        NAME: `sainbolt-app`,
         SRV: ``,
     },
     REDIS: {

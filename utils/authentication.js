@@ -46,6 +46,7 @@ const setAuth = async (req, res, next) => {
         }
 
         // check authen token
+
         if (skipPage(req.path)) return next();
 
         const token = authorization ? authorization.replace('Bearer ', '') : "";
