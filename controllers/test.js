@@ -11,7 +11,7 @@ class Example {
                 data: _helper.encode_data(req, {data}),
             })
         } catch (e) {
-            _log.err(`_test`, e);
+            // _log.err(`_test`, e);
             return res.send({
                 status: _res.STATUS.ERROR,
                 message: e.toString(),
