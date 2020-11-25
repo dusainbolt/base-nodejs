@@ -63,10 +63,10 @@
         + VD: Trong user.js có method _login => POST: localhost:port/user/login
    
 ### BU database
-mongodump --db sainbolt-app --out=sainbolt_app_local_24_11_2020
+mongodump --db sainbolt-app --out=25_11_2020_local_sainbolt_app
 mongodump mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt  --out=sainbolt_app_server_24_11_2020
 mongorestore <path dump>
-mongorestore mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt  --out=sainbolt_app_server_24_11_2020
+mongorestore mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt  25_11_2020_local_sainbolt_app
 
  
 ### update many <Rename>

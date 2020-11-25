@@ -2,6 +2,7 @@ class Validate {
     /**
     * Phục vụ _registration
     */
+    // co the them shape({...}).test(userName == pass)
     static get_validate_register(user_model) {
         return _yup.object().shape({
             fullName: _yup.string().required().min(2).max(50),
@@ -57,11 +58,24 @@ class Validate {
             status: _yup.number().required()
         });
     }
+
     static get_validate_course_detail() {
         return _yup.object().shape({
             userId: _yup.string().required()
                 .test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
-                     (userId) => _mongoose.Types.ObjectId.isValid(userId)),
+                    (userId) => _mongoose.Types.ObjectId.isValid(userId)),
+        });
+    }
+
+    static get_validate_request_course() {
+        return _yup.object().shape({
+            reply: _yup.string().required().max(255),
+            status: _yup.number().required()
+                .test('invalid status', _res.ERROR_CODE.INVALID_VALUE,
+                    (status) => status === _contains.COURSE.STATUS.REJECT || status === _contains.COURSE.STATUS.APPROVE),
+            courseId: _yup.string().required()
+                .test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                    (courseId) => _mongoose.Types.ObjectId.isValid(courseId)),
         });
     }
 }

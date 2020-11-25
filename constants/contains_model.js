@@ -27,6 +27,10 @@ module.exports = {
         DATA_DEFAULT: [
             {email: `dulh181199@gmail.com`, password: `du@dev1234`, fullName: `Du Sainbolt`, role: "ADMIN_APP"},
         ],
+        PARAMS_EMAIl_REQUEST_COURSE: {
+            fullName: 1,
+            email: 1,
+        },
         PARAMS_COURSE_LIST: {
             job: 1,
             jobAddress: 1,

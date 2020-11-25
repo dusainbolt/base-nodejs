@@ -81,8 +81,8 @@ const skipPage = (path) => {
         '/user/password-recovery',
         '/user/registration',
         '/user/verify_code',
-        '/course/register',
-        '/course/verify_code'
+        '/courses/register',
+        '/courses/verify_code'
     ];
     return pages.indexOf(path) !== -1;
 };

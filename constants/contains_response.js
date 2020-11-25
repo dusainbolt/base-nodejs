@@ -32,6 +32,7 @@ module.exports = {
         VERIFY_CODE_INVALID: 9,
         INVALID_EMAIL: 10, // loi trung email
         REGISTER_CLOSE: 11, //
+        INVALID_VALUE: 12, // value khong co trong follow
         AUTH: {
             FAIL: 1,
             TIMESTAMPS_INVALID: 2,

@@ -6,7 +6,7 @@ class User {
     constructor() {
     }
 
-    _test(req, res) {
+    async _test(req, res) {
         try {
             return res.send({
                 status: _res.STATUS.SUCCESS,

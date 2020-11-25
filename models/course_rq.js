@@ -1,5 +1,6 @@
 const obj_schema = new _mongoose.Schema({
     user: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+    subject: {type: Number, default: null},
     status: { type: Number, default: _contains.COURSE.STATUS.PENDING },
     frequency: {type: Number, default: null},
     durationTime: {type: Number, default: null},
@@ -9,7 +10,7 @@ const obj_schema = new _mongoose.Schema({
     outCondition: {type: Number, default: null},
     nowSkill: {type: String,default: null },
     mission: {type: String, default: null},
-    type: {type: Number, default: null},
+    reply: {type: String, default: null},
     created: {type: Date, default: Date.now},
     updated: {type: Date, default: null},
 },{id: false, versionKey: 'v'});
