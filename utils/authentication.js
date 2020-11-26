@@ -20,7 +20,7 @@ const setAuth = async (req, res, next) => {
 
         _log.log(ip + ` ` + method + ' ' + url);
         // if (process.env.NODE_ENV === 'local') return next();
-        let {authorization, hash_key} = headers;
+        let {authorization, hash_key, timestamp} = headers;
         //Check timestamps
         // let timestamp_server = moment().valueOf();
         // _log.log('timestamp_server', timestamp_server);
