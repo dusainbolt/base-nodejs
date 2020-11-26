@@ -64,7 +64,7 @@
    
 ### BU database
 mongodump --db sainbolt-app --out=25_11_2020_local_sainbolt_app
-mongodump mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt  --out=sainbolt_app_server_24_11_2020
+mongodump mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt  --out=bug_sainbolt_app_server_26_11_2020
 mongorestore <path dump>
 mongorestore mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt  25_11_2020_local_sainbolt_app
 

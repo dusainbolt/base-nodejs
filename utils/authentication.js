@@ -20,17 +20,17 @@ const setAuth = async (req, res, next) => {
 
         _log.log(ip + ` ` + method + ' ' + url);
         // if (process.env.NODE_ENV === 'local') return next();
-        let {authorization, hash_key, timestamp} = headers;
+        let {authorization, hash_key} = headers;
         //Check timestamps
-        let timestamp_server = moment().valueOf();
-        _log.log('timestamp_server', timestamp_server);
-        if (timestamp < timestamp_server - 1000 * 100 || timestamp > timestamp_server) {//Chỉ cho phép thời gian client chậm 100s so với server
-            return res.send({
-                status: _res.STATUS.ERROR,
-                message: _res.MESSAGE.AUTH.TIMESTAMPS_INVALID,
-                error_code: _res.ERROR_CODE.AUTH.TIMESTAMPS_INVALID,
-            })
-        }
+        // let timestamp_server = moment().valueOf();
+        // _log.log('timestamp_server', timestamp_server);
+        // if (timestamp < timestamp_server - 1000 * 100 || timestamp > timestamp_server) {//Chỉ cho phép thời gian client chậm 100s so với server
+        //     return res.send({
+        //         status: _res.STATUS.ERROR,
+        //         message: _res.MESSAGE.AUTH.TIMESTAMPS_INVALID,
+        //         error_code: _res.ERROR_CODE.AUTH.TIMESTAMPS_INVALID,
+        //     })
+        // }
         //Check hash_key
         url = url.indexOf("?") !== -1 ? url.substring(0, url.indexOf("?")) : url;
         let input = _config.APP_KEY + `_` + timestamp + `_` + url;
