@@ -58,6 +58,11 @@ const setAuth = async (req, res, next) => {
         }
         req.token = token;
         req.user = user;
+        if (skipAdminPage(req.path)) {
+            if (user.role !== _contains.USER.ROLE.ADMIN_APP) {
+                return res.status(401).send({error: 'Not authorized to access this resource'})
+            }
+        }
         return next();
     } catch (e) {
         _log.log('authentication error:', e.name);
@@ -86,6 +91,14 @@ const skipPage = (path) => {
     ];
     return pages.indexOf(path) !== -1;
 };
+
+const skipAdminPage = (path) => {
+    let pages = [
+        '/courses/list_user',
+        '/courses/request_course',
+    ];
+    return pages.indexOf(path) !== -1;
+}
 
 
 module.exports = setAuth;
