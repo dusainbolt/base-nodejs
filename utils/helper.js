@@ -1,7 +1,28 @@
 const crypto_js = require(`crypto-js`);
 const mailer = require('../connection/email');
+const AWS = require('aws-sdk');
 
 class Helper {
+
+
+    // static uploadFile(fileName){
+    // // Read content from the file
+    // const fileContent = fs.readFileSync(fileName);
+    //
+    // // Setting up S3 upload parameters
+    // const params = {
+    //     Bucket: BUCKET_NAME,
+    //     Key: 'cat.jpg', // File name you want to save as in S3
+    //     Body: fileContent
+    // };
+    //
+    // // Uploading files to the bucket
+    // s3.upload(params, function(err, data) {
+    //     if (err) {
+    //         throw err;
+    //     }
+    //     console.log(`File uploaded successfully. ${data.Location}`);
+    // });
 
     /*option mail -> va gui email*/
     static send_email(to = _logic.MAIL_TO_DEFAULT, subject = _logic.MAIL_SUBJECT_DEFAULT, template = _logic.template, data) {
@@ -20,17 +41,7 @@ class Helper {
     static render_verify_code() {
         return _.random(_logic.START_CODE, _logic.END_CODE);
     }
-
-    // static getStatusCourse(userId){
-    //     try {
-    //         const courseDetail = await ;
-    //         console.log(courseDetail);
-    //         return courseDetail;
-    //     } catch (e) {
-    //         throw e;
-    //     }
-    // }
-    /**
+    /*
      * input exception để kiểm tra và trả về lỗi
      * params: status, message, errorCode, data
      * @private

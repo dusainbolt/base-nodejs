@@ -19,6 +19,18 @@ class User {
         }
     }
 
+    async _change_avatar(req, res) {
+        try {
+            _log.log(`Body`, req.body);
+            // await validate_helper.get_validate_login(user_model).validate(req.body);
+            console.log("OK");
+            return res.send(_helper.render_response_success(req, "success", _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`login`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
     async _login(req, res) {
         try {
             _log.log(`Body`, req.body);

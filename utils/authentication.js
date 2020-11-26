@@ -1,5 +1,4 @@
 const crypto_js = require(`crypto-js`);
-const moment = require(`moment`);
 const jwt = require(`jsonwebtoken`);
 const user_model = require(`../models/user`);
 
