@@ -18,10 +18,12 @@ let dev_config = {
         ACCESS_KEY_ID: `AKIAUYZ7AQ5QF7I5RSM7`,
         SECRET_ACCESS_KEY: `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`,
         REGION: `ap-southeast-1`,
+        BUCKET_NAME: `appdu-storage`,
         UPLOAD: {
             Bucket: `appdu-storage`,
             ACL: `public-read`,
             ContentEncoding: 'base64',
+            // ContentLength: 2 * 1024 * 1024, //2mb size
         }
     },
     REDIS: {
