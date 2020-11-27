@@ -23,11 +23,11 @@ class User {
         try {
             await validate_helper.get_validate_change_avatar().validate(req.body);
             const {user, body: {avatar}} = req;
-            const params = await _helper.getPramsUpload(avatar, _logic.FOLDER_COURSE_AVATAR, user._id);
-            console.log(params);
-            if (!params) {
+            const params = _helper.getPramsUpload(avatar, _logic.FOLDER_COURSE_AVATAR, user._id);
+            if (!params.Key) {
                 return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.SIZE_IMAGE, _res.MESSAGE.IMAGE_SIZE));
             }
+            console.log(params);
             if (user.avatar.indexOf(_logic.URL_S3) !== -1) {
                 _helper.deleteImageFromS3(user.avatar);
             }
