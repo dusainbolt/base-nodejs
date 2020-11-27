@@ -24,12 +24,14 @@ class User {
             await validate_helper.get_validate_change_avatar().validate(req.body);
             const {user, body: {avatar}} = req;
             const params = await _helper.getPramsUpload(avatar, _logic.FOLDER_COURSE_AVATAR, user._id);
+            console.log(params);
             if (!params) {
                 return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.SIZE_IMAGE, _res.MESSAGE.IMAGE_SIZE));
             }
             if (user.avatar.indexOf(_logic.URL_S3) !== -1) {
                 _helper.deleteImageFromS3(user.avatar);
             }
+            console.log(user);
             const {Location} = await new Promise((resolve, reject) => {
                 _s3.upload(params, (err, data) => err == null ? resolve(data) : reject(err));
             });
