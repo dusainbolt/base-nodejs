@@ -10,7 +10,6 @@ try {
         // log: `trace`,
         // apiVersion: `7.9`,
     });
-
     client.ping({
         requestTimeout: 1000
     }, (error) => {

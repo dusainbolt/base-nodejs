@@ -15,6 +15,7 @@ module.exports = {
         REGISTER_NOT_FOUND: "Email end time or invalid",
         VERIFY_CODE_INVALID: "Verify code invalid",
         REGISTER_CLOSE: "End Time Register",
+        IMAGE_SIZE: "IMAGE SIZE INVALID",
         AUTH: {
             FAIL: `Authentication failed`,
             TIMESTAMPS_INVALID: `Timestamps invalid`,
@@ -33,6 +34,7 @@ module.exports = {
         INVALID_EMAIL: 10, // loi trung email
         REGISTER_CLOSE: 11, //
         INVALID_VALUE: 12, // value khong co trong follow
+        SIZE_IMAGE: 13, // anh qua dung luong,
         AUTH: {
             FAIL: 1,
             TIMESTAMPS_INVALID: 2,

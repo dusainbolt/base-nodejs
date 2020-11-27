@@ -7,6 +7,7 @@ global._mongoose = require(`mongoose`);
 global._mongoose_pageinate = require('mongoose-paginate');
 global._redis = require(`./connection/redis.js`);
 global._elastic = require(`./connection/elastic.js`);
+global._s3 = require(`./connection/aws.js`);
 global._yup = require(`yup`);
 global._res = require(`./constants/contains_response`);
 global._logic = require(`./constants/contains_logic.js`);
@@ -48,7 +49,7 @@ const start_server = () => {
         server.use('/favicon.ico', express.static(path.join(__dirname, 'assets/icons/favicon.ico')));
         server.use('/images', express.static(path.join(__dirname, 'assets/images')));
         // for parsing application/json
-        server.use(body_parser.json());
+        server.use(body_parser.json({ extended: true, limit: _config.SIZE_FILE_LIMIT }));
 
         // for parsing application/xwww-
         server.use(body_parser.urlencoded({ extended: true, limit: _config.SIZE_FILE_LIMIT }));

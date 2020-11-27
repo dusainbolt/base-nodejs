@@ -9,6 +9,18 @@ module.exports = {
         NAME: `sainbolt-app`,
         SRV: ``,
     },
+    S3: {
+        ACCESS_KEY_ID: `AKIAUYZ7AQ5QF7I5RSM7`,
+        SECRET_ACCESS_KEY: `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`,
+        REGION: `ap-southeast-1`,
+        BUCKET_NAME: `appdu-storage`,
+        UPLOAD: {
+            Bucket: `appdu-storage`,
+            ACL: `public-read`,
+            ContentEncoding: 'base64',
+            // ContentLength: 2 * 1024 * 1024, //2mb size
+        }
+    },
     REDIS: {
         HOST: `localhost`,
         PORT: `6379`,
@@ -35,5 +47,5 @@ module.exports = {
         SALT: 10
     },
     ALLOW_HEADER: `Origin, X-Requested-With, Content-Type, Accept, timestamp, Authorization, hash_key`,
-    SIZE_FILE_LIMIT: `15mb`,
+    SIZE_FILE_LIMIT: `50mb`,
 };

@@ -21,12 +21,23 @@ class User {
 
     async _change_avatar(req, res) {
         try {
-            _log.log(`Body`, req.body);
-            // await validate_helper.get_validate_login(user_model).validate(req.body);
-            console.log("OK");
-            return res.send(_helper.render_response_success(req, "success", _res.MESSAGE.SUCCESS));
+            await validate_helper.get_validate_change_avatar().validate(req.body);
+            const {user, body: {avatar}} = req;
+            const params = await _helper.getPramsUpload(avatar, _logic.FOLDER_COURSE_AVATAR, user._id);
+            if (!params) {
+                return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.SIZE_IMAGE, _res.MESSAGE.IMAGE_SIZE));
+            }
+            if (user.avatar.indexOf(_logic.URL_S3) !== -1) {
+                _helper.deleteImageFromS3(user.avatar);
+            }
+            const {Location} = await new Promise((resolve, reject) => {
+                _s3.upload(params, (err, data) => err == null ? resolve(data) : reject(err));
+            });
+            user.avatar = Location;
+            await user.save();
+            return res.send(_helper.render_response_success(req, {avatar: Location}, _res.MESSAGE.SUCCESS));
         } catch (e) {
-            _log.err(`login`, e);
+            _log.err(`change_avatar`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }

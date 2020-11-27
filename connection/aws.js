@@ -1,15 +1,13 @@
-// const AWS = require('aws-sdk');
-//
-// let s3 = null;
-//
-// try {
-//     s3 = new AWS.S3({
-//         accessKeyId : config.aws_access_key_id,
-//         secretAccessKey : config.aws_secret_access_key,
-//         region: config.aws_region,
-//     });
-// } catch (e) {
-//     throw  e;
-// }
-//
-// module.exports = s3;
+const aws = require('aws-sdk');
+let s3Storage = null;
+try {
+    s3Storage = new aws.S3({
+        accessKeyId : _config.S3.ACCESS_KEY_ID,
+        secretAccessKey : _config.S3.SECRET_ACCESS_KEY,
+        region: _config.S3.REGION,
+    });
+} catch (e) {
+    throw  e;
+}
+
+module.exports = s3Storage;

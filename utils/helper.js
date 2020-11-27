@@ -1,28 +1,42 @@
 const crypto_js = require(`crypto-js`);
 const mailer = require('../connection/email');
-const AWS = require('aws-sdk');
 
 class Helper {
 
 
-    // static uploadFile(fileName){
-    // // Read content from the file
-    // const fileContent = fs.readFileSync(fileName);
-    //
-    // // Setting up S3 upload parameters
-    // const params = {
-    //     Bucket: BUCKET_NAME,
-    //     Key: 'cat.jpg', // File name you want to save as in S3
-    //     Body: fileContent
-    // };
-    //
-    // // Uploading files to the bucket
-    // s3.upload(params, function(err, data) {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     console.log(`File uploaded successfully. ${data.Location}`);
-    // });
+    static getPramsUpload(base64_string, folder, path_name = "") {
+        // Read content from the file
+        const buffer_file_base64 = new Buffer.from(base64_string.replace(/^data:image\/\w+;base64,/, ""), 'base64')
+
+        const type = base64_string.split(';')[0].split('/')[1];
+        const stringLength = base64_string.length - 'data:image/png;base64,'.length;
+        const sizeInBytes = 4 * Math.ceil((stringLength / 3)) * 0.5624896334383812;
+        if (sizeInBytes > _logic.SIZE_UPLOAD) {
+            return false;
+        }
+        const time_upload = new Date().getTime();
+        const file_name = `${folder}/${path_name}_${time_upload}_${this.render_verify_code()}`;
+        // Setting up S3 upload parameters
+        return {
+            ..._config.S3.UPLOAD,
+            Key: file_name, // File name you want to save as in S3
+            Body: buffer_file_base64,
+            ContentType: `image/${type}`,
+        };
+    }
+
+    static deleteImageFromS3(fullPath) {
+        const key = fullPath.slice(_logic.URL_S3.length, fullPath.length);
+        _s3.deleteObject({
+            Bucket: _config.S3.BUCKET_NAME,
+            Key: key,
+        }, function (er, data) {
+        });
+    }
+
+    static convertLowerString(string) {
+        return _.lowerCase(string).replace(/\s/g, '')
+    }
 
     /*option mail -> va gui email*/
     static send_email(to = _logic.MAIL_TO_DEFAULT, subject = _logic.MAIL_SUBJECT_DEFAULT, template = _logic.template, data) {
@@ -38,9 +52,10 @@ class Helper {
     }
 
     /*return verify code: 6 chu so*/
-    static render_verify_code() {
-        return _.random(_logic.START_CODE, _logic.END_CODE);
+    static render_verify_code(start = _logic.START_CODE, end = _logic.END_CODE) {
+        return _.random(start, end);
     }
+
     /*
      * input exception để kiểm tra và trả về lỗi
      * params: status, message, errorCode, data

@@ -9,6 +9,9 @@ module.exports = {
     TYPE_ASC: "ASC",
     TYPE_DESC: "DESC",
     DBO_REGISTER: 0,
+    SIZE_UPLOAD: 2 * 1024 * 1024,
+    FOLDER_COURSE_AVATAR: "course_avatar",
+    URL_S3: `https://${_config.S3.BUCKET_NAME}.s3.${_config.S3.REGION}.amazonaws.com/`,
     PAGE_SIZE: 10, // so luong doc trong 1 page
     PAGE_SKIP: 0, // so luong doc bo qua
     SORT_CREATE: "created",

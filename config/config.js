@@ -14,6 +14,16 @@ let dev_config = {
         NAME: `sainbolt-app`,
         SRV: "?retryWrites=true&w=majority",
     },
+    S3: {
+        ACCESS_KEY_ID: `AKIAUYZ7AQ5QF7I5RSM7`,
+        SECRET_ACCESS_KEY: `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`,
+        REGION: `ap-southeast-1`,
+        UPLOAD: {
+            Bucket: `appdu-storage`,
+            ACL: `public-read`,
+            ContentEncoding: 'base64',
+        }
+    },
     REDIS: {
         HOST: `redis-15553.c16.us-east-1-3.ec2.cloud.redislabs.com`,
         PORT: `15553`,
@@ -42,7 +52,7 @@ let dev_config = {
         SALT: 10
     },
     ALLOW_HEADER: `Origin, X-Requested-With, Content-Type, Accept, timestamp, Authorization, hash_key`,
-    SIZE_FILE_LIMIT: `15mb`,
+    SIZE_FILE_LIMIT: `50mb`,
 };
 switch (process.env.NODE_ENV) {
     case `local`:

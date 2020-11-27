@@ -50,6 +50,13 @@ class Validate {
         });
     };
 
+    static get_validate_change_avatar() {
+        return _yup.object().shape({
+            avatar: _yup.string().required(),
+        });
+    };
+
+
     /**
      * Phục vụ get_all gender
      */
