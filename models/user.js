@@ -2,7 +2,7 @@ const jwt = require(`jsonwebtoken`);
 
 const obj_schema = new _mongoose.Schema({
     email: {type: String, required: true, unique: true},
-    password: {type: String, default: null},
+    password: {type: String, default: null, hideJSON: true},
     status: {type: Number, default: _contains.USER.STATUS.ACTIVE},
     fullName: {type: String, required: true},
     job: {type: String, default: null},
@@ -17,11 +17,7 @@ const obj_schema = new _mongoose.Schema({
     description: {type: String, default: null},
     role: {type: String, default: null},
     courseRequest: { type: _mongoose.Schema.Types.ObjectId, ref: 'course_rq', default: null },
-    tokens: [{
-        token: {
-            type: String,
-        },
-    }],
+    tokens: {type: Array, default: null, hideJSON: true},
     created: {type: Date, default: Date.now},
     updated: {type: Date, default: null},
 }, {id: false, versionKey: 'v'});
@@ -48,6 +44,7 @@ obj_schema.methods.generateAuthToken = async function () {
 obj_schema.index({email: 1});
 obj_schema.set('toJSON', {getters: true});
 obj_schema.set('toObject', {getters: true});
-
+obj_schema.plugin(_mongooseHidden);
+obj_schema.plugin(_mongoose_pageinate);
 
 module.exports = _mongoose.model('user', obj_schema);

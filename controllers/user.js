@@ -30,7 +30,6 @@ class User {
             if (user.avatar && user.avatar.indexOf(_logic.URL_S3) !== -1) {
                 _helper.deleteImageFromS3(user.avatar);
             }
-            console.log(user);
             const {Location} = await new Promise((resolve, reject) => {
                 _s3.upload(params, (err, data) => err == null ? resolve(data) : reject(err));
             });
@@ -55,6 +54,17 @@ class User {
                 return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.INVALID_EMAIL, _res.MESSAGE.ACCOUNT_INVALID));
             }
             const token = await user.generateAuthToken();
+            return res.send(_helper.render_response_success(req, {user, token}, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`login`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
+    async _get_refresh_user(req, res){
+        try {
+            const { user } = req;
+            const token = await user.generateAuthToken();
             _log.log(_res.MESSAGE.SUCCESS);
             return res.send(_helper.render_response_success(req, {user, token}, _res.MESSAGE.SUCCESS));
         } catch (e) {
@@ -65,10 +75,11 @@ class User {
 
     async _logout(req, res){
         try {
-            req.user.tokens = req.user.tokens.filter((token) => {
+            const { user } = req;
+            user.tokens = user.tokens.filter((token) => {
                 return token.token !== req.token;
             })
-            await req.user.save();
+            await user.save();
             return res.send(_helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`logout`, e);

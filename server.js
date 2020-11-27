@@ -5,6 +5,8 @@ global._log = require(`./utils/log.js`);
 global._ = require(`lodash`);
 global._mongoose = require(`mongoose`);
 global._mongoose_pageinate = require('mongoose-paginate');
+global._mongooseHidden = require('mongoose-hidden')();
+
 global._redis = require(`./connection/redis.js`);
 global._elastic = require(`./connection/elastic.js`);
 global._s3 = require(`./connection/aws.js`);

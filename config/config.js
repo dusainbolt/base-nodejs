@@ -48,7 +48,7 @@ let dev_config = {
     },
     JWT: {
         PRIVATE_KEY: `key_123543%G)G`,
-        AGE: `5d`,
+        AGE: `3d`,
     },
     BCRYPT: {
         SALT: 10
