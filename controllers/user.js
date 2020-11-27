@@ -27,8 +27,7 @@ class User {
             if (!params.Key) {
                 return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.SIZE_IMAGE, _res.MESSAGE.IMAGE_SIZE));
             }
-            console.log(params);
-            if (user.avatar.indexOf(_logic.URL_S3) !== -1) {
+            if (user.avatar && user.avatar.indexOf(_logic.URL_S3) !== -1) {
                 _helper.deleteImageFromS3(user.avatar);
             }
             console.log(user);
