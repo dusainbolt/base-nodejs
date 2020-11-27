@@ -44,7 +44,7 @@ obj_schema.methods.generateAuthToken = async function () {
 obj_schema.index({email: 1});
 obj_schema.set('toJSON', {getters: true});
 obj_schema.set('toObject', {getters: true});
-obj_schema.plugin(_mongooseHidden);
+obj_schema.plugin(_mongooseHidden, { hidden: { _id: false}});
 obj_schema.plugin(_mongoose_pageinate);
 
 module.exports = _mongoose.model('user', obj_schema);
