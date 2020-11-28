@@ -1,5 +1,19 @@
 class Validate {
 
+    static get_validate_add_subject() {
+        return _yup.object().shape({
+            name: _yup.string().required().max(255),
+        });
+    }
+
+    static get_validate_add_class() {
+        return _yup.object().shape({
+            name: _yup.string().required().max(255),
+            subject: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (subject) => _mongoose.Types.ObjectId.isValid(subject)),
+        });
+    }
+
     static get_validate_send_email_notify_course() {
         return _yup.object().shape({
             message: _yup.string().required(),

@@ -74,3 +74,6 @@ const courseDetail = await course_rq_model.updateMany({},{ $rename: { "userId": 
 - create_at: 27/10/20 - dusainbolt.
 - update_at: 31/10/20 - dusainbolt
 mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt
+
+### DELETE port local
+fuser -n tcp -k 6630 

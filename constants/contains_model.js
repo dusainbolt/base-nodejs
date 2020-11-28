@@ -1,4 +1,35 @@
 module.exports = {
+    CLASS: {
+        STATUS: {
+            ACTIVE: 1,
+            DONE: 2,
+            CLOSE: 3,
+        },
+    },
+    LESSON: {
+        STATUS: {
+            HAPPENING: 1,
+            END: 2,
+            PENDING: 3,
+        },
+    },
+    SUBJECT: {
+        STATUS: {
+            ACTIVE: 1,
+            PAUSE: 2,
+        },
+        PARAMS_ALL_INFO: {
+            avatar: 1,
+            name: 1
+        }
+    },
+    NOTIFY: {
+        TYPE: {
+            EMAIL: 1,
+            SYSTEM: 2,
+            MESSENGER: 3,
+        },
+    },
     COURSE: {
         STATUS: {
             REJECT: 0,//Tu choi
@@ -42,6 +73,10 @@ module.exports = {
             email: 1,
             fullName: 1,
             created: 1,
+        },
+        PARAMS_NOTIFY: {
+            fullName: 1,
+            role: 1,
         },
     }
 }

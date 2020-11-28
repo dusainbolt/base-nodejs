@@ -1,6 +1,5 @@
 const obj_schema = new _mongoose.Schema({
     user: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
-    subject: {type: Number, default: null},
     status: { type: Number, default: _contains.COURSE.STATUS.PENDING },
     frequency: {type: Number, default: null},
     durationTime: {type: Number, default: null},

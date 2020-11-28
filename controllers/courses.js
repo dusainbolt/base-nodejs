@@ -9,35 +9,26 @@ class Course {
     constructor() {
     }
 
-    async _email_notify_account_all(req, res) {
+    async _update_course_all(req, res) {
         try {
             _log.log(`body`, req.body);
-            await validate_helper.get_validate_send_email_notify_course().validate(req.body);
-            const {message, subject, noteClick, link} = req.body;
-
-            // search rgex
-            // const searchFullName = new RegExp('Lục Tuấn Nam', "i");
-            // fullName: {$regex: searchFullName},
-            const list_email_user_course = await user_model.find({
-                role: _contains.USER.ROLE.USER_COURSE,
-                status: _contains.USER.STATUS.ACTIVE,
-            }).select({email: 1, birthday: 1, fullName: 1, _id: false});
-            const subject_notify = `${_logic.SUBJECT_NOTIFY} - ${subject}`;
-            list_email_user_course.map((user, index) => {
-                 _helper.send_email( `dulh${index}181199@gmail.com`, subject_notify, _logic.TEMPLATE_EMAIL_NOTIFY_ACCOUNT, {
-                    fullName: user.fullName, link, myName: _logic.NAME, message, noteClick,
-                    onClick: !!noteClick,
-                    email: user.email,
-                    password: moment.unix(user.birthday).format("DD/MM/YYYY")
-                });
+            await validate_helper.get_validate_request_course().validate(req.body);
+            const {reply, status, courseId} = req.body;
+            await course_rq_model.findOneAndUpdate({_id: courseId}, {status, reply});
+            const userRequest = await user_model.findOne({courseRequest: courseId}, _contains.USER.PARAMS_EMAIl_REQUEST_COURSE);
+            _helper.send_email(userRequest.email, _logic.SUBJECT_REQUEST_COURSE, _logic.TEMPLATE_COURSE_RQ, {
+                status: parseInt(status) === _contains.COURSE.STATUS.APPROVE,
+                fullName: userRequest.fullName,
+                facebookGroup: _logic.FB_GROUP_NOW,
+                myName: _logic.NAME,
+                reply,
             });
-            return res.send(_helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
+            return res.send(_helper.render_response_success(req, userRequest.email, _res.MESSAGE.SUCCESS));
         } catch (e) {
-            _log.err(`_email_notify_course`, e);
+            _log.err(`_request_course`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }
-
     async _request_course(req, res) {
         try {
             _log.log(`body`, req.body);
@@ -74,17 +65,13 @@ class Course {
     async _get_list_user(req, res) {
         try {
             _log.log(`params`, req.query);
-            const {sortType, sortBy, pageSize, pageNum} = req.query;
-            const sort_type = sortType ? sortType : _logic.TYPE_ASC;
-            const sort_by = sortBy ? sortBy : _logic.SORT_CREATE;
-            const page_size = pageSize ? pageSize : _logic.PAGE_SIZE;
-            const count_skip = pageNum ? pageNum * page_size : _logic.PAGE_SKIP;
+            const params = _helper.getParamsSearch(req.query);
             const options = {
-                offset: parseInt(count_skip),
-                limit: parseInt(page_size),
-                select: _contains.COURSE.PRAMS_COURSE_USER,
-                sort: {[sort_by]: _logic[sort_type]},
-                populate: {path: 'user', select: _contains.USER.PARAMS_COURSE_LIST},
+                offset: params.count_skip,
+                limit: params.page_size,
+                sort: {[params.sort_by]: _logic[params.sort_type]},
+                populate: [{path: 'user', select: _contains.USER.PARAMS_COURSE_LIST},
+                    {path: 'class', select: _contains.USER.PARAMS_COURSE_LIST}],
             }
             const dataCourse = await course_rq_model.paginate({}, options);
             return res.send(_helper.render_response_success(req, dataCourse, _res.MESSAGE.SUCCESS));
@@ -132,7 +119,7 @@ class Course {
                 } else if (!receiver_register) {
                     return res.send(_helper.render_response_error(req, err, _res.ERROR_CODE.REDIS_REGISTER_NOT_FOUND, _res.MESSAGE.REGISTER_NOT_FOUND));
                 } else if (parseInt(code) === receiver_register.code) {
-                    const passwordBirthday = moment.unix(receiver_register.birthday).format("DD/MM/YYYY");
+                    const passwordBirthday = moment.unix(receiver_register.birthday).format(_logic.FORMAT_DATE_UTC);
                     const user_register = await user_model.create({
                         ...receiver_register,
                         password: await bcrypt.hash(passwordBirthday, _config.BCRYPT.SALT),

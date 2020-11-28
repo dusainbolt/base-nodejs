@@ -66,6 +66,17 @@ class Helper {
         return _.random(start, end);
     }
 
+    static getParamsSearch(requestQuery) {
+        const {sortType, sortBy, pageSize, pageNum} = requestQuery;
+        const page_size = pageSize ? parseInt(pageSize) : _logic.PAGE_SIZE;
+        return {
+            sort_type: sortType ? sortType : _logic.TYPE_DESC,
+            sort_by: sortBy ? sortBy : _logic.SORT_CREATE,
+            count_skip: pageNum ? parseInt(pageNum) * page_size : _logic.PAGE_SKIP,
+            page_size,
+        }
+    }
+
     /*
      * input exception để kiểm tra và trả về lỗi
      * params: status, message, errorCode, data
