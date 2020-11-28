@@ -51,6 +51,16 @@ class Helper {
         }
     }
 
+    static getSearchRegexSpecial(string) {
+        const term = [];
+        for (let i = 0; i < string.length; i++) {
+            const char = string.charAt(i);
+            const reg = _logic.UNICODE[char];
+            term.push(reg);
+        }
+        return new RegExp(term.join(""));
+    }
+
     /*return verify code: 6 chu so*/
     static render_verify_code(start = _logic.START_CODE, end = _logic.END_CODE) {
         return _.random(start, end);

@@ -9,6 +9,7 @@ try {
         port: _config.EMAIL.PORT,
         secure: false,
         requireTLS: true,
+        pool: true,
         auth: {
             user: _config.EMAIL.USERNAME,
             pass: _config.EMAIL.PASSWORD,

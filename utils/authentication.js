@@ -86,7 +86,7 @@ const skipPage = (path) => {
         '/user/registration',
         '/user/verify_code',
         '/courses/register',
-        '/courses/verify_code'
+        '/courses/verify_code',
     ];
     return pages.indexOf(path) !== -1;
 };
@@ -95,6 +95,7 @@ const skipAdminPage = (path) => {
     let pages = [
         '/courses/list_user',
         '/courses/request_course',
+        '/courses/email_notify_course'
     ];
     return pages.indexOf(path) !== -1;
 }

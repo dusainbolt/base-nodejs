@@ -9,9 +9,38 @@ class Course {
     constructor() {
     }
 
+    async _email_notify_account_all(req, res) {
+        try {
+            _log.log(`body`, req.body);
+            await validate_helper.get_validate_send_email_notify_course().validate(req.body);
+            const {message, subject, noteClick, link} = req.body;
+
+            // search rgex
+            // const searchFullName = new RegExp('Lục Tuấn Nam', "i");
+            // fullName: {$regex: searchFullName},
+            const list_email_user_course = await user_model.find({
+                role: _contains.USER.ROLE.USER_COURSE,
+                status: _contains.USER.STATUS.ACTIVE,
+            }).select({email: 1, birthday: 1, fullName: 1, _id: false});
+            const subject_notify = `${_logic.SUBJECT_NOTIFY} - ${subject}`;
+            list_email_user_course.map((user, index) => {
+                 _helper.send_email( `dulh${index}181199@gmail.com`, subject_notify, _logic.TEMPLATE_EMAIL_NOTIFY_ACCOUNT, {
+                    fullName: user.fullName, link, myName: _logic.NAME, message, noteClick,
+                    onClick: !!noteClick,
+                    email: user.email,
+                    password: moment.unix(user.birthday).format("DD/MM/YYYY")
+                });
+            });
+            return res.send(_helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_email_notify_course`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
     async _request_course(req, res) {
         try {
-            _log.log(`params`, req.body);
+            _log.log(`body`, req.body);
             await validate_helper.get_validate_request_course().validate(req.body);
             const {reply, status, courseId} = req.body;
             await course_rq_model.findOneAndUpdate({_id: courseId}, {status, reply});

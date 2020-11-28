@@ -9,25 +9,19 @@
                 </div>
             </div>
         </div>
-        {{#if status}}
-            <h4 style="text-align: center; font-size: 22px">🥳 CHÚC MỪNG 🥳</h4>
+        <h4 style="text-align: center; font-size: 22px">💌 THÔNG BÁO 💌</h4>
+        <p><b>{{fullName}}</b> hãy đọc kỹ thông báo phía dưới đây nhé:</p>
+        <p>{{message}}</p>
+        {{#if onClick}}
+            <p>{{noteClick}}: <a target="_blank" href="{{link}}">{{link}}</a>
         {{else}}
-            <h4 style="text-align: center; font-size: 22px">😢 SORRY FOR YOU 😢</h4>
-        {{/if}}
-        {{#if status}}
-            <p>Chúc mừng <b>{{fullName}}</b> hồ sơ của bạn đã được phê duyệt!</p>
-            <p>{{reply}}</p>
-        <p>Hãy tham gia nhóm học training tại đây nhé: <a target="_blank" href="{{facebookGroup}}">{{facebookGroup}}</a>
-        {{else}}
-            <p>Rất tiếc <b>{{fullName}}</b> hồ sơ của bạn không được phê duyệt!</p>
-            <p>{{reply}}</p>
         {{/if}}
         </p>
         <div style="max-width: 150px; margin-left: auto">
             <p style="font-style: italic; font-size: 18px">{{myName}} ❤️</p>
         </div>
-        <div style="border-top: solid 1px black; font-style: italic">
-            Email: apdu.hotro@gmail.com,
+        <div style="border-top: solid 1px black; ont-style: italic">
+           Email: apdu.hotro@gmail.com,
         </div>
         <div style="font-style: italic">
             Facebook: https://www.facebook.com/dusainbolt/

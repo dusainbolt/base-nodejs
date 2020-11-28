@@ -35,6 +35,8 @@ module.exports = {
     EMAIL: {
         HOST: 'smtp.gmail.com',
         PORT: 587,
+        // USERNAME: 'dule9xpro@gmail.com',
+        // PASSWORD: 'akgcliilpppqygvb',
         USERNAME: 'appdu.hotro@gmail.com',
         PASSWORD: 'ylnkfupxfeynqprv',
         FROM_NAME: 'Sainbolt App',

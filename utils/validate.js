@@ -1,7 +1,21 @@
 class Validate {
+
+    static get_validate_send_email_notify_course() {
+        return _yup.object().shape({
+            message: _yup.string().required(),
+            subject: _yup.string().required().max(255),
+            noteClick: _yup.string().max(255),
+            link: _yup.string()
+                .when('noteClick', {
+                    is: (noteClick) => noteClick,
+                    then: _yup.string().required()
+                })
+        });
+    }
+
     /**
-    * Phục vụ _registration
-    */
+     * Phục vụ _registration
+     */
     // co the them shape({...}).test(userName == pass)
     static get_validate_register(user_model) {
         return _yup.object().shape({
