@@ -79,6 +79,9 @@ module.exports = {
             birthday: 1,
             fullName: 1,
             facebook: 1,
+            avatar: 1,
+            phoneNumber:1,
+            email: 1,
         },
         PARAMS_NOTIFY: {
             fullName: 1,
