@@ -14,8 +14,7 @@ class Course {
             _log.log(`body`, req.body);
             // await validate_helper.get_validate_request_course().validate(req.body);
             // await course_rq_model.findOneAndUpdate({_id: courseId}, {status, reply});
-            const userRequest = await user_model.updateMany({role: _contains.USER.ROLE.USER_COURSE},{class: "5fc30c2f97cb213ce9c895fa"});
-
+            const userRequest = await user_model.updateMany({role: _contains.USER.ROLE.USER_COURSE},{status: _contains.USER.STATUS.CONFIRM_AGAIN});
             return res.send(_helper.render_response_success(req, userRequest, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_request_course`, e);
@@ -63,7 +62,7 @@ class Course {
                 offset: params.count_skip,
                 limit: params.page_size,
                 sort: {[params.sort_by]: _logic[params.sort_type]},
-                populate: [{path: 'user', select: _contains.USER.PARAMS_COURSE_LIST},
+                populate: [{path: 'user', select: _contains.USER.PARAMS_COURSE_LIST, match: {status: {$gte: _contains.USER.STATUS.ACTIVE} }},
                     {path: 'class', select: _contains.USER.PARAMS_COURSE_LIST}],
             }
             const dataCourse = await course_rq_model.paginate({}, options);

@@ -51,6 +51,7 @@ module.exports = {
             TEMPORARY: 2, //Khóa tạm thời
             COURSE_RQ: 3, // Dang cho xet duyet
             REJECT: 4, //Tu choi
+            CONFIRM_AGAIN: 5,
         },
         ROLE: {
             ADMIN_APP: "ADMIN_APP",
@@ -69,6 +70,7 @@ module.exports = {
             gender: 1,
             birthday: 1,
             facebook: 1,
+            status: 1,
             country: 1,
             phoneNumber: 1,
             email: 1,

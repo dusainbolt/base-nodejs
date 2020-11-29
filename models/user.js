@@ -38,6 +38,9 @@ obj_schema.methods.generateAuthToken = async function () {
         }
     );
     user.tokens = user.tokens.concat({token});
+    if(user.status !== _contains.USER.STATUS.ACTIVE){
+        user.status = _contains.USER.STATUS.ACTIVE;
+    }
     await user.save();
     return token;
 }

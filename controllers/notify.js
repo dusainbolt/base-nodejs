@@ -36,19 +36,17 @@ class Notify {
             // fullName: {$regex: searchFullName},
             const list_email_user_course = await user_model.find({
                 role: _contains.USER.ROLE.USER_COURSE,
-                status: _contains.USER.STATUS.ACTIVE,
             }).select({email: 1, birthday: 1, fullName: 1, _id: false});
+
             const subject_notify = `${_logic.SUBJECT_NOTIFY} - ${subject}`;
-            const notify = await notify_model.create({subject, message, link, user: req.user._id});
+            const notify = await notify_model.create({subject, message, user: req.user._id, class: "5fc30c2f97cb213ce9c895fa"});
             list_email_user_course.map((user, index) => {
-                if(index === 0 || index === 3){
-                    _helper.send_email(user.email, subject_notify, _logic.TEMPLATE_EMAIL_NOTIFY_ACCOUNT, {
-                        fullName: user.fullName, link, myName: _logic.NAME, message, noteClick,
-                        onClick: !!noteClick,
-                        email: user.email,
-                        password: moment.unix(user.birthday).format(_logic.FORMAT_DATE_UTC)
-                    });
-                }
+                _helper.send_email(user.email, subject_notify, _logic.TEMPLATE_EMAIL_NOTIFY_ACCOUNT, {
+                    fullName: user.fullName, myName: _logic.NAME, message,
+                    email: user.email,
+                    password: moment.unix(user.birthday).format(_logic.FORMAT_DATE_UTC)
+                });
+
             });
             return res.send(_helper.render_response_success(req, notify, _res.MESSAGE.SUCCESS));
         } catch (e) {
