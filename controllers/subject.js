@@ -9,7 +9,7 @@ class Subject {
         try {
             _log.log(`body`, req.body);
             await validate_helper.get_validate_add_subject().validate(req.body);
-            const new_subject = subject_model.create({
+            const new_subject = await subject_model.create({
                 name: req.body.name,
                 description: req.body.description,
                 user: req.user._id,

@@ -98,7 +98,8 @@ const skipAdminPage = (path) => {
         '/courses/email_notify_course',
         '/notify/list',
         '/subject/add_subject',
-        '/class/add_class'
+        '/class/add_class',
+        `/lesson/add_lesson`,
 
     ];
     return pages.indexOf(path) !== -1;

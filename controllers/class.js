@@ -42,7 +42,7 @@ class Subject {
             _log.log(`body`, req.body);
             await validate_helper.get_validate_add_class().validate(req.body);
             const {name, subject} = req.body;
-            const new_class = class_model.create({name, subject, user: req.user._id,});
+            const new_class = await class_model.create({name, subject, user: req.user._id,});
             return res.send(_helper.render_response_success(req, new_class, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_add_class`, e);

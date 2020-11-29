@@ -1,8 +1,11 @@
 const obj_schema = new _mongoose.Schema({
-    class: { type: _mongoose.Schema.Types.ObjectId, ref: 'class', default: null },
+    class: { type: _mongoose.Schema.Types.ObjectId, ref: 'class', required: true },
+    user: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
+    listQuestion: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'question', required: null }],
     title: {type: String, required: true},
     description: {type: String, default: null},
     expectedTime: {type: Number, required: true},
+    duration: {type: Number, required: true},
     startTime: {type: Number, default: null},
     endTime: {type: Number, default: null},
     status: {type: Number, default: _contains.LESSON.STATUS.PENDING},

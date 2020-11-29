@@ -10,7 +10,8 @@ module.exports = {
         STATUS: {
             HAPPENING: 1,
             END: 2,
-            PENDING: 3,
+            PENDING: 3, // len lich
+            QUESTION: 4, // chuan bi cau hoi // sap dien ra
         },
     },
     SUBJECT: {

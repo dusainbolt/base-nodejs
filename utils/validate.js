@@ -7,11 +7,28 @@ class Validate {
         });
     }
 
+    static get_validate_add_question() {
+        return _yup.object().shape({
+            message: _yup.string().required().max(255),
+            lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
+        });
+    }
 
     static get_validate_add_subject() {
         return _yup.object().shape({
             name: _yup.string().required().max(100),
             description: _yup.string().required().max(255),
+        });
+    }
+    static get_validate_add_lesson() {
+        return _yup.object().shape({
+            title: _yup.string().required().max(255),
+            description: _yup.string().required().max(255),
+            expectedTime: _yup.number().required(),
+            duration: _yup.number().required(),
+            classId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (classId) => _mongoose.Types.ObjectId.isValid(classId)),
         });
     }
 
