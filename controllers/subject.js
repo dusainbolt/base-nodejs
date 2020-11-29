@@ -11,6 +11,7 @@ class Subject {
             await validate_helper.get_validate_add_subject().validate(req.body);
             const new_subject = subject_model.create({
                 name: req.body.name,
+                description: req.body.description,
                 user: req.user._id,
             });
             return res.send(_helper.render_response_success(req, new_subject, _res.MESSAGE.SUCCESS));

@@ -2,6 +2,7 @@ const obj_schema = new _mongoose.Schema({
     user: {type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     listClass: [{type: _mongoose.Schema.Types.ObjectId, ref: 'class', default: null}],
     name: {type: String, default: null},
+    description: {type: String, default: null},
     avatar: {type: String, default: _logic.MY_LOGO_S3},
     status: {type: Number, default: _contains.SUBJECT.STATUS.ACTIVE},
     created: {type: Date, default: Date.now},

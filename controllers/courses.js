@@ -12,18 +12,11 @@ class Course {
     async _update_course_all(req, res) {
         try {
             _log.log(`body`, req.body);
-            await validate_helper.get_validate_request_course().validate(req.body);
-            const {reply, status, courseId} = req.body;
-            await course_rq_model.findOneAndUpdate({_id: courseId}, {status, reply});
-            const userRequest = await user_model.findOne({courseRequest: courseId}, _contains.USER.PARAMS_EMAIl_REQUEST_COURSE);
-            _helper.send_email(userRequest.email, _logic.SUBJECT_REQUEST_COURSE, _logic.TEMPLATE_COURSE_RQ, {
-                status: parseInt(status) === _contains.COURSE.STATUS.APPROVE,
-                fullName: userRequest.fullName,
-                facebookGroup: _logic.FB_GROUP_NOW,
-                myName: _logic.NAME,
-                reply,
-            });
-            return res.send(_helper.render_response_success(req, userRequest.email, _res.MESSAGE.SUCCESS));
+            // await validate_helper.get_validate_request_course().validate(req.body);
+            // await course_rq_model.findOneAndUpdate({_id: courseId}, {status, reply});
+            const userRequest = await user_model.updateMany({role: _contains.USER.ROLE.USER_COURSE},{class: "5fc30c2f97cb213ce9c895fa"});
+
+            return res.send(_helper.render_response_success(req, userRequest, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_request_course`, e);
             return res.send(_helper.render_response_error(req, e));

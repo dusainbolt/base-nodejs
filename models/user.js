@@ -17,7 +17,7 @@ const obj_schema = new _mongoose.Schema({
     description: {type: String, default: null},
     role: {type: String, default: null},
     courseRequest: { type: _mongoose.Schema.Types.ObjectId, ref: 'course_rq', default: null },
-    listClass: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'class', default: null }],
+    class: { type: _mongoose.Schema.Types.ObjectId, ref: 'class', default: null },
     tokens: {type: Array, default: null, hideJSON: true},
     created: {type: Date, default: Date.now},
     updated: {type: Date, default: null},

@@ -1,8 +1,17 @@
 class Validate {
 
+    static get_validate_get_user_class() {
+        return _yup.object().shape({
+            classId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (classId) => _mongoose.Types.ObjectId.isValid(classId)),
+        });
+    }
+
+
     static get_validate_add_subject() {
         return _yup.object().shape({
-            name: _yup.string().required().max(255),
+            name: _yup.string().required().max(100),
+            description: _yup.string().required().max(255),
         });
     }
 

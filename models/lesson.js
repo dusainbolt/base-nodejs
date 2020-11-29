@@ -1,8 +1,8 @@
 const obj_schema = new _mongoose.Schema({
-    listUser: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'user', default: null }],
-    listUserOff: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'user', default: null }],
+    class: { type: _mongoose.Schema.Types.ObjectId, ref: 'class', default: null },
     title: {type: String, required: true},
     description: {type: String, default: null},
+    expectedTime: {type: Number, required: true},
     startTime: {type: Number, default: null},
     endTime: {type: Number, default: null},
     status: {type: Number, default: _contains.LESSON.STATUS.PENDING},

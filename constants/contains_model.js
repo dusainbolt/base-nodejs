@@ -74,6 +74,12 @@ module.exports = {
             fullName: 1,
             created: 1,
         },
+        PARAMS_CLASS: {
+            gender: 1,
+            birthday: 1,
+            fullName: 1,
+            facebook: 1,
+        },
         PARAMS_NOTIFY: {
             fullName: 1,
             role: 1,
