@@ -77,19 +77,19 @@ class Course {
     async _register(req, res) {
         try {
             _log.log(`Body`, req.body);
-            return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REGISTER_CLOSE, _res.MESSAGE.REGISTER_CLOSE));
-            // await validate_helper.get_validate_register(user_model).validate(req.body);
-            // const {email} = req.body;
-            // const code = _helper.render_verify_code();
-            // //set info register to redis
-            // const register_data = JSON.stringify({...req.body, code});
-            // _redis.select(_logic.DBO_REGISTER);
-            // _redis.set(`${_logic.SUB_REGISTER_COURSE}${email}`, register_data, _logic.REDIS_EXPIRES, _logic.TIME_OUT_REGISTER);
-            // // convert code & send email to user
-            // const array_code_verify = code.toString().split("");
-            // const time_out = new moment().add(_logic.TIME_OUT_REGISTER, `seconds`).format(_logic.FORMAT_24H_TIME);
-            // _helper.send_email(email, _logic.SUBJECT_REGISTER, _logic.TEMPLATE_EMAIL, {array_code_verify, time_out});
-            // return res.send(_helper.render_response_success(req, {email}, _res.MESSAGE.REGISTER_SUCCESS));
+            // return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REGISTER_CLOSE, _res.MESSAGE.REGISTER_CLOSE));
+            await validate_helper.get_validate_register(user_model).validate(req.body);
+            const {email} = req.body;
+            const code = _helper.render_verify_code();
+            //set info register to redis
+            const register_data = JSON.stringify({...req.body, code});
+            _redis.select(_logic.DBO_REGISTER);
+            _redis.set(`${_logic.SUB_REGISTER_COURSE}${email}`, register_data, _logic.REDIS_EXPIRES, _logic.TIME_OUT_REGISTER);
+            // convert code & send email to user
+            const array_code_verify = code.toString().split("");
+            const time_out = new moment().add(_logic.TIME_OUT_REGISTER, `seconds`).format(_logic.FORMAT_24H_TIME);
+            _helper.send_email(email, _logic.SUBJECT_REGISTER, _logic.TEMPLATE_EMAIL, {array_code_verify, time_out});
+            return res.send(_helper.render_response_success(req, {email}, _res.MESSAGE.REGISTER_SUCCESS));
         } catch (e) {
             _log.err(`register`, e);
             return res.send(_helper.render_response_error(req, e));

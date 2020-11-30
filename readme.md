@@ -11,6 +11,16 @@ const courseDetail = await course_rq_model.updateMany({},{ $rename: { "userId": 
 - update_at: 31/10/20 - dusainbolt
 mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt
 
+### delete all collection db
+db.getCollectionNames().forEach( function(collection_name) { 
+  if (collection_name.indexOf("system.") == -1) 
+       db[collection_name].drop();
+  else  
+       db.collection_name.remove({}); 
+});
+
+db.getCollection('users').remove({fullName: "Vu Hong Viet"})
+
 ### DELETE port local
 fuser -n tcp -k 6630 
 
