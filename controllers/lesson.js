@@ -3,7 +3,7 @@ const lesson_model = require(`../models/lesson`);
 const user_model = require(`../models/user`);
 const class_model = require(`../models/class`);
 
-class Subject {
+class Lesson {
     constructor() {
     }
 
@@ -57,4 +57,4 @@ class Subject {
     }
 }
 
-module.exports = Subject;
+module.exports = Lesson;

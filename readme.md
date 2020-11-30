@@ -1,3 +1,19 @@
+### BU database
+mongodump --db sainbolt-app --out=25_11_2020_local_sainbolt_app
+mongodump mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt --out=28_11_2020_server_sainbolt_app
+mongorestore <path dump>
+mongorestore mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt 25_11_2020_local_sainbolt_app
+
+ 
+### update many <Rename>
+const courseDetail = await course_rq_model.updateMany({},{ $rename: { "userId": "user" } } )
+- create_at: 27/10/20 - dusainbolt.
+- update_at: 31/10/20 - dusainbolt
+mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt
+
+### DELETE port local
+fuser -n tcp -k 6630 
+
 ### Yêu cầu.
     - IDE: Webstome
     - Node: 12.19.0 (dùng nvm)
@@ -62,18 +78,3 @@
         + VD: Trong example.js có method _day_la_api => POST: localhost:port/example/day_la_api
         + VD: Trong user.js có method _login => POST: localhost:port/user/login
    
-### BU database
-mongodump --db sainbolt-app --out=25_11_2020_local_sainbolt_app
-mongodump mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt --out=28_11_2020_server_sainbolt_app
-mongorestore <path dump>
-mongorestore mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt 25_11_2020_local_sainbolt_app
-
- 
-### update many <Rename>
-const courseDetail = await course_rq_model.updateMany({},{ $rename: { "userId": "user" } } )
-- create_at: 27/10/20 - dusainbolt.
-- update_at: 31/10/20 - dusainbolt
-mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt
-
-### DELETE port local
-fuser -n tcp -k 6630 

@@ -86,6 +86,10 @@ module.exports = {
             phoneNumber:1,
             email: 1,
         },
+        PARAMS_AVATAR:{
+            fullName: 1,
+            avatar: 1,
+        },
         PARAMS_NOTIFY: {
             fullName: 1,
             role: 1,

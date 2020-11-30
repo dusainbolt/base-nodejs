@@ -1,5 +1,27 @@
 class Validate {
 
+    static get_validate_add_comment_question() {
+        return _yup.object().shape({
+            message: _yup.string().required().max(700),
+            questionId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (questionId) => _mongoose.Types.ObjectId.isValid(questionId)),
+        });
+    }
+
+    static get_validate_list_comment_for_question() {
+        return _yup.object().shape({
+            questionId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (questionId) => _mongoose.Types.ObjectId.isValid(questionId)),
+        });
+    }
+
+    static get_validate_list_question_for_lesson() {
+        return _yup.object().shape({
+            lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
+        });
+    }
+
     static get_validate_get_user_class() {
         return _yup.object().shape({
             classId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
@@ -9,7 +31,7 @@ class Validate {
 
     static get_validate_add_question() {
         return _yup.object().shape({
-            message: _yup.string().required().max(255),
+            message: _yup.string().required().max(700),
             lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
                 (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
         });
