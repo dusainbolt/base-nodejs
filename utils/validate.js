@@ -1,5 +1,12 @@
 class Validate {
 
+    static get_validate_add_manage_lesson() {
+        return _yup.object().shape({
+            status: _yup.string().required(),
+            lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
+        });
+    }
     static get_validate_add_comment_question() {
         return _yup.object().shape({
             message: _yup.string().required().max(700),
@@ -16,6 +23,13 @@ class Validate {
     }
 
     static get_validate_list_question_for_lesson() {
+        return _yup.object().shape({
+            lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
+        });
+    }
+
+    static get_validate_admin_get_lesson() {
         return _yup.object().shape({
             lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
                 (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),

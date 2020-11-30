@@ -13,6 +13,12 @@ module.exports = {
             PENDING: 3, // len lich
             QUESTION: 4, // chuan bi cau hoi // sap dien ra
         },
+        STATUS_MANAGE: {
+            JOINED: 1,  // da tjham gia
+            REJECT: 2,  // xin nghi buoi nay
+            QUIT: 3,  // khong tham gia gi het
+            PENDING: 4,  // khong tham gia gi het
+        }
     },
     SUBJECT: {
         STATUS: {
