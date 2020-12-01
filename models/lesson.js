@@ -9,6 +9,7 @@ const obj_schema = new _mongoose.Schema({
     duration: {type: Number, required: true},
     startTime: {type: Number, default: null},
     endTime: {type: Number, default: null},
+    show: {type: Number, default: _contains.LESSON.INACTIVE},
     status: {type: Number, default: _contains.LESSON.STATUS.PENDING},
     created: {type: Date, default: Date.now},
 },{id: false, versionKey: 'v'});

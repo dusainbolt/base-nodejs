@@ -3,6 +3,7 @@ class Validate {
     static get_validate_add_manage_lesson() {
         return _yup.object().shape({
             status: _yup.string().required(),
+            expectedTime: _yup.number().required(),
             lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
                 (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
         });
@@ -26,6 +27,14 @@ class Validate {
         return _yup.object().shape({
             lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
                 (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
+        });
+    }
+
+    static get_validate_start_lesson() {
+        return _yup.object().shape({
+            lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
+            status: _yup.string().required(),
         });
     }
 

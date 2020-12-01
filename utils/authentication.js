@@ -101,6 +101,7 @@ const skipAdminPage = (path) => {
         '/class/add_class',
         `/lesson/add_lesson`,
         `/lesson/admin_get_lesson`,
+        `/lesson/start_lesson`
     ];
     return pages.indexOf(path) !== -1;
 }

@@ -7,6 +7,8 @@ module.exports = {
         },
     },
     LESSON: {
+        ACTIVE: 1,
+        INACTIVE: 2,
         STATUS: {
             HAPPENING: 1,
             END: 2,

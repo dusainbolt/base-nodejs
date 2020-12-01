@@ -8,6 +8,8 @@ module.exports = {
   CHOOSE: 1,
   TYPE_ASC: "ASC",
   TYPE_DESC: "DESC",
+  JOIN_DURATION_TIME: 900,
+  REJECT_DURATION_TIME: -3600,
   DBO_REGISTER: 0,
   SIZE_UPLOAD: 2 * 1024 * 1024,
   FOLDER_COURSE_AVATAR: "course_avatar",

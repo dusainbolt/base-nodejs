@@ -11,7 +11,17 @@ class Lesson {
         try {
             _log.log(`body`, req.body);
             await validate_helper.get_validate_add_manage_lesson().validate(req.body);
-            const {status, description, lessonId} = req.body;
+            const {status, description, lessonId, expectedTime} = req.body;
+            const durationTime = Math.floor(new Date().getTime() / 1000) - expectedTime;
+            if(parseInt(status) === _contains.LESSON.STATUS_MANAGE.JOINED){
+                if(durationTime > _logic.JOIN_DURATION_TIME){
+                    return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.JOIN_DURATION_TIME, _res.MESSAGE.JOIN_DURATION_TIME));
+                }
+            }else{
+                if(durationTime > _logic.REJECT_DURATION_TIME){
+                    return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REJECT_DURATION_TIME, _res.MESSAGE.REJECT_DURATION_TIME));
+                }
+            }
             const new_manage = await new lesson_manage_model({
                 status, description, lesson: lessonId, user: req.user._id
             }).save();
@@ -23,12 +33,30 @@ class Lesson {
         }
     }
 
+    async _start_end_lesson(req, res) {
+        try {
+            _log.log(`body`, req.body);
+            await validate_helper.get_validate_start_lesson().validate(req.body);
+            const {lessonId, status} = req.body;
+            await lesson_model.findByIdAndUpdate(lessonId, {
+                $set: {
+                    status,
+                    [parseInt(status) === _contains.LESSON.STATUS.HAPPENING ? `startTime` : `endTime`]: Math.floor(new Date().getTime() / 1000)
+                }
+            });
+            return res.send(_helper.render_response_success(req, {status}, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_add_manage_lesson`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
     async _get_my_lesson(req, res) {
         try {
             _log.log(`body`, req.body);
             const my_lesson = await user_model.findById(req.user._id).populate({
                 path: 'class',
-                populate: {path: 'listLesson', match: {status: {$gte: _contains.LESSON.STATUS.QUESTION}}}
+                populate: {path: 'listLesson', match: {show: {$gte: _contains.LESSON.ACTIVE}}}
             }).select({fullName: 1});
             return res.send(_helper.render_response_success(req, my_lesson, _res.MESSAGE.SUCCESS));
         } catch (e) {
@@ -69,7 +97,15 @@ class Lesson {
                 }]
             }, {
                 path: 'class',
-            }]);
+            },
+                {
+                    path: 'listManage',
+                    populate: {
+                        path: 'user', select: _contains.USER.PARAMS_AVATAR,
+                    },
+                    options: {sort: {[_logic.SORT_CREATE]: _logic.DESC}}
+                }
+            ]);
             return res.send(_helper.render_response_success(req, lesson, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_get_admin_get_lesson`, e);
