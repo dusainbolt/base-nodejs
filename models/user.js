@@ -38,17 +38,25 @@ obj_schema.methods.generateAuthToken = async function () {
         }
     );
     user.tokens = user.tokens.concat({token});
-    if(user.status !== _contains.USER.STATUS.ACTIVE){
+    if (user.status !== _contains.USER.STATUS.ACTIVE) {
         user.status = _contains.USER.STATUS.ACTIVE;
     }
     await user.save();
     return token;
 }
 
+// .plugin(function (schema, options) {
+//     schema.pre('save', function (next) {
+//         this.status.isInFullHealth = (this.status.hitPoints >= this.status.maxHitpoints);
+//
+//         next();
+//     })
+// })
+
 obj_schema.index({email: 1});
 obj_schema.set('toJSON', {getters: true});
 obj_schema.set('toObject', {getters: true});
-obj_schema.plugin(_mongooseHidden, { hidden: { _id: false}});
+obj_schema.plugin(_mongooseHidden, {hidden: {_id: false}});
 obj_schema.plugin(_mongoose_pageinate);
 
 module.exports = _mongoose.model('user', obj_schema);

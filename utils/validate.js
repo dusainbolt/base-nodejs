@@ -1,5 +1,13 @@
 class Validate {
 
+    static get_validate_change_avatar_class() {
+        return _yup.object().shape({
+            avatar: _yup.string().required(),
+            classId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (classId) => _mongoose.Types.ObjectId.isValid(classId)),
+        });
+    };
+
     static get_validate_add_manage_lesson() {
         return _yup.object().shape({
             status: _yup.string().required(),
@@ -8,6 +16,7 @@ class Validate {
                 (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
         });
     }
+
     static get_validate_add_comment_question() {
         return _yup.object().shape({
             message: _yup.string().required().max(700),
@@ -154,7 +163,6 @@ class Validate {
             avatar: _yup.string().required(),
         });
     };
-
 
     /**
      * Phục vụ get_all gender

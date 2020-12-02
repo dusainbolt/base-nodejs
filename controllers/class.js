@@ -6,6 +6,43 @@ class Subject {
     constructor() {
     }
 
+    async _get_list_class_register(req, res) {
+        try {
+            const list_class_register = await class_model.find({status: _contains.CLASS.STATUS.PENDING})
+                .where({ listUser: { $nin: [req.user._id] }}).populate([{
+                    path: 'listUser',
+                    select: _contains.USER.PARAMS_AVATAR
+                },{
+                    path: 'subject',
+                }]);
+                return res.send(_helper.render_response_success(req, list_class_register, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_email_notify_course`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    };
+
+    async _change_avatar_class(req, res) {
+        try {
+            await validate_helper.get_validate_change_avatar_class().validate(req.body);
+            const {body: {avatar, classId}} = req;
+            const my_class = await class_model.findById(classId);
+            const params = _helper.getPramsUpload(avatar, _logic.FOLDER_COURSE_AVATAR, `class_${classId}`);
+            if (!params.Key) {
+                return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.SIZE_IMAGE, _res.MESSAGE.IMAGE_SIZE));
+            }
+            const {Location} = await new Promise((resolve, reject) => {
+                _s3.upload(params, (err, data) => err == null ? resolve(data) : reject(err));
+            });
+            my_class.avatar = Location;
+            await my_class.save();
+            return res.send(_helper.render_response_success(req, {avatar: Location}, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_email_notify_course`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
     async _get_list_user(req, res) {
         try {
             _log.log(`params`, req.query);

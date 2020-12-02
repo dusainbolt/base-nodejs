@@ -4,6 +4,7 @@ module.exports = {
             ACTIVE: 1,
             DONE: 2,
             CLOSE: 3,
+            PENDING: 4,
         },
     },
     LESSON: {
