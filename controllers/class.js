@@ -6,16 +6,52 @@ class Subject {
     constructor() {
     }
 
+    async _get_list_join(req, res) {
+        try {
+            _log.log(`params`, req.query);
+            await validate_helper.get_validate_join_class().validate(req.query);
+            const {query: {classId}} = req;
+            const list_join = await class_model.findById(classId).select({_id: 1}).populate({
+                path: 'listUser',
+                select: _contains.USER.PARAMS_AVATAR
+            });
+            return res.send(_helper.render_response_success(req, list_join, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_email_notify_course`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    };
+
+    async _join_class(req, res) {
+        try {
+            _log.log(`body`, req.body);
+            await validate_helper.get_validate_join_class().validate(req.body);
+            const {body: {classId}, user} = req;
+            await class_model.findByIdAndUpdate(classId, {$addToSet: {listUser: user._id}});
+            user.class = classId;
+            await user.save();
+            return res.send(_helper.render_response_success(req, {classId}, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_join_class`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    };
+
     async _get_list_class_register(req, res) {
         try {
-            const list_class_register = await class_model.find({status: _contains.CLASS.STATUS.PENDING})
-                .where({ listUser: { $nin: [req.user._id] }}).populate([{
-                    path: 'listUser',
-                    select: _contains.USER.PARAMS_AVATAR
-                },{
-                    path: 'subject',
-                }]);
-                return res.send(_helper.render_response_success(req, list_class_register, _res.MESSAGE.SUCCESS));
+            const list_class_register = await class_model.find({status: _contains.CLASS.STATUS.PENDING}).populate([{
+                path: 'listUser',
+                select: _contains.USER.PARAMS_AVATAR
+            }, {
+                path: 'subject',
+            }]);
+            let is_register = true;
+             list_class_register.forEach(item => {
+                if (item._id.equals(req.user.class)) {
+                    is_register =false;
+                }
+            })
+            return res.send(_helper.render_response_success(req, {list_class_register, is_register}, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_email_notify_course`, e);
             return res.send(_helper.render_response_error(req, e));

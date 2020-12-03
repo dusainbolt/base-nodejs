@@ -1,5 +1,12 @@
 class Validate {
 
+    static get_validate_join_class() {
+        return _yup.object().shape({
+            classId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (classId) => _mongoose.Types.ObjectId.isValid(classId)),
+        });
+    };
+
     static get_validate_change_avatar_class() {
         return _yup.object().shape({
             avatar: _yup.string().required(),

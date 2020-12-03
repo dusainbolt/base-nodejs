@@ -1,6 +1,6 @@
 const obj_schema = new _mongoose.Schema({
-    listUser: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'user', default: null }],
-    listLesson: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'lesson', required: null }],
+    listUser: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'user', default: null}],
+    listLesson: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'lesson', required: null}],
     subject: { type: _mongoose.Schema.Types.ObjectId, ref: 'subject', required: true },
     user: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
     name: {type: String, default: null},
