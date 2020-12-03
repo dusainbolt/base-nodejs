@@ -14,7 +14,7 @@ class Course {
             _log.log(`body`, req.body);
             // await validate_helper.get_validate_request_course().validate(req.body);
             // await course_rq_model.findOneAndUpdate({_id: courseId}, {status, reply});
-            const userRequest = await user_model.updateMany({role: _contains.USER.ROLE.USER_COURSE},{status: _contains.USER.STATUS.CONFIRM_AGAIN});
+            const userRequest = await user_model.updateMany({role: _contains.USER.ROLE.USER_COURSE},{status: _contains.USER.STATUS.CONFIRM_AGAIN, updated: Date.now()});
             return res.send(_helper.render_response_success(req, userRequest, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_request_course`, e);

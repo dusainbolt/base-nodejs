@@ -45,12 +45,9 @@ obj_schema.methods.generateAuthToken = async function () {
     return token;
 }
 
-// .plugin(function (schema, options) {
-//     schema.pre('save', function (next) {
-//         this.status.isInFullHealth = (this.status.hitPoints >= this.status.maxHitpoints);
-//
-//         next();
-//     })
+// obj_schema.pre('save', function (next) {
+//     this.updated = Date.now;
+//     next();
 // })
 
 obj_schema.index({email: 1});

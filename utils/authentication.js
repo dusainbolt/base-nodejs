@@ -99,9 +99,10 @@ const skipAdminPage = (path) => {
         '/notify/list',
         '/subject/add_subject',
         '/class/add_class',
+        `/class/chang_status_class`,
         `/lesson/add_lesson`,
         `/lesson/admin_get_lesson`,
-        `/lesson/start_lesson`
+        `/lesson/start_lesson`,
     ];
     return pages.indexOf(path) !== -1;
 }

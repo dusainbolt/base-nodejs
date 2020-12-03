@@ -6,6 +6,19 @@ class Subject {
     constructor() {
     }
 
+    async _chang_status_class(req, res) {
+        try {
+            _log.log(`body`, req.body);
+            await validate_helper.get_validate_change_status_class().validate(req.body);
+            const {body: {classId, status}} = req;
+            await class_model.findByIdAndUpdate(classId, {status});
+            return res.send(_helper.render_response_success(req, {status}, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_join_class`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    };
+
     async _get_list_join(req, res) {
         try {
             _log.log(`params`, req.query);

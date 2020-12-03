@@ -4,7 +4,7 @@ const obj_schema = new _mongoose.Schema({
     subject: { type: _mongoose.Schema.Types.ObjectId, ref: 'subject', required: true },
     user: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
     name: {type: String, default: null},
-    status: {type: Number, default: _contains.CLASS.STATUS.ACTIVE},
+    status: {type: Number, default: _contains.CLASS.STATUS.PENDING},
     avatar: {type: String, default: _logic.MY_LOGO_S3},
     created: {type: Date, default: Date.now},
     updated: {type: Date, default: null},

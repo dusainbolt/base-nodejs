@@ -2,6 +2,7 @@ const validate_helper = require(`../utils/validate`);
 const lesson_model = require(`../models/lesson`);
 const user_model = require(`../models/user`);
 const lesson_manage_model = require(`../models/lesson_manage`);
+const class_model = require(`../models/class`);
 
 class Lesson {
     constructor() {
