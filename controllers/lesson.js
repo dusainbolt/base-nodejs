@@ -8,14 +8,26 @@ class Lesson {
     constructor() {
     }
 
+    // async _add_manage_lesson(req, res) {
+    //     try {
+    //         _log.log(`body`, req.body);
+    //         await validate_helper.get_validate_add_manage_lesson().validate(req.body);
+    //
+    //         return res.send(_helper.render_response_success(req, new_manage, _res.MESSAGE.SUCCESS));
+    //     } catch (e) {
+    //         _log.err(`_add_manage_lesson`, e);
+    //         return res.send(_helper.render_response_error(req, e));
+    //     }
+    // }
+
     async _add_manage_lesson(req, res) {
         try {
             _log.log(`body`, req.body);
             await validate_helper.get_validate_add_manage_lesson().validate(req.body);
             const {status, description, lessonId, expectedTime} = req.body;
             const durationTime = Math.floor(new Date().getTime() / 1000) - expectedTime;
-            if(parseInt(status) === _contains.LESSON.STATUS_MANAGE.JOINED){
-                if(durationTime > _logic.JOIN_DURATION_TIME){
+            if (parseInt(status) === _contains.LESSON.STATUS_MANAGE.JOINED) {
+                if (durationTime > _logic.JOIN_DURATION_TIME) {
                     return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.JOIN_DURATION_TIME, _res.MESSAGE.JOIN_DURATION_TIME));
                 }
             }else{
@@ -69,16 +81,29 @@ class Lesson {
     async _get_manage_lesson(req, res) {
         try {
             _log.log(`params`, req.query);
-            await validate_helper.get_validate_admin_get_lesson().validate(req.query);
-            const lesson_manage = await lesson_model.findById(req.query.lessonId).populate({
+            await validate_helper.get_validate_get_manage_lesson().validate(req.query);
+            const {classId, lessonId} = req.query;
+            const lesson_manage = await lesson_model.findById(lessonId).populate({
                 path: 'listManage',
                 populate: {
                     path: 'user', select: _contains.USER.PARAMS_AVATAR,
                 },
                 options: {sort: {[_logic.SORT_CREATE]: _logic.DESC}}
             }).select({_id: 1});
+            const list_user_join = lesson_manage.listManage.map(item => {
+                return item.user._id;
+            });
 
-            return res.send(_helper.render_response_success(req, lesson_manage, _res.MESSAGE.SUCCESS));
+            const list_user_quit = await class_model.findById(classId).populate(
+                {
+                    path: 'listUser', select: _contains.USER.PARAMS_AVATAR,
+                    match: {_id: {$nin: list_user_join}},
+                }
+            ).select({_id: 1});
+            return res.send(_helper.render_response_success(req, {
+                lesson_manage,
+                list_user_quit
+            }, _res.MESSAGE.SUCCESS));
 
         } catch (e) {
             _log.err(`_get_admin_get_lesson`, e);
