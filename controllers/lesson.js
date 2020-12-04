@@ -77,7 +77,9 @@ class Lesson {
                 },
                 options: {sort: {[_logic.SORT_CREATE]: _logic.DESC}}
             }).select({_id: 1});
+
             return res.send(_helper.render_response_success(req, lesson_manage, _res.MESSAGE.SUCCESS));
+
         } catch (e) {
             _log.err(`_get_admin_get_lesson`, e);
             return res.send(_helper.render_response_error(req, e));
@@ -107,7 +109,17 @@ class Lesson {
                     options: {sort: {[_logic.SORT_CREATE]: _logic.DESC}}
                 }
             ]);
-            return res.send(_helper.render_response_success(req, lesson, _res.MESSAGE.SUCCESS));
+            const listUserJoin = lesson.listManage.map(item => {
+                return item.user._id;
+            });
+
+            const listUserQuit = await class_model.findById(lesson.class._id).populate(
+                {
+                    path: 'listUser', select: _contains.USER.PARAMS_AVATAR,
+                    match: { _id: { $nin: listUserJoin  } },
+                }
+            ).select({_id: 1});
+            return res.send(_helper.render_response_success(req, {lesson, listUserQuit}, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_get_admin_get_lesson`, e);
             return res.send(_helper.render_response_error(req, e));
