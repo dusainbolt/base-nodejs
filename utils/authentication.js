@@ -51,7 +51,7 @@ const setAuth = async (req, res, next) => {
         const token = authorization ? authorization.replace('Bearer ', '') : "";
         _log.log('token_server', token);
         const data = jwt.verify(token, _config.JWT.PRIVATE_KEY);
-        const user = await user_model.findOne({_id: data._id, 'tokens.token': token});
+        const user = await user_model.findOne({_id: data._id, 'tokens.token': token, status: _contains.USER.STATUS.ACTIVE});
         if (!user) {
             return res.status(401).send({error: 'Not authorized to access this resource'})
         }

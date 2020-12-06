@@ -8,6 +8,28 @@ class Lesson {
     constructor() {
     }
 
+    async _get_my_list_lesson(req, res) {
+        try {
+            _log.log(`params`, req.query);
+            const params = _helper.getParamsSearch(req.query);
+            const options = {
+                offset: params.count_skip,
+                limit: params.page_size,
+                sort: {[params.sort_by]: _logic[params.sort_type]},
+                populate: {path: 'listManage', match: {user: req.user._id}}
+            }
+            const my_list_lesson = await lesson_model.paginate({
+                class: req.user.class,
+                show: _contains.LESSON.ACTIVE,
+                status: _contains.LESSON.STATUS.END,
+            }, options);
+            return res.send(_helper.render_response_success(req, my_list_lesson, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_add_manage_lesson`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
     async _add_youtube_url(req, res) {
         try {
             _log.log(`body`, req.body);
@@ -68,10 +90,10 @@ class Lesson {
 
     async _get_my_lesson(req, res) {
         try {
-            _log.log(`body`, req.body);
+            _log.log(`params`, req.query);
             const my_lesson = await user_model.findById(req.user._id).populate({
                 path: 'class',
-                populate: {path: 'listLesson', match: {show: {$gte: _contains.LESSON.ACTIVE}}}
+                populate: {path: 'listLesson', $match: {show: _contains.LESSON.ACTIVE}}
             }).select({fullName: 1});
             return res.send(_helper.render_response_success(req, my_lesson, _res.MESSAGE.SUCCESS));
         } catch (e) {

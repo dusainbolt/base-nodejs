@@ -111,6 +111,17 @@ class Subject {
         }
     }
 
+    async _get_my_class(req, res) {
+        try {
+            _log.log(`params`, req.query);
+            const data_class = await class_model.findById(req.user.class);
+            return res.send(_helper.render_response_success(req, data_class, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_email_notify_course`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
     async _get_one_class(req, res) {
         try {
             _log.log(`params`, req.query);

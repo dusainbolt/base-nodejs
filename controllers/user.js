@@ -47,8 +47,8 @@ class User {
             _log.log(`Body`, req.body);
             await validate_helper.get_validate_login(user_model).validate(req.body);
             const {email, password} = req.body;
-            const user = await user_model.findOne({email});
-            const isPasswordMatch = await bcrypt.compare(password, user.password);
+            const user = await user_model.findOne({email, status: _contains.USER.STATUS.ACTIVE});
+            const isPasswordMatch = user ? await bcrypt.compare(password, user.password) : false;
             if (!isPasswordMatch) {
                 _log.log(_res.MESSAGE.ACCOUNT_INVALID);
                 return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.INVALID_EMAIL, _res.MESSAGE.ACCOUNT_INVALID));

@@ -10,7 +10,7 @@ const obj_schema = new _mongoose.Schema({
     startTime: {type: Number, default: null},
     endTime: {type: Number, default: null},
     youtubeUrl: {type: String, default: null},
-    show: {type: Number, default: _contains.LESSON.INACTIVE},
+    show: {type: Number, default: _contains.LESSON.ACTIVE},
     status: {type: Number, default: _contains.LESSON.STATUS.PENDING},
     created: {type: Date, default: Date.now},
 },{id: false, versionKey: 'v'});
