@@ -1,5 +1,12 @@
 class Validate {
 
+    static get_validate_add_youtube_url() {
+        return _yup.object().shape({
+            lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
+        });
+    };
+
     static get_validate_change_status_class() {
         return _yup.object().shape({
             classId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,

@@ -8,17 +8,18 @@ class Lesson {
     constructor() {
     }
 
-    // async _add_manage_lesson(req, res) {
-    //     try {
-    //         _log.log(`body`, req.body);
-    //         await validate_helper.get_validate_add_manage_lesson().validate(req.body);
-    //
-    //         return res.send(_helper.render_response_success(req, new_manage, _res.MESSAGE.SUCCESS));
-    //     } catch (e) {
-    //         _log.err(`_add_manage_lesson`, e);
-    //         return res.send(_helper.render_response_error(req, e));
-    //     }
-    // }
+    async _add_youtube_url(req, res) {
+        try {
+            _log.log(`body`, req.body);
+            await validate_helper.get_validate_add_youtube_url().validate(req.body);
+            const {lessonId, youtubeUrl} = req.body;
+            await lesson_model.findByIdAndUpdate(lessonId, {youtubeUrl});
+            return res.send(_helper.render_response_success(req, youtubeUrl, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_add_manage_lesson`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
 
     async _add_manage_lesson(req, res) {
         try {
@@ -38,7 +39,7 @@ class Lesson {
             const new_manage = await new lesson_manage_model({
                 status, description, lesson: lessonId, user: req.user._id
             }).save();
-            await lesson_model.findByIdAndUpdate(lessonId, {$push: {listManage: new_manage._id}});
+            await lesson_model.findByIdAndUpdate(lessonId, {$addToSet: {listManage: new_manage._id}});
             return res.send(_helper.render_response_success(req, new_manage, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_add_manage_lesson`, e);
@@ -51,13 +52,14 @@ class Lesson {
             _log.log(`body`, req.body);
             await validate_helper.get_validate_start_lesson().validate(req.body);
             const {lessonId, status} = req.body;
+            const timeEvent = Math.floor(new Date().getTime() / 1000);
             await lesson_model.findByIdAndUpdate(lessonId, {
                 $set: {
                     status,
-                    [parseInt(status) === _contains.LESSON.STATUS.HAPPENING ? `startTime` : `endTime`]: Math.floor(new Date().getTime() / 1000)
+                    [parseInt(status) === _contains.LESSON.STATUS.HAPPENING ? `startTime` : `endTime`]: timeEvent
                 }
             });
-            return res.send(_helper.render_response_success(req, {status}, _res.MESSAGE.SUCCESS));
+            return res.send(_helper.render_response_success(req, {status, timeEvent}, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_add_manage_lesson`, e);
             return res.send(_helper.render_response_error(req, e));
