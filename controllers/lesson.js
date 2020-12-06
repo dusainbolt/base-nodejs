@@ -93,7 +93,25 @@ class Lesson {
             _log.log(`params`, req.query);
             const my_lesson = await user_model.findById(req.user._id).populate({
                 path: 'class',
-                populate: {path: 'listLesson', $match: {show: _contains.LESSON.ACTIVE}}
+                populate: {
+                    path: 'listLesson', match:
+                        {show: {$eq: _contains.LESSON.ACTIVE}, status: {$ne: _contains.LESSON.STATUS.END}}
+                }
+            }).select({fullName: 1});
+            return res.send(_helper.render_response_success(req, my_lesson, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_get_my_lesson`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
+    async _get_lesson_item(req, res) {
+        try {
+            _log.log(`params`, req.query);
+            await validate_helper.get_validate_get_lesson_id().validate(req.query);
+            const my_lesson = await user_model.findById(req.user._id).populate({
+                path: 'class',
+                populate: {path: 'listLesson', $match: {_id: {$ne: req.query.lessonId}}}
             }).select({fullName: 1});
             return res.send(_helper.render_response_success(req, my_lesson, _res.MESSAGE.SUCCESS));
         } catch (e) {
@@ -105,7 +123,7 @@ class Lesson {
     async _get_manage_lesson(req, res) {
         try {
             _log.log(`params`, req.query);
-            await validate_helper.get_validate_get_manage_lesson().validate(req.query);
+            await validate_helper.get_validate_admin_get_lesson().validate(req.query);
             const {classId, lessonId} = req.query;
             const lesson_manage = await lesson_model.findById(lessonId).populate({
                 path: 'listManage',

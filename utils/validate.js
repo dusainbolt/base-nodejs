@@ -76,6 +76,13 @@ class Validate {
         });
     }
 
+    static get_validate_get_lesson_id() {
+        return _yup.object().shape({
+            lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+                (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
+        });
+    }
+
     static get_validate_get_manage_lesson() {
         return _yup.object().shape({
             lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
