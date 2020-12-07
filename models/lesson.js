@@ -9,6 +9,7 @@ const obj_schema = new _mongoose.Schema({
     duration: {type: Number, required: true},
     startTime: {type: Number, default: null},
     endTime: {type: Number, default: null},
+    questionExercise: {type: String, default: null},
     youtubeUrl: {type: String, default: null},
     show: {type: Number, default: _contains.LESSON.ACTIVE},
     status: {type: Number, default: _contains.LESSON.STATUS.PENDING},

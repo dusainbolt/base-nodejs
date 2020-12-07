@@ -25,20 +25,37 @@ class Lesson {
             }, options);
             return res.send(_helper.render_response_success(req, my_list_lesson, _res.MESSAGE.SUCCESS));
         } catch (e) {
-            _log.err(`_add_manage_lesson`, e);
+            _log.err(`_get_my_list_lesson`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }
 
-    async _add_youtube_url(req, res) {
+    async _content_after_lesson(req, res) {
         try {
             _log.log(`body`, req.body);
-            await validate_helper.get_validate_add_youtube_url().validate(req.body);
-            const {lessonId, youtubeUrl} = req.body;
-            await lesson_model.findByIdAndUpdate(lessonId, {youtubeUrl});
-            return res.send(_helper.render_response_success(req, youtubeUrl, _res.MESSAGE.SUCCESS));
+            await validate_helper.get_validate_content_after_lesson().validate(req.body);
+            const {lessonId, youtubeUrl, questionExercise} = req.body;
+            const data_update = {youtubeUrl, questionExercise};
+            await lesson_model.findByIdAndUpdate(lessonId, data_update);
+            return res.send(_helper.render_response_success(req, {youtubeUrl, questionExercise}, _res.MESSAGE.SUCCESS));
         } catch (e) {
-            _log.err(`_add_manage_lesson`, e);
+            _log.err(`_content_after_lesson`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
+    async _reply_after_lesson(req, res) {
+        try {
+            _log.log(`body`, req.body);
+            await validate_helper.get_validate_content_after_lesson().validate(req.body);
+            const {lessonId, exerciseUrl, replyExercise} = req.body;
+            const data_update = {exerciseUrl, replyExercise};
+            await lesson_manage_model.findOneAndUpdate(
+                {lesson: lessonId, user: req.user._id},
+                data_update);
+            return res.send(_helper.render_response_success(req, {exerciseUrl, replyExercise}, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_reply_after_lesson`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }
@@ -83,7 +100,7 @@ class Lesson {
             });
             return res.send(_helper.render_response_success(req, {status, timeEvent}, _res.MESSAGE.SUCCESS));
         } catch (e) {
-            _log.err(`_add_manage_lesson`, e);
+            _log.err(`_start_end_lesson`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }
@@ -115,7 +132,29 @@ class Lesson {
             }).select({fullName: 1});
             return res.send(_helper.render_response_success(req, my_lesson, _res.MESSAGE.SUCCESS));
         } catch (e) {
-            _log.err(`_get_my_lesson`, e);
+            _log.err(`_get_lesson_item`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
+    async _insert_list_quit(req, res) {
+        try {
+            _log.log(`body`, req.body);
+            await validate_helper.get_validate_insert_list_quit_lesson().validate(req.body);
+            const {listUserIdQuit, lessonId} = req.body;
+            const data_insert = listUserIdQuit.split(",").map(user => ({
+                status: _contains.LESSON.STATUS_MANAGE.QUIT,
+                user,
+                lesson: lessonId,
+            }));
+            const list_manage = await lesson_manage_model.insertMany(data_insert);
+            const list_manage_id = list_manage.map(item => item._id);
+            const lesson_update = await lesson_model.findByIdAndUpdate(lessonId, {
+                "$push": {"listManage": {"$each": list_manage_id}}
+            })
+            return res.send(_helper.render_response_success(req, lesson_update, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_insert_list_quit`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }
@@ -148,7 +187,7 @@ class Lesson {
             }, _res.MESSAGE.SUCCESS));
 
         } catch (e) {
-            _log.err(`_get_admin_get_lesson`, e);
+            _log.err(`_get_manage_lesson`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }
