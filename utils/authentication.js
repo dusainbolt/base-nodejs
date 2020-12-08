@@ -57,6 +57,7 @@ const setAuth = async (req, res, next) => {
         }
         req.token = token;
         req.user = user;
+        _log.log(`access_token: ${user.fullName} - ${user._id}`);
         if (skipAdminPage(req.path)) {
             if (user.role !== _contains.USER.ROLE.ADMIN_APP) {
                 return res.status(401).send({error: 'Not authorized to access this resource'})

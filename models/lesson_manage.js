@@ -4,7 +4,8 @@ const obj_schema = new _mongoose.Schema({
     description: {type: String, default: null},
     exerciseUrl: {type: String, default: null},
     replyExercise: {type: String, default: null},
-    point: {type: Number, default: null},
+    pointManage: { type: _mongoose.Schema.Types.ObjectId, ref: 'point', default: null},
+    pointExercise: { type: _mongoose.Schema.Types.ObjectId, ref: 'point', default: null},
     status: {type: Number, default: _contains.LESSON.STATUS_MANAGE.JOINED},
     created: {type: Date, default: Date.now},
 },{id: false, versionKey: 'v'});

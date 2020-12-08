@@ -1,5 +1,7 @@
 const validate_helper = require(`../utils/validate.js`);
-const user_model = require(`../models/user.js`);
+const user_model = require(`../models/user`);
+const lesson_manage_model = require(`../models/lesson_manage`);
+
 const bcrypt = require('bcryptjs')
 
 class User {
@@ -61,9 +63,22 @@ class User {
         }
     }
 
-    async _get_refresh_user(req, res){
+    async _get_dashboard(req, res) {
         try {
-            const { user } = req;
+            _log.log(`params`, req.query);
+            const user = req.user;
+            const user_data = await user.populate('point').execPopulate();
+            const lesson_history = await lesson_manage_model.find({user: user._id});
+            return res.send(_helper.render_response_success(req, {point_history: user_data.point, lesson_history}, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`login`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
+    async _get_refresh_user(req, res) {
+        try {
+            const {user} = req;
             const token = await user.generateAuthToken();
             _log.log(_res.MESSAGE.SUCCESS);
             return res.send(_helper.render_response_success(req, {user, token}, _res.MESSAGE.SUCCESS));

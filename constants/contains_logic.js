@@ -2,6 +2,10 @@ module.exports = {
   DEFAULT_ERROR_CODE: 5,
   START_CODE: 100000,
   END_CODE: 999999,
+  POINT: {
+    JOIN_LESSON: 5,
+    QUIT_LESSON: -10,
+  },
   SUB_REGISTER: "__register_",
   DESC: -1, // giam dan
   ASC: 1, // tang dan

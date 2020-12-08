@@ -1,4 +1,11 @@
 module.exports = {
+    POINT: {
+        TYPE: {
+            JOIN_LESSON: 1,
+            REPLY_QUESTION: 2,
+            QUIT_LESSON: 3,
+        },
+    },
     CLASS: {
         STATUS: {
             ACTIVE: 1,

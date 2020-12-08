@@ -3,6 +3,7 @@ const lesson_model = require(`../models/lesson`);
 const user_model = require(`../models/user`);
 const lesson_manage_model = require(`../models/lesson_manage`);
 const class_model = require(`../models/class`);
+const point_model = require(`../models/point`);
 
 class Lesson {
     constructor() {
@@ -66,7 +67,8 @@ class Lesson {
             await validate_helper.get_validate_add_manage_lesson().validate(req.body);
             const {status, description, lessonId, expectedTime} = req.body;
             const durationTime = Math.floor(new Date().getTime() / 1000) - expectedTime;
-            if (parseInt(status) === _contains.LESSON.STATUS_MANAGE.JOINED) {
+            const is_join = parseInt(status) === _contains.LESSON.STATUS_MANAGE.JOINED;
+            if (is_join) {
                 if (durationTime > _logic.JOIN_DURATION_TIME) {
                     return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.JOIN_DURATION_TIME, _res.MESSAGE.JOIN_DURATION_TIME));
                 }
@@ -75,9 +77,18 @@ class Lesson {
                     return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REJECT_DURATION_TIME, _res.MESSAGE.REJECT_DURATION_TIME));
                 }
             }
+            let new_point;
+            if(is_join){
+                new_point = await new point_model({
+                    value: _logic.POINT.JOIN_LESSON,
+                    lesson: lessonId,
+                    user: req.user._id,
+                }).save();
+            }
             const new_manage = await new lesson_manage_model({
-                status, description, lesson: lessonId, user: req.user._id
+                status, description, lesson: lessonId, user: req.user._id, pointManage: is_join ? new_point._id : null,
             }).save();
+            req.user.addPoint(new_point._id);
             await lesson_model.findByIdAndUpdate(lessonId, {$addToSet: {listManage: new_manage._id}});
             return res.send(_helper.render_response_success(req, new_manage, _res.MESSAGE.SUCCESS));
         } catch (e) {
@@ -142,13 +153,36 @@ class Lesson {
             _log.log(`body`, req.body);
             await validate_helper.get_validate_insert_list_quit_lesson().validate(req.body);
             const {listUserIdQuit, lessonId} = req.body;
-            const data_insert = listUserIdQuit.split(",").map(user => ({
+            const arr_user_quit = listUserIdQuit.split(",");
+
+            // tao data point quit
+            const data_insert_point = arr_user_quit.map(user => ({
+                type: _contains.POINT.TYPE.QUIT_LESSON,
+                user,
+                lesson: lessonId,
+                value: _logic.POINT.QUIT_LESSON
+            }));
+
+            // them point quit vao bang point
+            const list_point_quit = await point_model.insertMany(data_insert_point);
+
+            // add point quit to user
+            await Promise.all(arr_user_quit.map((user, index) => {
+                return  user_model.findByIdAndUpdate(user, {$addToSet: {point: list_point_quit[index]._id}});
+            }));
+
+            // tao data lesson quit
+            const data_insert = arr_user_quit.map((user, index) => ({
                 status: _contains.LESSON.STATUS_MANAGE.QUIT,
                 user,
                 lesson: lessonId,
+                pointManage: list_point_quit[index]._id,
             }));
+
             const list_manage = await lesson_manage_model.insertMany(data_insert);
             const list_manage_id = list_manage.map(item => item._id);
+
+            // update list id lesson manage vao lesson
             const lesson_update = await lesson_model.findByIdAndUpdate(lessonId, {
                 "$push": {"listManage": {"$each": list_manage_id}}
             })

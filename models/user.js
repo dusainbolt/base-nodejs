@@ -16,6 +16,7 @@ const obj_schema = new _mongoose.Schema({
     cover: {type: String, default: null},
     description: {type: String, default: null},
     role: {type: String, default: null},
+    point: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'point', default: null }],
     courseRequest: { type: _mongoose.Schema.Types.ObjectId, ref: 'course_rq', default: null },
     class: { type: _mongoose.Schema.Types.ObjectId, ref: 'class', default: null },
     tokens: {type: Array, default: null, hideJSON: true},
@@ -43,6 +44,14 @@ obj_schema.methods.generateAuthToken = async function () {
     }
     await user.save();
     return token;
+}
+
+obj_schema.methods.addPoint = async function (pointId) {
+    console.log(pointId);
+    const user = this;
+    user.point = user.point.concat(pointId);
+    await user.save();
+    return user;
 }
 
 // obj_schema.pre('save', function (next) {
