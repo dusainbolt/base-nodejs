@@ -97,6 +97,25 @@ class Lesson {
         }
     }
 
+    async _reply_exercise(req, res) {
+        try {
+            _log.log(`body`, req.body);
+            await validate_helper.get_validate_reply_exercise().validate(req.body);
+            // const {lessonId, status} = req.body;
+            // const timeEvent = Math.floor(new Date().getTime() / 1000);
+            // await lesson_model.findByIdAndUpdate(lessonId, {
+            //     $set: {
+            //         status,
+            //         [parseInt(status) === _contains.LESSON.STATUS.HAPPENING ? `startTime` : `endTime`]: timeEvent
+            //     }
+            // });
+            return res.send(_helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
+        } catch (e) {
+            _log.err(`_start_end_lesson`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
     async _start_end_lesson(req, res) {
         try {
             _log.log(`body`, req.body);

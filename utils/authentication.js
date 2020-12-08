@@ -105,7 +105,8 @@ const skipAdminPage = (path) => {
         `/lesson/admin_get_lesson`,
         `/lesson/start_lesson`,
         `/lesson/add_youtube_url`,
-        `/lesson/insert_list_quit`
+        `/lesson/insert_list_quit`,
+        `/lesson/reply_exercise`
     ];
     return pages.indexOf(path) !== -1;
 }
