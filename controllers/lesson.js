@@ -17,7 +17,9 @@ class Lesson {
                 offset: params.count_skip,
                 limit: params.page_size,
                 sort: {[params.sort_by]: _logic[params.sort_type]},
-                populate: {path: 'listManage', match: {user: req.user._id}}
+                populate: {path: 'listManage', match: {user: req.user._id},
+                    populate: [{path:'pointManage'}, {path:'pointExercise'}]
+                }
             }
             const my_list_lesson = await lesson_model.paginate({
                 class: req.user.class,
@@ -68,27 +70,33 @@ class Lesson {
             const {status, description, lessonId, expectedTime} = req.body;
             const durationTime = Math.floor(new Date().getTime() / 1000) - expectedTime;
             const is_join = parseInt(status) === _contains.LESSON.STATUS_MANAGE.JOINED;
+
+            // check time out cho manage lesson
             if (is_join) {
                 if (durationTime > _logic.JOIN_DURATION_TIME) {
                     return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.JOIN_DURATION_TIME, _res.MESSAGE.JOIN_DURATION_TIME));
                 }
-            }else{
-                if(durationTime > _logic.REJECT_DURATION_TIME){
+            } else {
+                if (durationTime > _logic.REJECT_DURATION_TIME) {
                     return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REJECT_DURATION_TIME, _res.MESSAGE.REJECT_DURATION_TIME));
                 }
             }
             let new_point;
-            if(is_join){
+
+            //if join thi add point cho user
+            if (is_join) {
                 new_point = await new point_model({
                     value: _logic.POINT.JOIN_LESSON,
                     lesson: lessonId,
                     user: req.user._id,
                 }).save();
             }
+            // create manage break lesson or join
             const new_manage = await new lesson_manage_model({
                 status, description, lesson: lessonId, user: req.user._id, pointManage: is_join ? new_point._id : null,
             }).save();
-            req.user.addPoint(new_point._id);
+            // add point to user
+            await req.user.addPoint(new_point._id);
             await lesson_model.findByIdAndUpdate(lessonId, {$addToSet: {listManage: new_manage._id}});
             return res.send(_helper.render_response_success(req, new_manage, _res.MESSAGE.SUCCESS));
         } catch (e) {
@@ -101,14 +109,19 @@ class Lesson {
         try {
             _log.log(`body`, req.body);
             await validate_helper.get_validate_reply_exercise().validate(req.body);
-            // const {lessonId, status} = req.body;
-            // const timeEvent = Math.floor(new Date().getTime() / 1000);
-            // await lesson_model.findByIdAndUpdate(lessonId, {
-            //     $set: {
-            //         status,
-            //         [parseInt(status) === _contains.LESSON.STATUS.HAPPENING ? `startTime` : `endTime`]: timeEvent
-            //     }
-            // });
+            const {lesson, value, user, manage} = req.body;
+
+            // them moi point
+            const new_point = await new point_model({
+                value,
+                lesson,
+                user,
+                type: _contains.POINT.TYPE.REPLY_QUESTION
+            }).save();
+            //update lesson manage them point reply bai tap
+            await lesson_manage_model.findByIdAndUpdate(manage, {pointExercise: new_point._id});
+            //update point vao user
+            await user_model.findByIdAndUpdate(user, {$addToSet: {point:  new_point._id}});
             return res.send(_helper.render_response_success(req, null, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_start_end_lesson`, e);
@@ -158,7 +171,7 @@ class Lesson {
             await validate_helper.get_validate_get_lesson_id().validate(req.query);
             const my_lesson = await user_model.findById(req.user._id).populate({
                 path: 'class',
-                populate: {path: 'listLesson', $match: {_id: {$ne: req.query.lessonId}}}
+                populate: {path: 'listLesson', match: {_id: {$eq: req.query.lessonId}}}
             }).select({fullName: 1});
             return res.send(_helper.render_response_success(req, my_lesson, _res.MESSAGE.SUCCESS));
         } catch (e) {
@@ -219,9 +232,11 @@ class Lesson {
             const {classId, lessonId} = req.query;
             const lesson_manage = await lesson_model.findById(lessonId).populate({
                 path: 'listManage',
-                populate: {
+                populate: [{
                     path: 'user', select: _contains.USER.PARAMS_AVATAR,
-                },
+                }, {
+                    path: 'pointExercise', match: {user: {$eq: req.user._id}}
+                }],
                 options: {sort: {[_logic.SORT_CREATE]: _logic.DESC}}
             }).select({_id: 1});
             const list_user_join = lesson_manage.listManage.map(item => {
@@ -245,7 +260,7 @@ class Lesson {
         }
     }
 
-    async _get_admin_get_lesson(req, res) {
+    async _get_lesson_by_admin(req, res) {
         try {
             _log.log(`params`, req.query);
             await validate_helper.get_validate_admin_get_lesson().validate(req.query);
@@ -259,14 +274,16 @@ class Lesson {
                 }]
             }, {
                 path: 'class',
+            }, {
+                path: 'listManage',
+                populate: [{
+                    path: 'user', select: _contains.USER.PARAMS_AVATAR,
+                },{
+                    path: 'pointExercise'
+                }],
+                options: {sort: {[_logic.SORT_CREATE]: _logic.DESC}}
             },
-                {
-                    path: 'listManage',
-                    populate: {
-                        path: 'user', select: _contains.USER.PARAMS_AVATAR,
-                    },
-                    options: {sort: {[_logic.SORT_CREATE]: _logic.DESC}}
-                }
+
             ]);
             const listUserJoin = lesson.listManage.map(item => {
                 return item.user._id;

@@ -79,11 +79,11 @@ class Validate {
 
     static get_validate_reply_exercise() {
         return _yup.object().shape({
-            lessonId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+            lesson: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
                 (lessonId) => _mongoose.Types.ObjectId.isValid(lessonId)),
-            manageId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+            manage: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
                 (manageId) => _mongoose.Types.ObjectId.isValid(manageId)),
-            userId: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
+            user: _yup.string().required().test('invalid_objectId', _res.ERROR_CODE.INVALID_OBJECT_ID,
                 (userId) => _mongoose.Types.ObjectId.isValid(userId)),
             value: _yup.string().required(),
         });

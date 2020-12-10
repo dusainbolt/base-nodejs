@@ -26,32 +26,29 @@ const obj_schema = new _mongoose.Schema({
 
 obj_schema.methods.generateAuthToken = async function () {
     // Generate an auth token for the user
-    const user = this;
     const token = jwt.sign(
         {
-            _id: user._id,
-            email: user.email,
-            fullName: user.fullName,
+            _id: this._id,
+            email: this.email,
+            fullName: this.fullName,
         },
         _config.JWT.PRIVATE_KEY,
         {
             expiresIn: _config.JWT.AGE,
         }
     );
-    user.tokens = user.tokens.concat({token});
-    if (user.status !== _contains.USER.STATUS.ACTIVE) {
-        user.status = _contains.USER.STATUS.ACTIVE;
+    this.tokens = this.tokens.concat({token});
+    if (this.status !== _contains.USER.STATUS.ACTIVE) {
+        this.status = _contains.USER.STATUS.ACTIVE;
     }
-    await user.save();
+    await this.save();
     return token;
 }
 
 obj_schema.methods.addPoint = async function (pointId) {
-    console.log(pointId);
-    const user = this;
-    user.point = user.point.concat(pointId);
-    await user.save();
-    return user;
+    this.point = this.point.concat(pointId);
+    await this.save();
+    return this;
 }
 
 // obj_schema.pre('save', function (next) {

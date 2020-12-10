@@ -79,9 +79,8 @@ class User {
     async _get_refresh_user(req, res) {
         try {
             const {user} = req;
-            const token = await user.generateAuthToken();
             _log.log(_res.MESSAGE.SUCCESS);
-            return res.send(_helper.render_response_success(req, {user, token}, _res.MESSAGE.SUCCESS));
+            return res.send(_helper.render_response_success(req, {user}, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`login`, e);
             return res.send(_helper.render_response_error(req, e));
