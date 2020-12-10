@@ -102,7 +102,7 @@ const skipAdminPage = (path) => {
         '/class/add_class',
         `/class/chang_status_class`,
         `/lesson/add_lesson`,
-        `/lesson/admin_get_lesson`,
+        `/lesson/get_lesson_by_admin`,
         `/lesson/start_lesson`,
         `/lesson/add_youtube_url`,
         `/lesson/insert_list_quit`,

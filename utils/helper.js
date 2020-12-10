@@ -70,7 +70,7 @@ class Helper {
         const {sortType, sortBy, pageSize, pageNum} = requestQuery;
         const page_size = pageSize ? parseInt(pageSize) : _logic.PAGE_SIZE;
         return {
-            sort_type: sortType ? sortType : _logic.TYPE_DESC,
+            sort_type: sortType ? sortType : _logic.TYPE_ASC,
             sort_by: sortBy ? sortBy : _logic.SORT_CREATE,
             count_skip: pageNum ? parseInt(pageNum) * page_size : _logic.PAGE_SKIP,
             page_size,
