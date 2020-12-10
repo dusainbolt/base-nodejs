@@ -4,6 +4,7 @@ module.exports = {
             JOIN_LESSON: 1,
             REPLY_QUESTION: 2,
             QUIT_LESSON: 3,
+            POSITIVE_LESSON: 4,
         },
     },
     CLASS: {
