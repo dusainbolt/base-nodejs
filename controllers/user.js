@@ -70,8 +70,8 @@ class User {
             const user_data = await user.populate('point').execPopulate();
             const point_history = user_data.point;
             const lesson_history = await lesson_manage_model.find({user: user._id}).select({status: 1, exerciseUrl: 1});
-
             // tong so buoi hoc user da join
+            console.log(point_history);
             const total_join = _.filter(lesson_history, {status: _contains.LESSON.STATUS_MANAGE.JOINED}).length;
 
             //tong so bai tap user da nop

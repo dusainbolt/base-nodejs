@@ -1,7 +1,9 @@
+const FloatType = require('mongoose-float').loadType(_mongoose, 1);
+
 const obj_schema = new _mongoose.Schema({
     user: { type: _mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     lesson: { type: _mongoose.Schema.Types.ObjectId, ref: 'lesson', default: null },
-    value: {type: Number, required: true},
+    value: {type: FloatType, required: true},
     type: {type: Number, required: true, default: _contains.POINT.TYPE.JOIN_LESSON},
     created: {type: Date, default: Date.now},
 },{id: false, versionKey: 'v'});
