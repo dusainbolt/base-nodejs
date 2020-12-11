@@ -1,6 +1,7 @@
 const validate_helper = require(`../utils/validate.js`);
 const user_model = require(`../models/user`);
 const lesson_manage_model = require(`../models/lesson_manage`);
+const point_model = require(`../models/point`);
 
 const bcrypt = require('bcryptjs')
 
@@ -71,7 +72,6 @@ class User {
             const point_history = user_data.point;
             const lesson_history = await lesson_manage_model.find({user: user._id}).select({status: 1, exerciseUrl: 1});
             // tong so buoi hoc user da join
-            console.log(point_history);
             const total_join = _.filter(lesson_history, {status: _contains.LESSON.STATUS_MANAGE.JOINED}).length;
 
             //tong so bai tap user da nop
