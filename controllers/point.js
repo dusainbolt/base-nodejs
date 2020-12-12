@@ -29,23 +29,25 @@ class Question {
                 {
                     $project: {
                         "_id": "$_id",
-                        "totalPointExercise": {
-                            $reduce: {
-                                input: "$points",
-                                initialValue: 0,
-                                in: {$add: ["$$value", "$$this.value"]}
-                            }
-                        },
+                        "class": "$class",
                         "fullName": "$fullName",
                         "avatar": "$avatar",
+                        "pointManage": {
+                            $reduce: {
+                                input: "$points",
+                                initialValue: {totalPoint: 0, sumPointExercise: 0, sumPointManage: 0},
+                                in: {
+                                    totalPoint: {$add: ["$$value.totalPoint", "$$this.value"]},
+                                    // countExercise: {$add: ["$$value.sumPointExercise", _aggre.POINT.COUNT_EXERCISE]},
+                                    sumPointManage: {$add: ["$$value.sumPointManage", _aggre.POINT.COUNT_POINT_MANAGE]},
+                                    sumPointExercise: {$add: ["$$value.sumPointExercise", _aggre.POINT.COUNT_POINT_EXERCISE]},
+                                    // avgExercise:  {$avg: _aggre.POINT.COUNT_POINT_EXERCISE}
+                                }
+                            }
+                        },
                     }
                 },
             ]);
-            // const data_user_point = await user_model.find(
-            //     {status: _contains.USER.STATUS.ACTIVE, role: _contains.USER.ROLE.USER_COURSE}
-            // ).populate({
-            //     path: "point"
-            // }).select(_contains.USER.PARAMS_AVATAR);
             return res.send(_helper.render_response_success(req, data, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_email_notify_course`, e);
