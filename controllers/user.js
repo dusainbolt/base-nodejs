@@ -1,6 +1,7 @@
 const validate_helper = require(`../utils/validate.js`);
 const user_model = require(`../models/user`);
 const lesson_manage_model = require(`../models/lesson_manage`);
+const point_model = require(`../models/point`);
 
 const bcrypt = require('bcryptjs')
 
@@ -69,10 +70,14 @@ class User {
             const user = req.user;
             const user_data = await user.populate('point').execPopulate();
             const point_history = user_data.point;
-            const lesson_history = await lesson_manage_model.find({user: user._id}).select({status: 1, exerciseUrl: 1});
+            const lesson_history = await lesson_manage_model.find({user: user._id}).populate('lesson').select({status: 1, exerciseUrl: 1});
             // tong so buoi hoc user da join
-            console.log(point_history);
             const total_join = _.filter(lesson_history, {status: _contains.LESSON.STATUS_MANAGE.JOINED}).length;
+
+            // tong so bai tap user phai lam
+            const total_lesson_exercise = _.filter(lesson_history, manage => {
+                if(manage.lesson.class.equals(user.class)) return manage;
+            }).length;
 
             //tong so bai tap user da nop
             const total_exercise = _.filter(lesson_history, item => item.exerciseUrl).length;
@@ -80,12 +85,13 @@ class User {
             // diem trung binh cham bai tap
             const arr_point_exercise = _.filter(point_history, {type: _contains.POINT.TYPE.REPLY_QUESTION});
             const avg_point = _.meanBy(arr_point_exercise, point => point.value);
+
             // tong so point user co
             const total_point = _.sumBy(point_history, point => point.value);
 
             return res.send(_helper.render_response_success(req, {
                 total_join, total_lesson: lesson_history.length, total_exercise,
-                avg_point, total_point
+                avg_point, total_point, total_lesson_exercise
             }, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`login`, e);
