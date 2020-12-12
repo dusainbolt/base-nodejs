@@ -84,7 +84,6 @@ class User {
             // diem trung binh cham bai tap
             const arr_point_exercise = _.filter(point_history, {type: _contains.POINT.TYPE.REPLY_QUESTION});
             const avg_point = _.meanBy(arr_point_exercise, point => point.value);
-
             // tong so point user co
             const total_point = _.sumBy(point_history, point => point.value);
 
