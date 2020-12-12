@@ -50,6 +50,13 @@ class Question {
                                 fullName: "$fullName",
                                 avatar: "$avatar",
                                 point: "$pointManage",
+                                avgPointExercise: {
+                                    $cond: {
+                                        if: {$eq: ["$pointManage.sumPointExercise", 0]}, then: 0, else: {
+                                            $divide: ["$pointManage.sumPointExercise", "$pointManage.countExercise"]
+                                        }
+                                    }
+                                }
                             }
                         },
                     }
