@@ -12,6 +12,7 @@ const user_model = require(`../models/user`);
 const setAuth = async (req, res, next) => {
     try {
         res.setHeader('Access-Control-Allow-Origin', '*');
+        res.setHeader('Access-Control-Request-Method', '*');
         res.setHeader('Access-Control-Allow-Headers', _config.ALLOW_HEADER);
 
         let {headers, method, url} = req;
@@ -31,6 +32,7 @@ const setAuth = async (req, res, next) => {
         //     })
         // }
         //Check hash_key
+        if(url.indexOf(/socket.io/) !== -1 )return next();
         url = url.indexOf("?") !== -1 ? url.substring(0, url.indexOf("?")) : url;
         let input = _config.APP_KEY + `_` + timestamp + `_` + url;
         console.log("---------->INPUT", input, url);

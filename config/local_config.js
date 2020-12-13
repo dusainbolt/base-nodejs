@@ -48,6 +48,7 @@ module.exports = {
     BCRYPT: {
         SALT: 10
     },
-    ALLOW_HEADER: `Origin, X-Requested-With, Content-Type, Accept, timestamp, Authorization, hash_key`,
+    // ALLOW_HEADER: `Origin, X-Requested-With, Content-Type, Accept, timestamp, Authorization, hash_key`,
+    ALLOW_HEADER: '*',
     SIZE_FILE_LIMIT: `50mb`,
 };
