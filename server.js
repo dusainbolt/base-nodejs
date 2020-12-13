@@ -65,10 +65,10 @@ const start_server = () => {
         server.set('views', 'views');
         server.set('view engine', 'ejs');
 
-        server.listen(PORT, () => {
-            let http = require('http').Server(server);
-            let io = socket_io(http, {transports: ['websocket', 'polling']});
+        let http = require('http').createServer(server);
+        let io = socket_io(http);
 
+        http.listen(PORT, () => {
             router_server.set_router(server, io);
             router_socket.set_router(io);
 
