@@ -63,41 +63,56 @@ class Lesson {
         }
     }
 
-    async _add_manage_lesson(req, res) {
+    async _add_manage_lesson(req, res, io) {
         try {
             _log.log(`body`, req.body);
+            const {user} = req;
             await validate_helper.get_validate_add_manage_lesson().validate(req.body);
             const {status, description, lessonId, expectedTime} = req.body;
             const durationTime = Math.floor(new Date().getTime() / 1000) - expectedTime;
             const is_join = parseInt(status) === _contains.LESSON.STATUS_MANAGE.JOINED;
 
             // check time out cho manage lesson
-            if (is_join) {
-                if (durationTime > _logic.JOIN_DURATION_TIME) {
-                    return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.JOIN_DURATION_TIME, _res.MESSAGE.JOIN_DURATION_TIME));
-                }
-            } else {
-                if (durationTime > _logic.REJECT_DURATION_TIME) {
-                    return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REJECT_DURATION_TIME, _res.MESSAGE.REJECT_DURATION_TIME));
-                }
-            }
+            // if (is_join) {
+            //     if (durationTime > _logic.JOIN_DURATION_TIME) {
+            //         return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.JOIN_DURATION_TIME, _res.MESSAGE.JOIN_DURATION_TIME));
+            //     }
+            // } else {
+            //     if (durationTime > _logic.REJECT_DURATION_TIME) {
+            //         return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REJECT_DURATION_TIME, _res.MESSAGE.REJECT_DURATION_TIME));
+            //     }
+            // }
             let new_point;
 
             //if join thi add point cho user
             if (is_join) {
+                // tao 1 ban ghi point
                 new_point = await new point_model({
                     value: _logic.POINT.JOIN_LESSON,
                     lesson: lessonId,
-                    user: req.user._id,
+                    user: user._id,
                 }).save();
+
+                // add point to user
+                await user.addPoint(new_point._id);
             }
             // create manage break lesson or join
             const new_manage = await new lesson_manage_model({
-                status, description, lesson: lessonId, user: req.user._id, pointManage: is_join ? new_point._id : null,
+                status, description, lesson: lessonId, user: user._id, pointManage: is_join ? new_point._id : null,
             }).save();
-            // add point to user
-            await req.user.addPoint(new_point._id);
+
+            //update them 1 ban manage cho lesson
             await lesson_model.findByIdAndUpdate(lessonId, {$addToSet: {listManage: new_manage._id}});
+
+            // gui socket cho room class
+            const data_socket = {
+                ...new_manage._doc, user: {
+                    avatar: user.avatar, fullName: user.fullName, _id: user._id, mySocket: false
+                }
+            };
+            io.to(`${_socket.ROOM_CLASS}${user.class}`).to(_socket.ROOM_ADMIN).emit(_socket.ADD_MANAGE_LESSON, data_socket);
+
+            //response
             return res.send(_helper.render_response_success(req, new_manage, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_add_manage_lesson`, e);
@@ -129,19 +144,20 @@ class Lesson {
         }
     }
 
-    async _start_end_lesson(req, res) {
+    async _start_end_lesson(req, res, io) {
         try {
             _log.log(`body`, req.body);
             await validate_helper.get_validate_start_lesson().validate(req.body);
-            const {lessonId, status} = req.body;
+            const {lessonId} = req.body;
+            const status = parseInt(req.body.status);
             const timeEvent = Math.floor(new Date().getTime() / 1000);
-            await lesson_model.findByIdAndUpdate(lessonId, {
-                $set: {
-                    status,
-                    [parseInt(status) === _contains.LESSON.STATUS.HAPPENING ? `startTime` : `endTime`]: timeEvent
-                }
-            });
-            return res.send(_helper.render_response_success(req, {status, timeEvent}, _res.MESSAGE.SUCCESS));
+            const data_update = {
+                status,
+                [status === _contains.LESSON.STATUS.HAPPENING ? `startTime` : `endTime`]: timeEvent,
+            }
+            const lesson = await lesson_model.findByIdAndUpdate(lessonId, {$set: data_update});
+            io.to(`${_socket.ROOM_CLASS}${lesson.class}`).emit(_socket.EMIT_STATUS_LESSON, data_update);
+            return res.send(_helper.render_response_success(req, data_update, _res.MESSAGE.SUCCESS));
         } catch (e) {
             _log.err(`_start_end_lesson`, e);
             return res.send(_helper.render_response_error(req, e));

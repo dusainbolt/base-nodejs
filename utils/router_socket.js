@@ -5,41 +5,20 @@
 const set_router = (io) => {
     io.on(`connection`, (socket) => {
 
-        _log.log('socket_id: ' + socket.id);
-
         socket.auth = false;
         socket.type_user = null;
-        socket.auth = true;
 
-        socket.on('auth', (data) => {
-            try{
-                _log.log(`socket_id: ` + socket.id, data);
+        socket.on(_socket.EVENT_AUTH, (data) => {
+            try {
                 //auth hợp lệ của soft
-
-                if (data && _.isEqual(data.auth, _config.APP_KEY)) {
+                const { auth, userDetail } =data;
+                if (data && _.isEqual(auth, _config.APP_KEY)) {
                     socket.auth = true;
-                    socket.type_user = "SOFT PC";
-                    socket.join(`roomSoftSocket`);
-                    _log.log(`socket_id: ` + socket.id + ' connected SOFT PC');
+                    socket.type_user = userDetail.role;
+                    const roomName = socket.type_user === _contains.USER.ROLE.ADMIN_APP ? _socket.ROOM_ADMIN : `${_socket.ROOM_CLASS}${userDetail.class}`
+                    socket.join(roomName);
+                    _log.log(`${data.userDetail.fullName} - socket_id: ${socket.id} -room: ${roomName} -connected`);
                 }
-                // else if (data && _.isEqual(data.auth, _config.APP_KEY)) {
-                //     socket.auth = true;
-                //     socket.type_user = "APP ANDROID";
-                //     socket.join(`roomAppSocket`);
-                //
-                //     let socket_ids = io.sockets.adapter.rooms[`roomAppSocket`].sockets;
-                //     for (let socket_id in socket_ids) {
-                //         let item_socket = io.sockets.sockets[socket_id];
-                //         if (item_socket && item_socket.type_user && item_socket.user_id &&
-                //             item_socket.type_user === `APP ANDROID`
-                //             && item_socket.user_id === data.user_id && client.id !== socket_id) {
-                //             io.to(socket_id).emit("logout_session", _output(405));
-                //             console.log(socket_id + " bi logout");
-                //         }
-                //     }
-                //
-                //     socket.user_id = data.user_id;
-                //     _log.log(`socket_id: ` + socket.id + ` connected APP`);
                  else {
                     _log.log(`socket_id: ` + socket.id + ` auth fail`);
                     socket.disconnect();
@@ -67,26 +46,24 @@ const set_router = (io) => {
             }
         }, 1000);
 
-        // console.log(socket);
-        // socket.on(`event_01`, (data) => {
-        //     try {
-        //         _log.log(`data socket event_01`, data);
-        //         //something
-        //     } catch (e) {
-        //         _log.err(`socket event_01 error`, e);
-        //         throw e;
-        //     }
-        // });
+        // else if (data && _.isEqual(data.auth, _config.APP_KEY)) {
+        //     socket.auth = true;
+        //     socket.type_user = "APP ANDROID";
+        //     socket.join(`roomAppSocket`);
         //
-        // socket.on(`event_02`, (data) => {
-        //     try {
-        //         _log.log(`data socket event_02`, data);
-        //         //something
-        //     } catch (e) {
-        //         _log.err(`socket event_02 error`, e);
-        //         throw e;
+        //     let socket_ids = io.sockets.adapter.rooms[`roomAppSocket`].sockets;
+        //     for (let socket_id in socket_ids) {
+        //         let item_socket = io.sockets.sockets[socket_id];
+        //         if (item_socket && item_socket.type_user && item_socket.user_id &&
+        //             item_socket.type_user === `APP ANDROID`
+        //             && item_socket.user_id === data.user_id && client.id !== socket_id) {
+        //             io.to(socket_id).emit("logout_session", _output(405));
+        //             console.log(socket_id + " bi logout");
+        //         }
         //     }
-        // });
+        //
+        //     socket.user_id = data.user_id;
+        //     _log.log(`socket_id: ` + socket.id + ` connected APP`);
     });
 };
 
