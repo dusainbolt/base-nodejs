@@ -73,15 +73,15 @@ class Lesson {
             const is_join = parseInt(status) === _contains.LESSON.STATUS_MANAGE.JOINED;
 
             // check time out cho manage lesson
-            // if (is_join) {
-            //     if (durationTime > _logic.JOIN_DURATION_TIME) {
-            //         return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.JOIN_DURATION_TIME, _res.MESSAGE.JOIN_DURATION_TIME));
-            //     }
-            // } else {
-            //     if (durationTime > _logic.REJECT_DURATION_TIME) {
-            //         return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REJECT_DURATION_TIME, _res.MESSAGE.REJECT_DURATION_TIME));
-            //     }
-            // }
+            if (is_join) {
+                if (durationTime > _logic.JOIN_DURATION_TIME) {
+                    return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.JOIN_DURATION_TIME, _res.MESSAGE.JOIN_DURATION_TIME));
+                }
+            } else {
+                if (durationTime > _logic.REJECT_DURATION_TIME) {
+                    return res.send(_helper.render_response_error(req, null, _res.ERROR_CODE.REJECT_DURATION_TIME, _res.MESSAGE.REJECT_DURATION_TIME));
+                }
+            }
             let new_point;
 
             //if join thi add point cho user
