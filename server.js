@@ -15,6 +15,7 @@ global._res = require(`./constants/contains_response`);
 global._logic = require(`./constants/contains_logic.js`);
 global._contains = require(`./constants/contains_model.js`);
 global._aggre = require(`./constants/contains_aggregate.js`);
+global._socket = require(`./constants/contains_socket`);
 global._helper = require(`./utils/helper.js`);
 
 const express = require(`express`);
