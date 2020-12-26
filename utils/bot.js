@@ -55,13 +55,16 @@ class handleBot {
             "qs": {"access_token": _config.TOKEN_BOT_MESSENGER},
             "method": "POST",
             "json": {
-                "get_started":{
-                    "payload":"{\"type\":\"legacy_reply_to_message_action\",\"message\":\"Bắt đầu\"}"
-                },
-                "greeting":[
+                // "get_started":{
+                //     "payload":"{\"type\":\"legacy_reply_to_message_action\",\"message\":\"Bắt đầu\"}"
+                // },
+                "greeting": [
                     {
                         "locale":"default",
-                        "text":"Hello {{user_first_name}}!"
+                        "text":"Hello!"
+                    }, {
+                        "locale":"en_US",
+                        "text":"Timeless apparel for the masses."
                     }
                 ]
             }

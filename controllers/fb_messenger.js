@@ -2,18 +2,18 @@ class FBMessenger {
     constructor() {
     }
 
-    // async _get_test(req, res) {
-    //     try {
-    //         const message = {
-    //             text: "hello"
-    //         }
-    //         // _bot.handleMessageFB(4681411058600771, message);
-    //         _bot.settingStartedButtonPostback();
-    //     } catch (e) {
-    //         _log.err(`_get_test`, e);
-    //         return res.send(_helper.render_response_error(req, e));
-    //     }
-    // }
+    async _get_test(req, res) {
+        try {
+            const message = {
+                text: "hello"
+            }
+            // _bot.handleMessageFB(4681411058600771, message);
+            _bot.settingStartedButtonPostback();
+        } catch (e) {
+            _log.err(`_get_test`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
 
     async _post_webhook(req, res) {
         try {
