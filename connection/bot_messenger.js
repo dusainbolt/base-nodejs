@@ -12,7 +12,31 @@ class handleBot {
                 "text": `You sent the message: "${received_message.text}". Now send me an image!`
             }
         }
-        console.log()
+        response = {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "generic",
+                    "elements": [{
+                        "title": "Is this the right picture?",
+                        "subtitle": "Tap a button to answer.",
+                        "image_url": "",
+                        "buttons": [
+                            {
+                                "type": "postback",
+                                "title": "Yes!",
+                                "payload": "yes",
+                            },
+                            {
+                                "type": "postback",
+                                "title": "No!",
+                                "payload": "no",
+                            }
+                        ],
+                    }]
+                }
+            }
+        };
         // Sends the response message
         this.callSendAPIFB(sender_psId, response);
     }
@@ -41,7 +65,6 @@ class handleBot {
     };
     // Sends response messages via the Send API
     static callSendAPIFB(sender_psId, response) {
-        console.log("test response",response);
         // Construct the message body
         let request_body = {
             "recipient": {
@@ -50,9 +73,12 @@ class handleBot {
             "message": response
         }
 
+        console.log("test response",request_body);
+
+
         // Send the HTTP request to the Messenger Platform
         request({
-            "uri": "https://graph.facebook.com/v2.6/me/messages",
+            "uri": "https://graph.facebook.com/v9.0/me/messages",
             "qs": {"access_token": _config.TOKEN_BOT_MESSENGER},
             "method": "POST",
             "json": request_body
