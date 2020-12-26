@@ -11,6 +11,8 @@ class FBMessenger {
             const postback = {
                 payload: key
             }
+            // 108642264227705
+            // 4681411058600771
             if(type){
                 _bot.handlePostbackFB(4681411058600771, postback);
 
@@ -39,9 +41,8 @@ class FBMessenger {
                     // Gets the message. entry.messaging is an array, but
                     // will only ever contain one message, so we get index 0
                     const webhook_event = entry.messaging[0];
-                    console.log(webhook_event);
                     // Get the sender PSID
-                    const { sender, message, postback } = webhook_event;
+                    const { sender, message, postback, recipient } = webhook_event;
                     console.log('Sender PSID: ' + sender.id, message, postback);
 
                     // Check if the event is a message or postback and

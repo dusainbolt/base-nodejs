@@ -30,7 +30,6 @@ class responseAPIMessenger {
             }
         }
     }
-
 }
 
 module.exports = responseAPIMessenger;
