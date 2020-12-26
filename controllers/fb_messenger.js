@@ -2,6 +2,18 @@ class FBMessenger {
     constructor() {
     }
 
+    async _get_test(req, res) {
+        try {
+            const message = {
+                text: "hello"
+            }
+            _bot.handleMessageFB(4681411058600771, message);
+        } catch (e) {
+            _log.err(`_get_test`, e);
+            return res.send(_helper.render_response_error(req, e));
+        }
+    }
+
     async _post_webhook(req, res) {
         try {
             let body = req.body;
@@ -18,17 +30,15 @@ class FBMessenger {
 
                     // Get the sender PSID
                     const { sender, message, postback } = webhook_event;
-                    console.log('Sender PSID: ' + sender.id);
-
-                    console.log(webhook_event, sender, postback);
+                    console.log('Sender PSID: ' + sender.id, message, postback);
 
                     // Check if the event is a message or postback and
                     // pass the event to the appropriate handler function
-                    // if (message) {
-                    //     _bot.handleMessageFB(sender_psid, webhook_event.message);
-                    // } else if (postback) {
-                    //     _bot.handlePostbackFB(sender_psid, webhook_event.postback);
-                    // }
+                    if (message) {
+                        _bot.handleMessageFB(sender_psid, webhook_event.message);
+                    } else if (postback) {
+                        _bot.handlePostbackFB(sender_psid, webhook_event.postback);
+                    }
                 });
 
                 // Returns a '200 OK' response to all requests
@@ -38,7 +48,7 @@ class FBMessenger {
                 res.sendStatus(404);
             }
         } catch (e) {
-            _log.err(`_get_list`, e);
+            _log.err(`_post_webhook`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }
@@ -69,7 +79,7 @@ class FBMessenger {
                 }
             }
         } catch (e) {
-            _log.err(`_get_list`, e);
+            _log.err(`_get_webhook`, e);
             return res.send(_helper.render_response_error(req, e));
         }
     }

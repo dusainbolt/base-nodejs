@@ -3,21 +3,6 @@ const mailer = require('../connection/email');
 
 class Helper {
 
-// Handles messages events
-    static handleMessage(sender_psId, received_message) {
-        return null;
-    }
-
-// Handles messaging_postbacks events
-    static handlePostback(sender_psId, received_postback) {
-
-    }
-
-// Sends response messages via the Send API
-    static callSendAPI(sender_psId, response) {
-
-    }
-
     static getPramsUpload(base64_string, folder, path_name = "") {
         // Read content from the file
         const buffer_file_base64 = new Buffer.from(base64_string.replace(/^data:image\/\w+;base64,/, ""), 'base64')

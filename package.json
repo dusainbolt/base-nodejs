@@ -36,6 +36,7 @@
         "nodemailer-express-handlebars": "^4.0.0",
         "path": "^0.12.7",
         "redis": "^3.0.2",
+        "request": "^2.88.2",
         "socket.io": "^2.3.0",
         "yup": "^0.29.3"
     }
