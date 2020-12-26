@@ -2,7 +2,7 @@ class FBMessenger {
     constructor() {
     }
 
-    async static  _post_webhook(req, res) {
+    async _post_webhook(req, res) {
         try {
             let body = req.body;
 
