@@ -2,7 +2,7 @@ class FBMessenger {
     constructor() {
     }
 
-    async _post_webhook(req, res) {
+    async static  _post_webhook(req, res) {
         try {
             let body = req.body;
 
@@ -10,12 +10,24 @@ class FBMessenger {
             if (body.object === 'page') {
 
                 // Iterates over each entry - there may be multiple if batched
-                body.entry.forEach(function(entry) {
+                body.entry.forEach(function (entry) {
 
                     // Gets the message. entry.messaging is an array, but
                     // will only ever contain one message, so we get index 0
-                    let webhook_event = entry.messaging[0];
-                    console.log(webhook_event);
+                    const webhook_event = entry.messaging[0];
+                    console.log(webhook_event, entry);
+
+                    // Get the sender PSID
+                    const sender_psid = webhook_event.sender.id;
+                    console.log('Sender PSID: ' + sender_psid);
+
+                    // Check if the event is a message or postback and
+                    // pass the event to the appropriate handler function
+                    // if (webhook_event.message) {
+                    //     _bot.handleMessageFB(sender_psid, webhook_event.message);
+                    // } else if (webhook_event.postback) {
+                    //     _bot.handlePostbackFB(sender_psid, webhook_event.postback);
+                    // }
                 });
 
                 // Returns a '200 OK' response to all requests
@@ -60,7 +72,6 @@ class FBMessenger {
             return res.send(_helper.render_response_error(req, e));
         }
     }
-
 
 }
 

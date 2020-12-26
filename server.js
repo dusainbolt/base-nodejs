@@ -1,32 +1,33 @@
 require(`dotenv`).config(); //Cho phép đọc file .env
 
-global._config = require(`./config/config.js`);
-global._log = require(`./utils/log.js`);
+global._config = require(`./config/config`);
+global._log = require(`./utils/log`);
 global._ = require(`lodash`);
 global._mongoose = require(`mongoose`);
 global._mongoose_pageinate = require('mongoose-paginate');
 global._mongooseHidden = require('mongoose-hidden')();
 
-global._redis = require(`./connection/redis.js`);
-global._elastic = require(`./connection/elastic.js`);
-global._s3 = require(`./connection/aws.js`);
+global._redis = require(`./connection/redis`);
+global._elastic = require(`./connection/elastic`);
+global._s3 = require(`./connection/aws`);
 global._yup = require(`yup`);
 global._res = require(`./constants/contains_response`);
-global._logic = require(`./constants/contains_logic.js`);
-global._contains = require(`./constants/contains_model.js`);
-global._aggre = require(`./constants/contains_aggregate.js`);
+global._logic = require(`./constants/contains_logic`);
+global._contains = require(`./constants/contains_model`);
+global._aggre = require(`./constants/contains_aggregate`);
 global._socket = require(`./constants/contains_socket`);
-global._helper = require(`./utils/helper.js`);
+global._helper = require(`./utils/helper`);
+global._bot = require(`./utils/bot`);
 
 const express = require(`express`);
 const server = express();
 const body_parser = require(`body-parser`);
 const multer = require(`multer`);
-const router_server = require(`./utils/router_server.js`);
-const router_socket = require(`./utils/router_socket.js`);
-const authentication = require(`./utils/authentication.js`);
-const init = require(`./utils/init.js`);
-const mongodb = require(`./connection/mongodb.js`);
+const router_server = require(`./utils/router_server`);
+const router_socket = require(`./utils/router_socket`);
+const authentication = require(`./utils/authentication`);
+const init = require(`./utils/init`);
+const mongodb = require(`./connection/mongodb`);
 const path = require(`path`);
 const schedule = require(`./utils/schedule`);
 
