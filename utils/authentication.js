@@ -32,7 +32,7 @@ const setAuth = async (req, res, next) => {
         //     })
         // }
         //Check hash_key
-        if(url.indexOf(/socket.io/) !== -1 )return next();
+        if(skipHashKey(req.path))return next();
         url = url.indexOf("?") !== -1 ? url.substring(0, url.indexOf("?")) : url;
         let input = _config.APP_KEY + `_` + timestamp + `_` + url;
         console.log("---------->INPUT", input, url);
@@ -94,6 +94,14 @@ const skipPage = (path) => {
     ];
     return pages.indexOf(path) !== -1;
 };
+
+const skipHashKey = (path) => {
+    let pages = [
+       '/socket.io/',
+       '/fb_messenger/webhook',
+    ];
+    return pages.indexOf(path) !== -1;
+}
 
 const skipAdminPage = (path) => {
     let pages = [
