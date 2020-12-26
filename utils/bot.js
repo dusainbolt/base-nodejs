@@ -57,7 +57,13 @@ class handleBot {
             "json": {
                 "get_started":{
                     "payload":"{\"type\":\"legacy_reply_to_message_action\",\"message\":\"Bắt đầu\"}"
-                }
+                },
+                "greeting":[
+                    {
+                        "locale":"default",
+                        "text":"Hello {{user_first_name}}!"
+                    }
+                ]
             }
         }, (err, res, body) => {
             if (!err) {
