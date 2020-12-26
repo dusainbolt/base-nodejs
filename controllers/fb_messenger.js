@@ -4,11 +4,22 @@ class FBMessenger {
 
     async _get_test(req, res) {
         try {
+            const { type, key } = req.query;
             const message = {
-                text: "hello"
+                text: key
             }
-            // _bot.handleMessageFB(4681411058600771, message);
-            _bot.settingStartedButtonPostback();
+            const postback = {
+                payload: key
+            }
+            if(type){
+                _bot.handlePostbackFB(4681411058600771, postback);
+
+            }else{
+                _bot.handleMessageFB(4681411058600771, message);
+            }
+            // _bot.settingStartedButtonPostback();
+
+            res.status(200).send('EVENT_RECEIVED');
         } catch (e) {
             _log.err(`_get_test`, e);
             return res.send(_helper.render_response_error(req, e));
@@ -28,7 +39,7 @@ class FBMessenger {
                     // Gets the message. entry.messaging is an array, but
                     // will only ever contain one message, so we get index 0
                     const webhook_event = entry.messaging[0];
-
+                    console.log(webhook_event);
                     // Get the sender PSID
                     const { sender, message, postback } = webhook_event;
                     console.log('Sender PSID: ' + sender.id, message, postback);

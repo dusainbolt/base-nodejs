@@ -17,7 +17,7 @@ global._contains = require(`./constants/contains_model`);
 global._aggre = require(`./constants/contains_aggregate`);
 global._socket = require(`./constants/contains_socket`);
 global._helper = require(`./utils/helper`);
-global._bot = require(`./utils/bot`);
+global._bot = require(`./connection/bot_messenger`);
 
 const express = require(`express`);
 const server = express();

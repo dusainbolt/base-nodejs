@@ -42,6 +42,13 @@ module.exports = {
   TIME_OUT_REGISTER: 300, // 5p
   REDIS_EXPIRES: "EX",
   FORMAT_24H_TIME: "HH:mm:ss",
+  BOT: {
+    CONTACT_MAKE_WEB_SITE: "CONTACT_MAKE_WEB_SITE",
+    HOW_PROJECT: "HOW_PROJECT",
+    START_APP: "START_APP",
+    CONTACT_MAKE_APP_MOBILE: "CONTACT_MAKE_APP_MOBILE",
+    MORE_USER_APP: "MORE_USER_APP",
+  },
   UNICODE: {
     a: ["áàảãạăắằẳẵặâấầẩẫậåäæāąǻǎ"],
     A: ["ÁÀẢÃẠĂẮẰẲẴẶÂẤẦẨẪẬÅÄÆĀĄǺǍ"],
