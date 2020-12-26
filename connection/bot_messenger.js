@@ -3,7 +3,7 @@ const res_api_messenger = require('../utils/bot');
 
 class handleBot {
     // Handles messages events
-    static handleMessageFB(sender_psId, RECIPIENT_ID, received_message) {
+    static handleMessageFB(sender_psId, received_message) {
         let response;
         // Check if the message contains text
         if (received_message.text) {
@@ -12,6 +12,7 @@ class handleBot {
                 "text": `You sent the message: "${received_message.text}". Now send me an image!`
             }
         }
+        console.log()
         // Sends the response message
         this.callSendAPIFB(sender_psId, response);
     }
