@@ -48,6 +48,26 @@ class handleBot {
         });
     }
 
+    static settingStartedButtonPostback() {
+        // Send the HTTP request to the Messenger Platform
+        request({
+            "uri": "https://graph.facebook.com/v2.6/me/messenger_profile",
+            "qs": {"access_token": _config.TOKEN_BOT_MESSENGER},
+            "method": "POST",
+            "json": {
+                "get_started":{
+                    "payload":"{\"type\":\"legacy_reply_to_message_action\",\"message\":\"Bắt đầu\"}"
+                }
+            }
+        }, (err, res, body) => {
+            if (!err) {
+                console.log('setting started button postback success!')
+            } else {
+                console.error("setting fail" + err);
+            }
+        });
+    }
+
 }
 
 module.exports = handleBot;
