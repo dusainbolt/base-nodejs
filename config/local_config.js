@@ -51,5 +51,5 @@ module.exports = {
     // ALLOW_HEADER: `Origin, X-Requested-With, Content-Type, Accept, timestamp, Authorization, hash_key`,
     ALLOW_HEADER: '*',
     SIZE_FILE_LIMIT: `50mb`,
-    TOKEN_BOT_MESSENGER: 'EAACoHZAeLoNkBALN6uePyS1WW4eqt15CcJkh3mz0ZBtec8IIsXiYtuZAgpZCLq3gApZAzFZBmwZCZBoAiBukzNUz9qQhFp3KKT3svoB840ZAoEb73uAqNGotrOOpClY3HulBHkZCzMi9jv2YzRW8ZAZCZBrSl0lasWkIluuQtyf2baWZA9UuLvCT08tZAZBU',
+    TOKEN_BOT_MESSENGER: 'EAACoHZAeLoNkBAFzi36n0Mhg4OdcTmm2rXPEUHq3Ef85VuDjxMLZCtdHrFsY8Fym1QCbGHHb8lDe9RrXLFO31Qv0r4VyJrJZARQhQMRwktcbnZCGIMwHUvmUT1yJuTqzgpLfCroIge5oWn6q5AOVyXE4iaV6mUsZClUCReQt9JmvyNsLUWKfN',
 };
