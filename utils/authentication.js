@@ -89,6 +89,7 @@ const skipPage = (path) => {
         '/user/registration',
         '/user/verify_code',
         '/courses/register',
+        '/fb_messenger/webhook',
         '/courses/verify_code',
     ];
     return pages.indexOf(path) !== -1;

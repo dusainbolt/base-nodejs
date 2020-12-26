@@ -12,23 +12,30 @@ const set_router = (server, io) => {
             let array_file_name = filename.split(`.`);
             if (array_file_name[1] === 'js') {
                 let controller_name = array_file_name[0];
-                let obj_controller = require('../controllers/' + filename);
-                let obj = new obj_controller();
+                const obj_controller = require('../controllers/' + filename);
+                const obj = new obj_controller();
                 let methods = get_methods(obj);
+                const endpoint_controller = '/' + controller_name + "/";
                 // console.log("obj:", obj, "methods: ", methods, "controller_name: ", controller_name);
                 methods.map(method => {
-                    let end_point = ``;
-                    if (method.indexOf(`_get`) !== -1) {
-                        end_point = '/' + controller_name + "/"  + method.replace(`_get_`,`get_`);
-                        server.route(end_point).get((req, res) => {
-                            obj[method](req, res, io);
-                        });
+                    let end_point = null;
+                    let method_rq = 'get';
+                    // if(end_point_normal(controller_name)){
+                    //
+                    // }
+                    if(end_point_normal(controller_name)){
+                        method_rq = method.slice(1, method.lastIndexOf("_"));
+                        end_point = endpoint_controller  + method.replace(`_${method_rq}_`,``);
+                    } else if (method.indexOf(`_get`) !== -1) {
+                        end_point = endpoint_controller  + method.replace(`_get_`,`get_`);
+                        method_rq = _logic.GET_METHOD;
                     } else {
-                        end_point = '/' + controller_name + `/` + method.replace(`_`, ``);
-                        server.route(end_point).post((req, res) => {
-                            obj[method](req, res, io);
-                        })
+                        end_point = endpoint_controller + method.replace(`_`, ``);
+                        method_rq =_logic.POST_METHOD;
                     }
+                    server.route(end_point)[method_rq]((req, res) => {
+                        obj[method](req, res, io);
+                    });
                 })
             }
         });
@@ -37,6 +44,13 @@ const set_router = (server, io) => {
         throw e;
     }
 };
+
+const end_point_normal = (controller_name) => {
+    const controller = [
+        'fb_messenger'
+    ];
+    return controller.indexOf(controller_name) !== -1;
+}
 
 
 /**

@@ -1,13 +1,14 @@
 module.exports = {
     SERVER_PORT: `6630`,
+    SERVER_PORT_DEFAULT: `0.0.0.0`,
     APP_KEY: `ag123FSG!@#6546`,
     MONGODB: {
-        HOST: `localhost`,
+        HOST: `cluster0.hxmc8.mongodb.net`,
         PORT: `27017`,
-        USERNAME: `du_sainbolt`,
-        PASSWORD: `12345678`,
+        USERNAME: `dusainbolt`,
+        PASSWORD: `du@dev1234`,
         NAME: `sainbolt-app`,
-        SRV: ``,
+        SRV: "?retryWrites=true&w=majority",
     },
     S3: {
         ACCESS_KEY_ID: `AKIAUYZ7AQ5QF7I5RSM7`,
@@ -22,21 +23,21 @@ module.exports = {
         }
     },
     REDIS: {
-        HOST: `localhost`,
-        PORT: `6379`,
-        PASSWORD: `tr@$234gGFjgfh35`,
+        HOST: `redis-15553.c16.us-east-1-3.ec2.cloud.redislabs.com`,
+        PORT: `15553`,
+        PASSWORD: `lRNf6cpk9eeRTo0v53N0bbbdWnPz8HTV`,
     },
+    // Bad: "My cluster is https://username:password@somehost-1234567.us-east-1.bonsaisearch.net"
+    // https://zhgvzfcfuy:vbk3on35ua@:443
     ELASTIC: {
-        HOST: `localhost`,
-        PORT: `9200`,
-        USERNAME: `elastic`,
-        PASSWORD: `JHGFLKJO234@$dsa`,
+        HOST: `cedar-181992460.us-east-1.bonsaisearch.net`,
+        PORT: `443`,
+        USERNAME: `zhgvzfcfuy`,
+        PASSWORD: `vbk3on35ua`,
     },
     EMAIL: {
         HOST: 'smtp.gmail.com',
         PORT: 587,
-        // USERNAME: 'dule9xpro@gmail.com',
-        // PASSWORD: 'akgcliilpppqygvb',
         USERNAME: 'appdu.hotro@gmail.com',
         PASSWORD: 'ylnkfupxfeynqprv',
         FROM_NAME: 'Sainbolt App',
@@ -48,7 +49,6 @@ module.exports = {
     BCRYPT: {
         SALT: 10
     },
-    // ALLOW_HEADER: `Origin, X-Requested-With, Content-Type, Accept, timestamp, Authorization, hash_key`,
     ALLOW_HEADER: '*',
     SIZE_FILE_LIMIT: `50mb`,
     TOKEN_BOT_MESSENGER: 'EAACoHZAeLoNkBALN6uePyS1WW4eqt15CcJkh3mz0ZBtec8IIsXiYtuZAgpZCLq3gApZAzFZBmwZCZBoAiBukzNUz9qQhFp3KKT3svoB840ZAoEb73uAqNGotrOOpClY3HulBHkZCzMi9jv2YzRW8ZAZCZBrSl0lasWkIluuQtyf2baWZA9UuLvCT08tZAZBU',

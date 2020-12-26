@@ -12,6 +12,8 @@ module.exports = {
   CHOOSE: 1,
   TYPE_ASC: "ASC",
   TYPE_DESC: "DESC",
+  GET_METHOD: "get",
+  POST_METHOD: "post",
   JOIN_DURATION_TIME: 900,
   REJECT_DURATION_TIME: -3600,
   SORT_TYPE_POINT_DASHBOARD: "totalPoint",

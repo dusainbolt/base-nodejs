@@ -28,12 +28,15 @@ const authentication = require(`./utils/authentication.js`);
 const init = require(`./utils/init.js`);
 const mongodb = require(`./connection/mongodb.js`);
 const path = require(`path`);
+const schedule = require(`./utils/schedule`);
+
 const locale = require(`yup/lib/setLocale`);
 const socket_io = require(`socket.io`);
 const PORT = process.env.PORT || _config.SERVER_PORT;
 _redis.on(`error`, (error) => {
     _log.err('redis connect fail', error.toString());
 });
+
 
 mongodb.once('open', async (e) => {
     _log.log(`MongoDB connected: ` + _config.MONGODB.HOST + `:` + _config.MONGODB.PORT);
@@ -49,6 +52,8 @@ mongodb.on('error', (error) => {
 const start_server = () => {
     try {
         locale(_res.VALIDATE);
+
+        schedule.run_schedule();
 
         server.use('/favicon.ico', express.static(path.join(__dirname, 'assets/icons/favicon.ico')));
         server.use('/images', express.static(path.join(__dirname, 'assets/images')));
