@@ -23,7 +23,7 @@ const obj_schema = new _mongoose.Schema({
     created: {type: Date, default: Date.now},
     updated: {type: Date, default: null},
 }, {id: false, versionKey: 'v'});
-
+// timestamps: true, tạo create và updated
 obj_schema.methods.generateAuthToken = async function () {
     // Generate an auth token for the user
     const token = jwt.sign(

@@ -1,7 +1,23 @@
 const request = require('request');
 const res_api_messenger = require('../utils/bot');
+const setting_model = require('../models/setting');
 
 class handleBot {
+
+    static async getResponseBot(key, title, sender_psId) {
+        switch (key) {
+            case _logic.BOT.CONTACT_MAKE_WEB_SITE:
+            case _logic.BOT.HOW_PROJECT:
+                await this.callSendAPIFB(sender_psId, this.getResponseText(_mess_bot.LIST_PLATFORM));
+                const setting_platforms = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
+                return res_api_messenger.responseListProjectWeb(setting_platforms.value);
+            case _logic.BOT.CONTACT_MAKE_APP_MOBILE:
+                return {"text": "Thanks! VIEW MOBILE"};
+            default:
+                return {"text": ""};
+        }
+    };
+
     // Handles messages events
     static handleMessageFB(sender_psId, received_message) {
         let response;
@@ -12,57 +28,19 @@ class handleBot {
                 "text": `You sent the message: "${received_message.text}". Now send me an image!`
             }
         }
-        response = {
-            "attachment": {
-                "type": "template",
-                "payload": {
-                    "template_type": "generic",
-                    "elements": [{
-                        "title": "Is this the right picture?",
-                        "subtitle": "Tap a button to answer.",
-                        "image_url": "",
-                        "buttons": [
-                            {
-                                "type": "postback",
-                                "title": "Yes!",
-                                "payload": "yes",
-                            },
-                            {
-                                "type": "postback",
-                                "title": "No!",
-                                "payload": "no",
-                            }
-                        ],
-                    }]
-                }
-            }
-        };
         // Sends the response message
         this.callSendAPIFB(sender_psId, response);
     }
 
     // Handles messaging_post_backs events
-    static handlePostbackFB(sender_psId, received_postback) {
-        let response;
+    static async handlePostbackFB(sender_psId, received_postback) {
         // Get the payload for the postback
-        let payload = received_postback.payload;
+        const {payload, title} = received_postback;
         // Set the response based on the postback payload
-        response = this.getResponseBot(payload);
+        const response = await this.getResponseBot(payload, title, sender_psId);
         // Send the message to acknowledge the postback
         this.callSendAPIFB(sender_psId, response);
     }
-
-    static getResponseBot(key){
-        switch (key) {
-            case _logic.BOT.CONTACT_MAKE_WEB_SITE:
-            case _logic.BOT.HOW_PROJECT:
-                return res_api_messenger.responseListProjectWeb();
-            case _logic.BOT.CONTACT_MAKE_APP_MOBILE:
-                return {"text": "Thanks! VIEW MOBILE"};
-            default:
-                return {"text": ""};
-        }
-    };
     // Sends response messages via the Send API
     static callSendAPIFB(sender_psId, response) {
         // Construct the message body
@@ -78,8 +56,8 @@ class handleBot {
 
         // Send the HTTP request to the Messenger Platform
         request({
-            "uri": "https://graph.facebook.com/v9.0/me/messages",
-            "qs": {"access_token": _config.TOKEN_BOT_MESSENGER},
+            "uri": `${_config.BOT_MESSENGER.API_URL}/messages`,
+            "qs": {"access_token": _config.BOT_MESSENGER.TOKEN},
             "method": "POST",
             "json": request_body
         }, (err, res, body) => {
@@ -94,8 +72,8 @@ class handleBot {
     static settingStartedButtonPostback() {
         // Send the HTTP request to the Messenger Platform
         request({
-            "uri": "https://graph.facebook.com/v2.6/me/messenger_profile",
-            "qs": {"access_token": _config.TOKEN_BOT_MESSENGER},
+            "uri": `${_config.BOT_MESSENGER.API_URL}/messenger_profile`,
+            "qs": {"access_token": _config.BOT_MESSENGER.TOKEN},
             "method": "POST",
             "json": {
                 // "fields": [
@@ -113,24 +91,7 @@ class handleBot {
                 "get_started": {
                     "payload": _logic.BOT.START_APP
                 },
-                "ice_breakers": [
-                    {
-                        "question": "Tôi muốn liên hệ làm website có được không?",
-                        "payload": _logic.BOT.CONTACT_MAKE_WEB_SITE
-                    },
-                    {
-                        "question": "Bạn có thể làm các dự án website như thế nào?",
-                        "payload": _logic.BOT.HOW_PROJECT
-                    },
-                    {
-                        "question": "Tôi muốn liên hệ làm app mobile có được không?",
-                        "payload": _logic.BOT.CONTACT_MAKE_APP_MOBILE
-                    },
-                    {
-                        "question": "Tôi muốn xem các lựa chọn cho thành viên của Sainbolt App",
-                        "payload": _logic.BOT.MORE_USER_APP
-                    },
-                ]
+                "ice_breakers": ICE_BREAKERS
             }
         }, (err, res, body) => {
             if (!err) {
@@ -141,6 +102,9 @@ class handleBot {
         });
     }
 
+    static getResponseText(text) {
+        return {text};
+    }
 }
 
 module.exports = handleBot;

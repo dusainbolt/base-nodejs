@@ -1,4 +1,12 @@
 module.exports = {
+    SETTING: {
+        TYPE: {
+            PLATFORM: 3,
+        },
+        STATUS: {
+            ACTIVE: 1,
+        }
+    },
     POINT: {
         TYPE: {
             JOIN_LESSON: 1,

@@ -51,5 +51,10 @@ module.exports = {
     },
     ALLOW_HEADER: '*',
     SIZE_FILE_LIMIT: `50mb`,
-    TOKEN_BOT_MESSENGER: 'EAACoHZAeLoNkBAFzi36n0Mhg4OdcTmm2rXPEUHq3Ef85VuDjxMLZCtdHrFsY8Fym1QCbGHHb8lDe9RrXLFO31Qv0r4VyJrJZARQhQMRwktcbnZCGIMwHUvmUT1yJuTqzgpLfCroIge5oWn6q5AOVyXE4iaV6mUsZClUCReQt9JmvyNsLUWKfN',
+    BOT_MESSENGER: {
+        API_URL: 'https://graph.facebook.com/v9.0/me',
+        TOKEN: 'EAACoHZAeLoNkBAFzi36n0Mhg4OdcTmm2rXPEUHq3Ef85VuDjxMLZCtdHrFsY8Fym1QCbGHHb8lDe9RrXLFO31Qv0r4VyJrJZARQhQMRwktcbnZCGIMwHUvmUT1yJuTqzgpLfCroIge5oWn6q5AOVyXE4iaV6mUsZClUCReQt9JmvyNsLUWKfN',
+        // Luu y khi config cac payload cua bot thi phai sua ca switch case trong code
+        LIMIT_PAYLOAD_LIST_PLATFORM: 10,
+    }
 };
