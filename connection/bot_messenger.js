@@ -21,12 +21,11 @@ class handleBot {
             case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_8`:
             case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_9`:
             case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_10`:
-
                 const setting_platforms_select = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM})
-                const title_platform = _.find(setting_platforms_select.value, item => item.payload === key);
-                // console.log(title_platform);
-                await  this.callSendAPIFB(sender_psId, this.getResponseMedia())
-                return;
+                const platform = _.find(setting_platforms_select.value, item => item.payload === key);
+                await this.callSendAPIFB(sender_psId, this.getResponseMedia(platform.attachment_id, res_api_messenger.getButtonContactMyProfile()))
+                // await this.callSendAPIFB(sender_psId, )
+                return res_api_messenger.responseQuick1();
             // return await this.callSendAPIFB(sender_psId, this.getResponseText(_mess_bot.LIST_PLATFORM));
             case _logic.BOT.CONTACT_MAKE_APP_MOBILE:
                 return {"text": "Thanks! VIEW MOBILE"};
@@ -36,7 +35,7 @@ class handleBot {
     };
 
     // Handles messages events
-    static handleMessageFB(sender_psId, received_message) {
+    static async handleMessageFB(sender_psId, received_message) {
         let response;
         // Check if the message contains text
         if (received_message.text) {
@@ -46,7 +45,7 @@ class handleBot {
             }
         }
         // Sends the response message
-        this.callSendAPIFB(sender_psId, response);
+        await this.callSendAPIFB(sender_psId, response);
     }
 
     // Handles messaging_post_backs events
@@ -56,7 +55,7 @@ class handleBot {
         // Set the response based on the postback payload
         const response = await this.getResponseBot(payload, title, sender_psId);
         // Send the message to acknowledge the postback
-        this.callSendAPIFB(sender_psId, response);
+        await this.callSendAPIFB(sender_psId, response);
     }
     // Sends response messages via the Send API
     static callSendAPIFB(sender_psId, response) {
@@ -68,21 +67,24 @@ class handleBot {
             "message": response
         }
 
-        console.log("test response",request_body);
-
-
         // Send the HTTP request to the Messenger Platform
-        request({
-            "uri": `${_config.BOT_MESSENGER.API_URL}/messages`,
-            "qs": {"access_token": _config.BOT_MESSENGER.TOKEN},
-            "method": "POST",
-            "json": request_body
-        }, (err, res, body) => {
-            if (!err) {
-                console.log('message sent!')
-            } else {
-                console.error("Unable to send message:" + err);
-            }
+        return new Promise((resolve, reject) => {
+            request({
+
+                "uri": `${_config.BOT_MESSENGER.API_URL}/messages`,
+                "qs": {"access_token": _config.BOT_MESSENGER.TOKEN},
+                "method": "POST",
+                "json": request_body
+            }, (err, res, body) => {
+                if (!err) {
+                    console.log('message sent!')
+                    resolve(body)
+                } else {
+                    reject(err);
+                    console.error("Unable to send message:" + err);
+                }
+
+            });
         });
     }
 
@@ -160,8 +162,7 @@ class handleBot {
                 "type": "template",
                 "payload": {
                     "template_type": "media",
-                    "elements": [{media_type: "image", attachment_id: attachment_id}],
-                    buttons
+                    "elements": [{media_type, attachment_id, buttons}],
                 }
             }
         }

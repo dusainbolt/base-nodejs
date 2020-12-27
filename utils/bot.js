@@ -23,12 +23,33 @@ class responseAPIMessenger {
             }
         }
     }
-    static getButtonContactMyProfile(){
+
+    static responseQuick1() {
+        return {
+            "text": "Pick a color:",
+            "quick_replies": [
+                {
+                    "content_type": "text",
+                    "title": "Red",
+                    "payload": "HELLO",
+                    "image_url": "http://example.com/img/red.png"
+                }, {
+                    "content_type": "text",
+                    "title": "Green",
+                    "payload": "HELLO",
+                    "image_url": "http://example.com/img/green.png"
+                }
+            ]
+        }
+
+    }
+
+    static getButtonContactMyProfile() {
         return [
             {
                 type: "web_url",
                 url: _logic.MY_PROFILE_FB,
-                title: "Xem nhà phát triển",
+                title: "Nhà phát triển",
             }
         ]
     }

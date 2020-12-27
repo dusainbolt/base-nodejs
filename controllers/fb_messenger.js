@@ -18,11 +18,11 @@ class FBMessenger {
                 await _bot.handlePostbackFB(4681411058600771, postback);
 
             }else{
-                _bot.handleMessageFB(4681411058600771, message);
+                await _bot.handleMessageFB(4681411058600771, message);
             }
 
             // _bot.settingStartedButtonPostback();
-            attachment_id = await _bot.uploadAttachmentFromUrl(url);
+            // attachment_id = await _bot.uploadAttachmentFromUrl(url);
 
             res.status(200).send('EVENT_RECEIVED: ' + attachment_id);
         } catch (e) {
