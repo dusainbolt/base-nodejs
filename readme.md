@@ -1,5 +1,7 @@
 ### BU database
 mongodump --db sainbolt-app --out=25_11_2020_local_sainbolt_app
+▶mongodump --collection settings  --db sainbolt-app --out=27_11_2020_local_sainbolt_app
+
 mongodump mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt --out=28_11_2020_server_sainbolt_app
 mongorestore <path dump>
 mongorestore mongodb+srv://cluster0.hxmc8.mongodb.net/sainbolt-app --username dusainbolt 25_11_2020_local_sainbolt_app

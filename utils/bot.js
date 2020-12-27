@@ -13,7 +13,6 @@ class responseAPIMessenger {
                 ],
             }
         });
-        console.log(elements);
         return {
             "attachment": {
                 "type": "template",
@@ -23,6 +22,15 @@ class responseAPIMessenger {
                 }
             }
         }
+    }
+    static getButtonContactMyProfile(){
+        return [
+            {
+                type: "web_url",
+                url: _logic.MY_PROFILE_FB,
+                title: "Xem nhà phát triển",
+            }
+        ]
     }
 }
 

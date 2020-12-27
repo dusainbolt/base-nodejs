@@ -9,8 +9,25 @@ class handleBot {
             case _logic.BOT.CONTACT_MAKE_WEB_SITE:
             case _logic.BOT.HOW_PROJECT:
                 await this.callSendAPIFB(sender_psId, this.getResponseText(_mess_bot.LIST_PLATFORM));
-                const setting_platforms = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
-                return res_api_messenger.responseListProjectWeb(setting_platforms.value);
+                const setting_platforms_question = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
+                return res_api_messenger.responseListProjectWeb(setting_platforms_question.value);
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_1`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_2`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_3`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_4`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_5`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_6`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_7`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_8`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_9`:
+            case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_10`:
+
+                const setting_platforms_select = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM})
+                const title_platform = _.find(setting_platforms_select.value, item => item.payload === key);
+                // console.log(title_platform);
+                await  this.callSendAPIFB(sender_psId, this.getResponseMedia())
+                return;
+            // return await this.callSendAPIFB(sender_psId, this.getResponseText(_mess_bot.LIST_PLATFORM));
             case _logic.BOT.CONTACT_MAKE_APP_MOBILE:
                 return {"text": "Thanks! VIEW MOBILE"};
             default:
@@ -102,8 +119,52 @@ class handleBot {
         });
     }
 
+    static uploadAttachmentFromUrl(url) {
+        // Send the HTTP request to the Messenger Platform
+        return new Promise((resolve, reject) => {
+            request({
+                "uri": `${_config.BOT_MESSENGER.API_URL}/message_attachments`,
+                "qs": {"access_token": _config.BOT_MESSENGER.TOKEN},
+                "method": "POST",
+                "json": {
+                    "message":{
+                        "attachment":{
+                            "type":"image",
+                            "payload":{
+                                "is_reusable": true,
+                                url
+                            }
+                        }
+                    }
+                }
+            }, (err, res, body) => {
+                if (!err) {
+                    console.log('upload successful ' + body.attachment_id);
+                    resolve(body.attachment_id)
+                } else {
+                    console.error("setting fail" + err);
+                    reject(err);
+                }
+            });
+        });
+
+    }
+
     static getResponseText(text) {
         return {text};
+    }
+
+    static getResponseMedia(attachment_id, buttons = [], media_type = _logic.TYPE_IMAGE) {
+        return {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "media",
+                    "elements": [{media_type: "image", attachment_id: attachment_id}],
+                    buttons
+                }
+            }
+        }
     }
 }
 

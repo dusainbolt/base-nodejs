@@ -4,7 +4,8 @@ class FBMessenger {
 
     async _get_test(req, res) {
         try {
-            const { type, key } = req.query;
+            const { type, key, url } = req.query;
+            let attachment_id = null;
             const message = {
                 text: key
             }
@@ -14,14 +15,16 @@ class FBMessenger {
             // 108642264227705
             // 4681411058600771
             if(type){
-                _bot.handlePostbackFB(4681411058600771, postback);
+                await _bot.handlePostbackFB(4681411058600771, postback);
 
             }else{
                 _bot.handleMessageFB(4681411058600771, message);
             }
-            // _bot.settingStartedButtonPostback();
 
-            res.status(200).send('EVENT_RECEIVED');
+            // _bot.settingStartedButtonPostback();
+            attachment_id = await _bot.uploadAttachmentFromUrl(url);
+
+            res.status(200).send('EVENT_RECEIVED: ' + attachment_id);
         } catch (e) {
             _log.err(`_get_test`, e);
             return res.send(_helper.render_response_error(req, e));
