@@ -6,27 +6,27 @@ class FBMessenger {
         try {
             const { type, key, url, quick_reply } = req.query;
             let attachment_id = null;
-            // const message = {
-            //     text: key,
-            //     // if quick question
-            //     quick_reply: !quick_reply ? null : {
-            //         payload: quick_reply
-            //     }
-            // }
-            // console.log(message);
-            // const postback = {
-            //     payload: key
-            // }
-            // // 108642264227705
-            // // 4681411058600771
-            // if(type){
-            //     await _bot.handlePostbackFB(4681411058600771, postback);
-            //
-            // }else{
-            //     await _bot.handleMessageFB(4681411058600771, message);
-            // }
+            const message = {
+                text: key,
+                // if quick question
+                quick_reply: !quick_reply ? null : {
+                    payload: quick_reply
+                }
+            }
+            console.log(message);
+            const postback = {
+                payload: key
+            }
+            // 108642264227705
+            // 4681411058600771
+            if(type){
+                await _bot.handlePostbackFB(4681411058600771, postback);
 
-            _bot.settingStartedButtonPostback();
+            }else{
+                await _bot.handleMessageFB(4681411058600771, message);
+            }
+
+            // _bot.settingStartedButtonPostback();
             // attachment_id = await _bot.uploadAttachmentFromUrl(url);
 
             res.status(200).send('EVENT_RECEIVED: ' + attachment_id);
