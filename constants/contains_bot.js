@@ -1,6 +1,5 @@
 module.exports = {
     LIST_PLATFORM: "Dưới đây là danh sách các nền tảng Sainbolt App phát triển. Bạn tham khảo nhé ❤",
-
     ICE_BREAKERS: [
         {
             "question": "Tôi muốn liên hệ làm website có được không?",

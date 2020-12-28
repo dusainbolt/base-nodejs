@@ -26,18 +26,25 @@ class responseAPIMessenger {
 
     static responseQuick1() {
         return {
-            "text": "Pick a color:",
+            text: "Quy mô đơn vị trong dự án hiện tại của bạn:",
             "quick_replies": [
                 {
-                    "content_type": "text",
-                    "title": "Red",
-                    "payload": "HELLO",
-                    "image_url": "http://example.com/img/red.png"
-                }, {
-                    "content_type": "text",
-                    "title": "Green",
-                    "payload": "HELLO",
-                    "image_url": "http://example.com/img/green.png"
+                    content_type: "text",
+                    title: "Cá nhân",
+                    payload: _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS,
+                    image_url: _logic.BOT.URL_ICON_QUESTION
+                },
+                // {
+                //     content_type: "text",
+                //     title : "Doanh Nghiệp",
+                //     payload: _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS,
+                //     image_url: _logic.BOT.URL_ICON_QUESTION
+                // },
+                {
+                    content_type: "text",
+                    title: "Nhóm team",
+                    payload: _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS,
+                    image_url: _logic.BOT.URL_ICON_QUESTION
                 }
             ]
         }
