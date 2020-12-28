@@ -18,6 +18,7 @@ class handleBot {
             case _logic.BOT.CONTACT_MAKE_WEB_SITE:
             case _logic.BOT.HOW_PROJECT:
             case _logic.BOT.CONTACT_MAKE_APP_MOBILE:
+            case _logic.BOT.MORE_USER_APP:
                 await this.callSendAPIFB(sender_psId, this.getResponseText(_mess_bot.LIST_PLATFORM));
                 const setting_platforms_question = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
                 return res_api_messenger.responseListProjectWeb(setting_platforms_question.value);
