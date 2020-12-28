@@ -4,11 +4,16 @@ class FBMessenger {
 
     async _get_test(req, res) {
         try {
-            const { type, key, url } = req.query;
+            const { type, key, url, quick_reply } = req.query;
             let attachment_id = null;
             const message = {
-                text: key
+                text: key,
+                // if quick question
+                quick_reply: !quick_reply ? null : {
+                    payload: quick_reply
+                }
             }
+            console.log(message);
             const postback = {
                 payload: key
             }

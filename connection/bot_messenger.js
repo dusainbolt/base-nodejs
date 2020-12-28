@@ -4,13 +4,24 @@ const setting_model = require('../models/setting');
 
 class handleBot {
 
-    static async getResponseBot(key, title, sender_psId) {
+    /*
+    * **__params
+    * key: payload or text
+    * sender_psId: id user sender to page
+    * **__out
+    * process in case: handle logic function in case
+    * response in call api send message
+    * */
+    static async getResponseBot(key, sender_psId) {
         switch (key) {
+            // view platform
             case _logic.BOT.CONTACT_MAKE_WEB_SITE:
             case _logic.BOT.HOW_PROJECT:
+            case _logic.BOT.CONTACT_MAKE_APP_MOBILE:
                 await this.callSendAPIFB(sender_psId, this.getResponseText(_mess_bot.LIST_PLATFORM));
                 const setting_platforms_question = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
                 return res_api_messenger.responseListProjectWeb(setting_platforms_question.value);
+            // select platform
             case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_1`:
             case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_2`:
             case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_3`:
@@ -24,11 +35,14 @@ class handleBot {
                 const setting_platforms_select = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM})
                 const platform = _.find(setting_platforms_select.value, item => item.payload === key);
                 await this.callSendAPIFB(sender_psId, this.getResponseMedia(platform.attachment_id, res_api_messenger.getButtonContactMyProfile()))
-                // await this.callSendAPIFB(sender_psId, )
-                return res_api_messenger.responseQuick1();
-            // return await this.callSendAPIFB(sender_psId, this.getResponseText(_mess_bot.LIST_PLATFORM));
-            case _logic.BOT.CONTACT_MAKE_APP_MOBILE:
-                return {"text": "Thanks! VIEW MOBILE"};
+                return res_api_messenger.responseQuickQuestion_1();
+            // quick question
+            case _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS:
+                return res_api_messenger.responseQuickQuestion_2();
+            case _logic.BOT.REPLY_QUESTION_YOUR_CUSTOMER:
+                return res_api_messenger.responseQuickQuestion_3();
+            case _logic.BOT.REPLY_THINK_READY_OR_START:
+                return this.getResponseText(_mess_bot.PLEASE_WRITE_SHORT_THINK);
             default:
                 return {"text": ""};
         }
@@ -37,8 +51,12 @@ class handleBot {
     // Handles messages events
     static async handleMessageFB(sender_psId, received_message) {
         let response;
+        // Check if the message quick question
+        if(received_message.quick_reply) {
+            response = await this.getResponseBot(received_message.quick_reply.payload);
+        }
         // Check if the message contains text
-        if (received_message.text) {
+        else if (received_message.text) {
             // Create the payload for a basic text message
             response = {
                 "text": `You sent the message: "${received_message.text}". Now send me an image!`
@@ -51,9 +69,9 @@ class handleBot {
     // Handles messaging_post_backs events
     static async handlePostbackFB(sender_psId, received_postback) {
         // Get the payload for the postback
-        const {payload, title} = received_postback;
+        const {payload} = received_postback;
         // Set the response based on the postback payload
-        const response = await this.getResponseBot(payload, title, sender_psId);
+        const response = await this.getResponseBot(payload, sender_psId);
         // Send the message to acknowledge the postback
         await this.callSendAPIFB(sender_psId, response);
     }
