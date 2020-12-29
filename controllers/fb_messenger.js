@@ -50,8 +50,8 @@ class FBMessenger {
                     // will only ever contain one message, so we get index 0
                     const webhook_event = entry.messaging[0];
                     // Get the sender PSID
-                    const { sender, message, postback, recipient } = webhook_event;
-                    console.log('Sender PSID: ' + sender.id, message, postback);
+                    const { sender, message, postback, account_linking } = webhook_event;
+                    console.log('Sender PSID: ' + sender.id, message, postback, account_linking);
 
                     // Check if the event is a message or postback and
                     // pass the event to the appropriate handler function

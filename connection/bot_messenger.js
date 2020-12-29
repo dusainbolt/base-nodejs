@@ -1,6 +1,7 @@
 const request = require('request');
 const res_api_messenger = require('../utils/bot');
 const setting_model = require('../models/setting');
+const user_model = require('../models/user');
 
 class handleBot {
 
@@ -12,7 +13,7 @@ class handleBot {
     * process in case: handle logic function in case
     * response in call api send message
     * */
-    static async getResponseBot(key, sender_psId) {
+    static async getResponseBot(key, messengerPSID) {
         switch (key) {
             // view platform
             case _logic.BOT.CONTACT_MAKE_WEB_SITE:
@@ -20,7 +21,7 @@ class handleBot {
             case _logic.BOT.CONTACT_MAKE_APP_MOBILE:
             case _logic.BOT.LIST_PLATFORM_MENU:
             case _logic.BOT.START_APP:
-                await this.callSendAPIFB(sender_psId, this.getResponseText(_mess_bot.LIST_PLATFORM));
+                await this.callSendAPIFB(messengerPSID, this.getResponseText(_mess_bot.LIST_PLATFORM));
                 const setting_platforms_question = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
                 return res_api_messenger.responseListProjectWeb(setting_platforms_question.value);
             // select platform
@@ -36,7 +37,7 @@ class handleBot {
             case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_10`:
                 const setting_platforms_select = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM})
                 const platform = _.find(setting_platforms_select.value, item => item.payload === key);
-                await this.callSendAPIFB(sender_psId, this.getResponseMedia(platform.attachment_id, res_api_messenger.getButtonContactMyProfile()))
+                await this.callSendAPIFB(messengerPSID, this.getResponseMedia(platform.attachment_id, res_api_messenger.getButtonContactMyProfile()))
                 return res_api_messenger.responseQuickQuestion_1();
             // quick question
             case _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS:
@@ -45,8 +46,18 @@ class handleBot {
                 return res_api_messenger.responseQuickQuestion_3();
             case _logic.BOT.REPLY_THINK_READY_OR_START:
                 return this.getResponseText(_mess_bot.PLEASE_WRITE_SHORT_THINK);
+            // start use bot
             case _logic.BOT.MORE_USER_APP:
-                return this.getResponseText(_mess_bot.PLEASE_WRITE_SHORT_THINK);
+                return res_api_messenger.responseQuickQuestionUserOrAdmin();
+            case _logic.BOT.REPLY_USER:
+                //check active user
+                const user = await user_model.findOne({messengerPSID}).select(_contains.USER.PARAMS_AVATAR);
+                if(user){
+                    return res_api_messenger.responseQuickQuestionUserOrAdmin();
+                }else{
+                    // https://sainboltapp.web.app/training
+                    return res_api_messenger.responseAccountLink();
+                }
             default:
                 return {"text": ""};
         }
@@ -103,7 +114,6 @@ class handleBot {
                     reject(err);
                     console.error("Unable to send message:" + err);
                 }
-
             });
         });
     }
@@ -131,29 +141,29 @@ class handleBot {
                 //         "text": "Timeless apparel for the masses."
                 //     }
                 // ],
-                "get_started": {
-                    "payload": _logic.BOT.START_APP
-                    // "payload":"{\"type\":\"legacy_reply_to_message_action\",\"message\":\"Bắt đầu\"}"
-                },
-                // "ice_breakers": _mess_bot.ICE_BREAKERS,
-                // "persistent_menu": [
-                //     {
-                //         "locale": "default",
-                //         "composer_input_disabled": false,
-                //         "call_to_actions": [
-                //             {
-                //                 "type": "postback",
-                //                 "title": _mess_bot.MENU.LIST_PLATFORM,
-                //                 "payload": _logic.BOT.LIST_PLATFORM_MENU,
-                //             },
-                //             {
-                //                 "type": "postback",
-                //                 "title": _mess_bot.MENU.ACTIVE_BOT,
-                //                 "payload": _logic.BOT.LIST_PLATFORM_MENU,
-                //             },
-                //         ]
-                //     }
-                // ]
+                // "get_started": {
+                //     "payload": _logic.BOT.START_APP
+                //     // "payload":"{\"type\":\"legacy_reply_to_message_action\",\"message\":\"Bắt đầu\"}"
+                // },
+                "ice_breakers": _mess_bot.ICE_BREAKERS,
+                "persistent_menu": [
+                    {
+                        "locale": "default",
+                        "composer_input_disabled": false,
+                        "call_to_actions": [
+                            {
+                                "type": "postback",
+                                "title": _mess_bot.MENU.LIST_PLATFORM,
+                                "payload": _logic.BOT.LIST_PLATFORM_MENU,
+                            },
+                            {
+                                "type": "postback",
+                                "title": _mess_bot.MENU.SYSTEM_BOT,
+                                "payload": _logic.BOT.MORE_USER_APP,
+                            },
+                        ]
+                    }
+                ]
             }
         }, (err, res, body) => {
             if (!err) {

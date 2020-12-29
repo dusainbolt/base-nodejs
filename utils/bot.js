@@ -84,6 +84,73 @@ class responseAPIMessenger {
         }
     }
 
+    static responseQuickQuestionUserOrAdmin() {
+        return {
+            text: "Bạn là người dùng hay quản trị viên?",
+            "quick_replies": [
+                {
+                    content_type: "text",
+                    title: "Người dùng",
+                    payload: _logic.BOT.REPLY_USER,
+                    image_url: _logic.BOT.URL_ICON_QUESTION
+                },
+                {
+                    content_type: "text",
+                    title: "Quản trị viên",
+                    payload: _logic.BOT.REPLY_ADMIN,
+                    image_url: _logic.BOT.URL_ICON_QUESTION
+                }
+            ]
+        }
+    }
+
+    static responseListMenuUser() {
+        return {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": "Try the postback button!",
+                    "buttons": [
+                        {
+                            "type": "postback",
+                            "title": "Postback Button",
+                            "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Postback Button",
+                            "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                        },
+                        {
+                            "type": "postback",
+                            "title": "Postback Button",
+                            "payload": "DEVELOPER_DEFINED_PAYLOAD"
+                        }
+                    ]
+                }
+            }
+        }
+    }
+
+    static responseAccountLink() {
+        return {
+            "attachment": {
+                "type": "template",
+                "payload": {
+                    "template_type": "button",
+                    "text": "Try the postback button!",
+                    "buttons": [
+                        {
+                            "type": "account_link",
+                            "url": "https://sainboltapp.web.app/training?account_linking_token=ACCOUNT_LINKING_TOKEN&redirect_uri=CALLBACK_URL"
+                        },
+                    ]
+                }
+            }
+        }
+    }
+
     static getButtonContactMyProfile() {
         return [
             {

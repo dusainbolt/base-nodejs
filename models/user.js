@@ -16,6 +16,7 @@ const obj_schema = new _mongoose.Schema({
     cover: {type: String, default: null},
     description: {type: String, default: null},
     role: {type: String, default: null},
+    messengerPSID: {type: Number, default: null},
     point: [{ type: _mongoose.Schema.Types.ObjectId, ref: 'point', default: null }],
     courseRequest: { type: _mongoose.Schema.Types.ObjectId, ref: 'course_rq', default: null },
     class: { type: _mongoose.Schema.Types.ObjectId, ref: 'class', default: null },

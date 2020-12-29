@@ -3,7 +3,7 @@ module.exports = {
     PLEASE_WRITE_SHORT_THINK: "Hãy viết ngắn gọn ý tưởng của bạn. Sainbolt App sẽ trả lời bạn sớm nhất ❤",
     MENU: {
         LIST_PLATFORM: "Danh sách nền tảng",
-        ACTIVE_BOT: "Kích hoạt BOT",
+        SYSTEM_BOT: "Hệ thống Sainbolt App"
     },
     ICE_BREAKERS: [
         {
