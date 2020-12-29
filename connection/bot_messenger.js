@@ -123,7 +123,7 @@ class handleBot {
         request({
             "uri": `${_config.BOT_MESSENGER.API_URL}/messenger_profile`,
             "qs": {access_token: _config.BOT_MESSENGER.TOKEN,
-                fields: "get_started,greeting,persistent_menu,ice_breakers"
+                fields: "account_linking_url,get_started,greeting,persistent_menu,ice_breakers"
             },
             "method": "GET",
             // "json": {
@@ -132,6 +132,9 @@ class handleBot {
             //     ]
             // },
             "json": {
+                // dung cho url xac minh
+                // account_linking_url: "https://sainboltapp.web.app/verify-bot-messenger",
+                // dung cho man hinh loi chao
                 // "greeting": [
                 //     {
                 //         "locale": "default",
@@ -145,25 +148,27 @@ class handleBot {
                 //     "payload": _logic.BOT.START_APP
                 //     // "payload":"{\"type\":\"legacy_reply_to_message_action\",\"message\":\"Bắt đầu\"}"
                 // },
-                "ice_breakers": _mess_bot.ICE_BREAKERS,
-                "persistent_menu": [
-                    {
-                        "locale": "default",
-                        "composer_input_disabled": false,
-                        "call_to_actions": [
-                            {
-                                "type": "postback",
-                                "title": _mess_bot.MENU.LIST_PLATFORM,
-                                "payload": _logic.BOT.LIST_PLATFORM_MENU,
-                            },
-                            {
-                                "type": "postback",
-                                "title": _mess_bot.MENU.SYSTEM_BOT,
-                                "payload": _logic.BOT.MORE_USER_APP,
-                            },
-                        ]
-                    }
-                ]
+                // dung cho cau hoi menu hien tren box
+                // "ice_breakers": _mess_bot.ICE_BREAKERS,
+                // dung cho cau hoi menu duoi box
+                // "persistent_menu": [
+                //     {
+                //         "locale": "default",
+                //         "composer_input_disabled": false,
+                //         "call_to_actions": [
+                //             {
+                //                 "type": "postback",
+                //                 "title": _mess_bot.MENU.LIST_PLATFORM,
+                //                 "payload": _logic.BOT.LIST_PLATFORM_MENU,
+                //             },
+                //             {
+                //                 "type": "postback",
+                //                 "title": _mess_bot.MENU.SYSTEM_BOT,
+                //                 "payload": _logic.BOT.MORE_USER_APP,
+                //             },
+                //         ]
+                //     }
+                // ]
             }
         }, (err, res, body) => {
             if (!err) {

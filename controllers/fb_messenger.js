@@ -25,7 +25,6 @@ class FBMessenger {
             }else{
                 await _bot.handleMessageFB(4681411058600771, message);
             }
-
             // _bot.settingStartedButtonPostback();
             // attachment_id = await _bot.uploadAttachmentFromUrl(url);
 

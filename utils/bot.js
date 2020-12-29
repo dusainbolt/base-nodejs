@@ -143,7 +143,7 @@ class responseAPIMessenger {
                     "buttons": [
                         {
                             "type": "account_link",
-                            "url": "https://sainboltapp.web.app/training?account_linking_token=ACCOUNT_LINKING_TOKEN&redirect_uri=CALLBACK_URL"
+                            "url": "https://sainboltapp.web.app/verify-bot-messenger?authorization_code=213213"
                         },
                     ]
                 }
