@@ -1,3 +1,5 @@
+const receive = require('../messenger-api/receive');
+
 class FBMessenger {
     constructor() {
     }
@@ -20,7 +22,7 @@ class FBMessenger {
             // 108642264227705
             // 4681411058600771
             if(type){
-                await _bot.handlePostbackFB(4681411058600771, postback);
+                await receive.handleReceivePostback(4681411058600771, postback);
 
             }else{
                 await _bot.handleMessageFB(4681411058600771, message);
@@ -55,9 +57,9 @@ class FBMessenger {
                     // Check if the event is a message or postback and
                     // pass the event to the appropriate handler function
                     if (message) {
-                        _bot.handleMessageFB(sender.id, message);
+                        _bot.handlePostbackFB(sender.id, message);
                     } else if (postback) {
-                        _bot.handlePostbackFB(sender.id, postback);
+                        _bot.handleMessageFB(sender.id, postback);
                     }
                 });
 
