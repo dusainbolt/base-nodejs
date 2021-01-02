@@ -58,9 +58,9 @@ class FBMessenger {
                     // Check if the event is a message or postback and
                     // pass the event to the appropriate handler function
                     if (message) {
-                        receive.handleReceivePostback(sender.id, message);
+                        receive.handleReceiveMessage(sender.id, message);
                     } else if (postback) {
-                        receive.handleReceiveMessage(sender.id, postback);
+                        receive.handleReceivePostback(sender.id, postback);
                     }
                 });
 
