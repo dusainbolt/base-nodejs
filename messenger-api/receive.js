@@ -63,31 +63,30 @@ const handleReceivePostback = async (messengerPSID, postback) => {
             const setting_platforms_question = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
             sendAPI.sendStartAppMessage(messengerPSID, setting_platforms_question.value);
             break;
-            // await this.callSendAPIFB(messengerPSID, this.getResponseText(_mess_bot.LIST_PLATFORM));
-            // const setting_platforms_question = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
-            // return res_api_messenger.responseListProjectWeb(setting_platforms_question.value);
-        // select platform
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_1`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_2`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_3`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_4`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_5`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_6`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_7`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_8`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_9`:
-        // case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_10`:
-        //     const setting_platforms_select = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM})
-        //     const platform = _.find(setting_platforms_select.value, item => item.payload === key);
-        //     await this.callSendAPIFB(messengerPSID, this.getResponseMedia(platform.attachment_id, res_api_messenger.getButtonContactMyProfile()))
-        //     return res_api_messenger.responseQuickQuestion_1();
-        // // quick question
-        // case _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS:
-        //     return res_api_messenger.responseQuickQuestion_2();
-        // case _logic.BOT.REPLY_QUESTION_YOUR_CUSTOMER:
-        //     return res_api_messenger.responseQuickQuestion_3();
-        // case _logic.BOT.REPLY_THINK_READY_OR_START:
-        //     return this.getResponseText(_mess_bot.PLEASE_WRITE_SHORT_THINK);
+        // select platform + question
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_1`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_2`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_3`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_4`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_5`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_6`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_7`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_8`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_9`:
+        case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_10`:
+            const setting_platforms = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM})
+            const platform_select = _.find(setting_platforms.value, item => item.payload === type);
+            sendAPI.sendSelectPlatform(messengerPSID, platform_select.attachment_id);
+            break;
+        case _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS:
+            sendAPI.sendHowCustomer(messengerPSID);
+            break;
+        case _logic.BOT.REPLY_QUESTION_YOUR_CUSTOMER:
+            sendAPI.sendHowYourPlatform(messengerPSID);
+            break;
+        case _logic.BOT.REPLY_THINK_READY_OR_START:
+            sendAPI.sendPleaseWriteThink(messengerPSID);
+            break;
         // // start use bot
         // case _logic.BOT.MORE_USER_APP:
         //     return res_api_messenger.responseQuickQuestionUserOrAdmin();
@@ -110,9 +109,9 @@ const handleReceiveMessage = async (messengerPSID, message) => {
     // It's good practice to send the user a read receipt so they know
     // the bot has seen the message. This can prevent a user
     // spamming the bot if the requests take some time to return.
-    // sendAPI.sendReadReceipt(senderId);
-
-    if (message.text) { sendAPI.sendWelcomeMessage(messengerPSID); }
+    if (message.text && _helper.checkTextHello(message.text.toLowerCase())) {
+        sendAPI.sendWelcomeMessage(messengerPSID);
+    }
 };
 
 module.exports = {

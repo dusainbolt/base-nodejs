@@ -214,7 +214,7 @@ class handleBot {
         return {text};
     }
 
-    static getResponseMedia(attachment_id, buttons = [], media_type = _logic.TYPE_IMAGE) {
+static getResponseMedia(attachment_id, buttons = [], media_type = _logic.TYPE_IMAGE) {
         return {
             "attachment": {
                 "type": "template",

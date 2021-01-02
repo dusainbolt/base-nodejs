@@ -76,6 +76,13 @@ class Helper {
         }
     }
 
+    static checkTextHello(text) {
+        if (text.indexOf('xin chao') !== -1 || text.indexOf('chao ban') !== -1 || text === 'hi' || text === 'hello') {
+            return true;
+        };
+        return false;
+    }
+
     /*
      * input exception để kiểm tra và trả về lỗi
      * params: status, message, errorCode, data

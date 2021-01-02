@@ -49,7 +49,7 @@ const sendLoggedInWelcomeMessage = (recipientId, username) => {
         recipientId,
         [
             messages.napMessage,
-            messages.loggedInMessage(username),
+            // messages.loggedInMessage(username),
         ]);
 };
 
@@ -68,7 +68,44 @@ const sendStartAppMessage =  (recipientId, listPlatform) => {
         ]);
 }
 
+const sendSelectPlatform =  (recipientId, attachment_id) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageImagePlatForm(attachment_id),
+            messages.messageScaleForYou,
+        ]);
+}
+
+const sendHowCustomer = (recipientId) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageHowCustomer,
+        ]);
+};
+
+const sendHowYourPlatform = (recipientId) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageHowYourPlatform,
+        ]);
+};
+
+const sendPleaseWriteThink = (recipientId) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messagePleaseWriteShortThink,
+        ]);
+}
+
 module.exports = {
     sendWelcomeMessage,
     sendStartAppMessage,
+    sendSelectPlatform,
+    sendHowCustomer,
+    sendHowYourPlatform,
+    sendPleaseWriteThink,
 }

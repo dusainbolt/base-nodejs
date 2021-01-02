@@ -21,11 +21,12 @@ class FBMessenger {
             }
             // 108642264227705
             // 4681411058600771
+            const messengerPSID = 4681411058600771;
             if(type){
-                await receive.handleReceivePostback(4681411058600771, postback);
+                await receive.handleReceivePostback(messengerPSID, postback);
 
             }else{
-                await _bot.handleMessageFB(4681411058600771, message);
+                await receive.handleReceiveMessage(messengerPSID, message);
             }
             // _bot.settingStartedButtonPostback();
             // attachment_id = await _bot.uploadAttachmentFromUrl(url);
@@ -57,9 +58,9 @@ class FBMessenger {
                     // Check if the event is a message or postback and
                     // pass the event to the appropriate handler function
                     if (message) {
-                        _bot.handleMessageFB(sender.id, message);
+                        receive.handleReceivePostback(sender.id, message);
                     } else if (postback) {
-                        _bot.handlePostbackFB(sender.id, postback);
+                        receive.handleReceiveMessage(sender.id, postback);
                     }
                 });
 
