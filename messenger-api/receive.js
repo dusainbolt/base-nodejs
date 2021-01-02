@@ -63,7 +63,7 @@ const handleReceivePostback = async (messengerPSID, postback) => {
             const setting_platforms_question = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM});
             sendAPI.sendStartAppMessage(messengerPSID, setting_platforms_question.value);
             break;
-        // select platform + question
+        // select platform
         case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_1`:
         case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_2`:
         case `${_logic.BOT.PAYLOAD_LIST_PLATFORM}_3`:
@@ -77,15 +77,6 @@ const handleReceivePostback = async (messengerPSID, postback) => {
             const setting_platforms = await setting_model.findOne({type: _contains.SETTING.TYPE.PLATFORM})
             const platform_select = _.find(setting_platforms.value, item => item.payload === type);
             sendAPI.sendSelectPlatform(messengerPSID, platform_select.attachment_id);
-            break;
-        case _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS:
-            sendAPI.sendHowCustomer(messengerPSID);
-            break;
-        case _logic.BOT.REPLY_QUESTION_YOUR_CUSTOMER:
-            sendAPI.sendHowYourPlatform(messengerPSID);
-            break;
-        case _logic.BOT.REPLY_THINK_READY_OR_START:
-            sendAPI.sendPleaseWriteThink(messengerPSID);
             break;
         // // start use bot
         // case _logic.BOT.MORE_USER_APP:
@@ -111,6 +102,19 @@ const handleReceiveMessage = async (messengerPSID, message) => {
     // spamming the bot if the requests take some time to return.
     if (message.text && _helper.checkTextHello(message.text.toLowerCase())) {
         sendAPI.sendWelcomeMessage(messengerPSID);
+    } else if (message.quick_reply) {
+        switch (message.quick_reply.payload) {
+            // quick question
+            case _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS:
+                sendAPI.sendHowCustomer(messengerPSID);
+                break;
+            case _logic.BOT.REPLY_QUESTION_YOUR_CUSTOMER:
+                sendAPI.sendHowYourPlatform(messengerPSID);
+                break;
+            case _logic.BOT.REPLY_THINK_READY_OR_START:
+                sendAPI.sendPleaseWriteThink(messengerPSID);
+                break;
+        }
     }
 };
 
