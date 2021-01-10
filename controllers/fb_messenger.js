@@ -15,20 +15,23 @@ class FBMessenger {
                     payload: quick_reply
                 }
             }
-            console.log(message);
             const postback = {
                 payload: key
             }
             // 108642264227705
             // 4681411058600771
             const messengerPSID = 4681411058600771;
-            if(type){
+            if(type === "1"){
+                console.log("Handle postback->>>>>>>>>>>>>>>>>>>>>>>", messengerPSID, postback);
                 await receive.handleReceivePostback(messengerPSID, postback);
-
-            }else{
+            }else if(type === "2"){
+                _bot.settingStartedButtonPostback();
+            }
+            else{
+                console.log("Handle message->>>>>>>>>>>>>>>>>>>>>>>",messengerPSID, message);
                 await receive.handleReceiveMessage(messengerPSID, message);
             }
-            // _bot.settingStartedButtonPostback();
+
             // attachment_id = await _bot.uploadAttachmentFromUrl(url);
 
             res.status(200).send('EVENT_RECEIVED: ' + attachment_id);
@@ -61,6 +64,11 @@ class FBMessenger {
                         receive.handleReceiveMessage(sender.id, message);
                     } else if (postback) {
                         receive.handleReceivePostback(sender.id, postback);
+                    }else if(account_linking){
+                        console.log(">>>>>>>>>>>>>ACCOUNT-LINK<<<<<<<<<<<<<");
+                    }
+                    else{
+                        _log.err('Webhook received unknown messagingEvent: ', entry);
                     }
                 });
 

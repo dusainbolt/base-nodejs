@@ -7,12 +7,6 @@
 const getMessageText = (text) => {
     return {text};
 }
-// const loggedInMessage = (username) => {
-//     return {
-//         text: `You’re still logged in as ${username}.`
-//     };
-// };
-
 const getResponseMedia = (attachment_id, buttons = [], media_type = _logic.TYPE_IMAGE) => {
     return {
         "attachment": {
@@ -127,16 +121,55 @@ const messageHowYourPlatform = {
     ]
 };
 
+const messageQuestionUserOrAdmin = {
+    text: "Bạn là người dùng hay quản trị viên?",
+    "quick_replies": [
+        {
+            content_type: "text",
+            title: "Người dùng",
+            payload: _logic.BOT.REPLY_USER,
+            image_url: _logic.BOT.URL_ICON_QUESTION
+        },
+        {
+            content_type: "text",
+            title: "Quản trị viên",
+            payload: _logic.BOT.REPLY_ADMIN,
+            image_url: _logic.BOT.URL_ICON_QUESTION
+        }
+    ]
+}
+
 const messagePleaseWriteShortThink = getMessageText(_mess_bot.PLEASE_WRITE_SHORT_THINK);
+
+const messagePleaseActiveBOT = getMessageText(_mess_bot.PLEASE_ACTIVE_BOT);
+
+const messageAccountLink = {
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "button",
+            "text": "Bấm nút đăng nhập ở dưới đấy để kích hoạt",
+            "buttons": [
+                {
+                    "type": "account_link",
+                    "url": "https://sainboltapp.web.app/verify-bot-messenger"
+                },
+            ]
+        }
+    }
+}
 
 module.exports = {
     // loggedInMessage,
     messageListPlatForm,
     messageImagePlatForm,
+    messageAccountLink,
+    messagePleaseActiveBOT,
     napMessage,
     messageReviewPlatform,
     messageScaleForYou,
     messageHowCustomer,
     messageHowYourPlatform,
-    messagePleaseWriteShortThink
+    messagePleaseWriteShortThink,
+    messageQuestionUserOrAdmin
 }

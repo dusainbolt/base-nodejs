@@ -1,6 +1,7 @@
 module.exports = {
-    LIST_PLATFORM: "Dưới đây là danh sách các nền tảng Sainbolt App phát triển. Bạn tham khảo nhé ❤",
-    PLEASE_WRITE_SHORT_THINK: "Hãy viết ngắn gọn ý tưởng của bạn. Sainbolt App sẽ trả lời bạn sớm nhất ❤",
+    LIST_PLATFORM: `Dưới đây là danh sách các nền tảng Sainbolt App phát triển. Bạn tham khảo và nhấn vào nút "Lựa chọn" nhé ❤`,
+    PLEASE_WRITE_SHORT_THINK: "Hãy viết ngắn gọn ý tưởng của bạn rồi gửi tại đây. Sainbolt App sẽ trả lời bạn sớm nhất ❤",
+    PLEASE_ACTIVE_BOT: "Để sử dụng chức năng, trước tiên bạn phải kích hoạt BOT với tài khoản trên hệ thống Sainbolt App 🔥",
     MENU: {
         LIST_PLATFORM: "Danh sách nền tảng",
         SYSTEM_BOT: "Hệ thống Sainbolt App"

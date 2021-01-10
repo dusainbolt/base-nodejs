@@ -151,24 +151,24 @@ class handleBot {
                 // dung cho cau hoi menu hien tren box
                 // "ice_breakers": _mess_bot.ICE_BREAKERS,
                 // dung cho cau hoi menu duoi box
-                // "persistent_menu": [
-                //     {
-                //         "locale": "default",
-                //         "composer_input_disabled": false,
-                //         "call_to_actions": [
-                //             {
-                //                 "type": "postback",
-                //                 "title": _mess_bot.MENU.LIST_PLATFORM,
-                //                 "payload": _logic.BOT.LIST_PLATFORM_MENU,
-                //             },
-                //             {
-                //                 "type": "postback",
-                //                 "title": _mess_bot.MENU.SYSTEM_BOT,
-                //                 "payload": _logic.BOT.MORE_USER_APP,
-                //             },
-                //         ]
-                //     }
-                // ]
+                "persistent_menu": [
+                    {
+                        "locale": "default",
+                        "composer_input_disabled": false,
+                        "call_to_actions": [
+                            {
+                                "type": "postback",
+                                "title": _mess_bot.MENU.LIST_PLATFORM,
+                                "payload": _logic.BOT.LIST_PLATFORM_MENU,
+                            },
+                            {
+                                "type": "postback",
+                                "title": _mess_bot.MENU.SYSTEM_BOT,
+                                "payload": _logic.BOT.MORE_USER_APP,
+                            },
+                        ]
+                    }
+                ]
             }
         }, (err, res, body) => {
             if (!err) {
