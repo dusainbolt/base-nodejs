@@ -18,6 +18,8 @@ class FBMessenger {
             const postback = {
                 payload: key
             }
+
+            const account_linking = { authorization_code: '5fbb8cc040dbb200049a7a62', status: 'linked' };
             // 108642264227705
             // 4681411058600771
             const messengerPSID = 4681411058600771;
@@ -26,6 +28,9 @@ class FBMessenger {
                 await receive.handleReceivePostback(messengerPSID, postback);
             }else if(type === "2"){
                 _bot.settingStartedButtonPostback();
+            }else if(type === "3"){
+                console.log("Handle account_linking->>>>>>>>>>>>>>>>>>>>>>>", messengerPSID, postback);
+                await receive.handleReceiveAccountLink(messengerPSID, account_linking);
             }
             else{
                 console.log("Handle message->>>>>>>>>>>>>>>>>>>>>>>",messengerPSID, message);
@@ -65,9 +70,10 @@ class FBMessenger {
                     } else if (postback) {
                         receive.handleReceivePostback(sender.id, postback);
                     }else if(account_linking){
+                        receive.handleReceiveAccountLink(sender.id, account_linking)
+                        // { authorization_code: '5fbb8cc040dbb200049a7a62', status: 'linked' }
                         console.log(">>>>>>>>>>>>>ACCOUNT-LINK<<<<<<<<<<<<<");
-                    }
-                    else{
+                    } else{
                         _log.err('Webhook received unknown messagingEvent: ', entry);
                     }
                 });

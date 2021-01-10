@@ -8,7 +8,6 @@
 // ===== MESSENGER =============================================================
 const sendAPI = require('./send');
 // ===== STORES ================================================================
-const res_api_messenger = require('../utils/bot');
 const setting_model = require('../models/setting');
 const user_model = require('../models/user');
 /*
@@ -17,29 +16,24 @@ const user_model = require('../models/user');
  * https://developers.facebook.com/docs/messenger-platform/
  * webhook-reference/account-linking
  */
-const handleReceiveAccountLink = (event) => {
-    const senderId = event.sender.id;
-
+const handleReceiveAccountLink = async (messengerPSID, account_linking) => {
     /* eslint-disable camelcase */
-    const status = event.account_linking.status;
-    const authCode = event.account_linking.authorization_code;
+    const {status, authorization_code} = account_linking;
     /* eslint-enable camelcase */
-
-    console.log('Received account link event with for user %d with status %s ' +
-        'and auth code %s ', senderId, status, authCode);
-
-    // switch (status) {
-    //     case 'linked':
-    //         const linkedUser = UserStore.replaceAuthToken(authCode, senderId);
-    //         sendApi.sendSignInSuccessMessage(senderId, linkedUser.username);
-    //         break;
-    //     case 'unlinked':
-    //         UserStore.unlinkMessengerAccount(senderId);
-    //         sendApi.sendSignOutSuccessMessage(senderId);
-    //         break;
-    //     default:
-    //         break;
-    // }
+    _log.log('>>>>>>>ACCOUNT-LINK<<<<<<<' + 'status: and auth code %s ', status, authorization_code);
+    switch (status) {
+        case 'linked':
+            const user_active_bot = await user_model.findByIdAndUpdate(authorization_code, {
+                messengerPSID: messengerPSID,
+            });
+            sendAPI.sendActiveBotSuccess(messengerPSID, user_active_bot.fullName);
+            break;
+        case 'unlinked':
+            sendAPI.sendWelcomeMessage(messengerPSID)
+            break;
+        default:
+            break;
+    }
 };
 
 /*
@@ -92,7 +86,7 @@ const handleReceivePostback = async (messengerPSID, postback) => {
         //         return res_api_messenger.responseAccountLink();
         //     }
         default:
-            console.error(`Unknown Postback called: ${type}`);
+            sendAPI.sendModePendingDevelop(messengerPSID);
             break;
     }
 };
@@ -106,7 +100,6 @@ const handleReceiveMessage = async (messengerPSID, message) => {
         sendAPI.sendWelcomeMessage(messengerPSID);
     } else if (message.quick_reply) {
          type = message.quick_reply.payload;
-         console.log(type);
         switch (type) {
             // quick question
             case _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS:
@@ -119,16 +112,13 @@ const handleReceiveMessage = async (messengerPSID, message) => {
                 sendAPI.sendPleaseWriteThink(messengerPSID);
                 break;
             case _logic.BOT.REPLY_USER:
-                    //check active user
-                    const user = await user_model.findOne({messengerPSID}).select(_contains.USER.PARAMS_AVATAR);
-                console.log(user);
-
-                if(user){
-                        sendAPI.sendWelcomeMessage(messengerPSID);
-                    }else{
-                        sendAPI.sendAccountLinkVerify(messengerPSID);
-                        // https://sainboltapp.web.app/training
-                    }
+                //check active user
+                const user = await user_model.findOne({messengerPSID}).select(_contains.USER.PARAMS_AVATAR);
+                if (user) {
+                    sendAPI.sendWelcomeMessage(messengerPSID);
+                } else {
+                    sendAPI.sendAccountLinkVerify(messengerPSID);
+                }
                 break;
             default:
                 console.error(`Unknown Postback called: ${type}`);

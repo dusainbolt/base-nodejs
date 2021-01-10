@@ -59,6 +59,8 @@ module.exports = {
     START_APP: "START_APP",
     CONTACT_MAKE_APP_MOBILE: "CONTACT_MAKE_APP_MOBILE",
     MORE_USER_APP: "MORE_USER_APP",
+    VIEW_MY_INFO : "VIEW_MY_INFO",
+    VIEW_MY_DASHBOARD: "VIEW_MY_DASHBOARD",
   },
   UNICODE: {
     a: ["áàảãạăắằẳẵặâấầẩẫậåäæāąǻǎ"],
