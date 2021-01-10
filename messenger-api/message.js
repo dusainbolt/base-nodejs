@@ -121,6 +121,7 @@ const messageHowYourPlatform = {
     ]
 };
 
+const messageModePendingDevelop = getMessageText("Rất tiếc! 🥺 chức năng này đang được phát triển và sớm ra mắt tại phiên bản sắp tới 🥳");
 const messageQuestionUserOrAdmin = {
     text: "Bạn là người dùng hay quản trị viên?",
     "quick_replies": [
@@ -143,6 +144,32 @@ const messagePleaseWriteShortThink = getMessageText(_mess_bot.PLEASE_WRITE_SHORT
 
 const messagePleaseActiveBOT = getMessageText(_mess_bot.PLEASE_ACTIVE_BOT);
 
+const messageActiveBotSuccess = (fullName) => {
+    return getMessageText(`Xin chào ${fullName}, bạn vừa kích hoạt BOT thành công 🥳🥳. Hãy sử dụng các tính năng mà Bot cung cấp dưới đây nhé nhé. 😍`);
+};
+
+const messageModeUserApp = {
+    "attachment": {
+        "type": "template",
+        "payload": {
+            "template_type": "button",
+            "text": "Danh sách chức năng 🙆",
+            "buttons": [
+                {
+                    "type": "postback",
+                    "title": "Xem hồ sơ",
+                    "payload": _logic.BOT.VIEW_MY_INFO
+                },
+                {
+                    "type": "postback",
+                    "title": "Xem thống kê",
+                    "payload": _logic.BOT.VIEW_MY_DASHBOARD
+                },
+            ]
+        }
+    }
+}
+
 const messageAccountLink = {
     "attachment": {
         "type": "template",
@@ -152,7 +179,7 @@ const messageAccountLink = {
             "buttons": [
                 {
                     "type": "account_link",
-                    "url": "https://sainboltapp.web.app/verify-bot-messenger"
+                    "url": _config.BOT_MESSENGER.ACCOUNT_LINK_URL
                 },
             ]
         }
@@ -163,10 +190,13 @@ module.exports = {
     // loggedInMessage,
     messageListPlatForm,
     messageImagePlatForm,
+    messageActiveBotSuccess,
+    messageModeUserApp,
     messageAccountLink,
     messagePleaseActiveBOT,
     napMessage,
     messageReviewPlatform,
+    messageModePendingDevelop,
     messageScaleForYou,
     messageHowCustomer,
     messageHowYourPlatform,

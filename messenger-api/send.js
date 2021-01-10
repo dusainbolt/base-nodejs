@@ -43,20 +43,12 @@ const sendMessage = (recipientId, messagePayloads) => {
         ]);
 };
 
-// Send a welcome message for a signed in user.
-const sendLoggedInWelcomeMessage = (recipientId, username) => {
+const sendWelcomeMessage = (recipientId) => {
     sendMessage(
         recipientId,
         [
-            messages.napMessage,
-            // messages.loggedInMessage(username),
+            messages.napMessage
         ]);
-};
-
-// Send a different Welcome message based on if the user is logged in.
-const sendWelcomeMessage = (recipientId) => {
-    // const userProfile = UserStore.getByMessengerId(recipientId);
-    sendLoggedInWelcomeMessage(recipientId, "Du Sainbolt");
 };
 
 const sendStartAppMessage =  (recipientId, listPlatform) => {
@@ -118,6 +110,23 @@ const sendAccountLinkVerify = (recipientId) => {
         ]);
 }
 
+const sendActiveBotSuccess = (recipientId, fullName) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageActiveBotSuccess(fullName),
+            messages.messageModeUserApp
+        ]);
+}
+
+const sendModePendingDevelop = (recipientId) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageModePendingDevelop,
+        ]);
+}
+
 module.exports = {
     sendWelcomeMessage,
     sendStartAppMessage,
@@ -126,5 +135,7 @@ module.exports = {
     sendHowYourPlatform,
     sendPleaseWriteThink,
     sendQuestionUserOrAdmin,
-    sendAccountLinkVerify
+    sendAccountLinkVerify,
+    sendModePendingDevelop,
+    sendActiveBotSuccess
 }

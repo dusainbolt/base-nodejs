@@ -133,7 +133,7 @@ class handleBot {
             // },
             "json": {
                 // dung cho url xac minh
-                // account_linking_url: "https://sainboltapp.web.app/verify-bot-messenger",
+                // account_linking_url: _config.BOT_MESSENGER.ACCOUNT_LINK_URL,
                 // dung cho man hinh loi chao
                 // "greeting": [
                 //     {
