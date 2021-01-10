@@ -78,9 +78,10 @@ const handleReceivePostback = async (messengerPSID, postback) => {
             const platform_select = _.find(setting_platforms.value, item => item.payload === type);
             sendAPI.sendSelectPlatform(messengerPSID, platform_select.attachment_id);
             break;
-        // // start use bot
-        // case _logic.BOT.MORE_USER_APP:
-        //     return res_api_messenger.responseQuickQuestionUserOrAdmin();
+        // start use bot
+        case _logic.BOT.MORE_USER_APP:
+            sendAPI.sendQuestionUserOrAdmin(messengerPSID);
+            break;
         // case _logic.BOT.REPLY_USER:
         //     //check active user
         //     const user = await user_model.findOne({messengerPSID}).select(_contains.USER.PARAMS_AVATAR);
@@ -100,10 +101,13 @@ const handleReceiveMessage = async (messengerPSID, message) => {
     // It's good practice to send the user a read receipt so they know
     // the bot has seen the message. This can prevent a user
     // spamming the bot if the requests take some time to return.
+    let type = null;
     if (message.text && _helper.checkTextHello(message.text.toLowerCase())) {
         sendAPI.sendWelcomeMessage(messengerPSID);
     } else if (message.quick_reply) {
-        switch (message.quick_reply.payload) {
+         type = message.quick_reply.payload;
+         console.log(type);
+        switch (type) {
             // quick question
             case _logic.BOT.REPLY_QUESTION_USER_OR_BUSINESS:
                 sendAPI.sendHowCustomer(messengerPSID);
@@ -113,6 +117,21 @@ const handleReceiveMessage = async (messengerPSID, message) => {
                 break;
             case _logic.BOT.REPLY_THINK_READY_OR_START:
                 sendAPI.sendPleaseWriteThink(messengerPSID);
+                break;
+            case _logic.BOT.REPLY_USER:
+                    //check active user
+                    const user = await user_model.findOne({messengerPSID}).select(_contains.USER.PARAMS_AVATAR);
+                console.log(user);
+
+                if(user){
+                        sendAPI.sendWelcomeMessage(messengerPSID);
+                    }else{
+                        sendAPI.sendAccountLinkVerify(messengerPSID);
+                        // https://sainboltapp.web.app/training
+                    }
+                break;
+            default:
+                console.error(`Unknown Postback called: ${type}`);
                 break;
         }
     }

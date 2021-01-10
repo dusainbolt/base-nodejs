@@ -101,6 +101,23 @@ const sendPleaseWriteThink = (recipientId) => {
         ]);
 }
 
+const sendQuestionUserOrAdmin = (recipientId) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageQuestionUserOrAdmin,
+        ]);
+}
+
+const sendAccountLinkVerify = (recipientId) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messagePleaseActiveBOT,
+            messages.messageAccountLink,
+        ]);
+}
+
 module.exports = {
     sendWelcomeMessage,
     sendStartAppMessage,
@@ -108,4 +125,6 @@ module.exports = {
     sendHowCustomer,
     sendHowYourPlatform,
     sendPleaseWriteThink,
+    sendQuestionUserOrAdmin,
+    sendAccountLinkVerify
 }
