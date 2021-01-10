@@ -115,13 +115,13 @@ const handleReceiveMessage = async (messengerPSID, message) => {
                 //check active user
                 const user = await user_model.findOne({messengerPSID}).select(_contains.USER.PARAMS_AVATAR);
                 if (user) {
-                    sendAPI.sendWelcomeMessage(messengerPSID);
+                    sendAPI.sendModeUserApp(messengerPSID);
                 } else {
                     sendAPI.sendAccountLinkVerify(messengerPSID);
                 }
                 break;
             default:
-                console.error(`Unknown Postback called: ${type}`);
+                sendAPI.sendModePendingDevelop(messengerPSID);
                 break;
         }
     }

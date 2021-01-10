@@ -5,10 +5,11 @@ const request = require('request');
  * @param   {String}          endPoint - Specific endpoint to send data to
  * @param   {Object|Object[]} messageDataArray - Payloads to send individually
  * @param   {Object}          queryParams - Query Parameters
+ * @param   {String}          method - method call API
  * @param   {Object}          retries - # of times to attempt to send a message.
  * @returns {undefined}
  */
-const callAPI = (endPoint, messageDataArray, queryParams = {}, retries = 5) => {
+const callAPI = (endPoint, messageDataArray, queryParams = {}, method= "POST", retries = 5) => {
     // Error if developer forgot to specify an endpoint to send our request to
     if (!endPoint) {
         console.error('callAPI requires you specify an endpoint.');
@@ -35,7 +36,7 @@ const callAPI = (endPoint, messageDataArray, queryParams = {}, retries = 5) => {
     request({
         uri: `${_config.BOT_MESSENGER.API_URL}/${endPoint}`,
         qs: query,
-        method: 'POST',
+        method,
         json: messageToSend,
     }, (error, response, body) => {
         if (!error && response.statusCode === 200) {
@@ -70,11 +71,17 @@ const callMessagesAPI = (messageDataArray, queryParams = {}) => {
     return callAPI('messages', messageDataArray, queryParams);
 };
 
-const callMessengerProfileAPI = (messageDataArray, queryParams = {}) => {
-    return callAPI('messenger_profile', messageDataArray, queryParams);
+const callMessengerProfileAPI = (messageDataArray, queryParams = {}, method = "POST") => {
+    return callAPI('messenger_profile', messageDataArray, queryParams, method);
 };
+
+const callMessengerPersonasAPI = (messageDataArray, queryParams = {}, method = "POST") => {
+    return callAPI('personas', messageDataArray, queryParams, method);
+};
+
 
 module.exports = {
     callMessagesAPI,
-    callMessengerProfileAPI
+    callMessengerProfileAPI,
+    callMessengerPersonasAPI
 }

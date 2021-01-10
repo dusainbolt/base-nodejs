@@ -8,6 +8,18 @@ const typingOn = (recipientId) => {
             id: recipientId,
         },
         sender_action: 'typing_on', // eslint-disable-line camelcase
+        persona_id: "2139908752806080"
+    };
+};
+
+// mark_seen last message
+const markSeen = (recipientId) => {
+    return {
+        recipient: {
+            id: recipientId,
+        },
+        sender_action: 'mark_seen', // eslint-disable-line camelcase
+        persona_id: "526084288295131",
     };
 };
 
@@ -18,6 +30,7 @@ const typingOff = (recipientId) => {
             id: recipientId,
         },
         sender_action: 'typing_off', // eslint-disable-line camelcase
+        persona_id: "406642230644793"
     };
 };
 //
@@ -28,6 +41,7 @@ const messageToJSON = (recipientId, messagePayload) => {
             id: recipientId,
         },
         message: messagePayload,
+        persona_id: "2869200563404624"
     };
 };
 //
@@ -37,6 +51,7 @@ const sendMessage = (recipientId, messagePayloads) => {
         .map((messagePayload) => messageToJSON(recipientId, messagePayload));
     api.callMessagesAPI(
         [
+            markSeen(recipientId),
             typingOn(recipientId),
             ...messagePayloadArray,
             typingOff(recipientId),
@@ -119,6 +134,14 @@ const sendActiveBotSuccess = (recipientId, fullName) => {
         ]);
 }
 
+const sendModeUserApp = (recipientId) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageModeUserApp
+        ]);
+};
+
 const sendModePendingDevelop = (recipientId) => {
     sendMessage(
         recipientId,
@@ -134,6 +157,7 @@ module.exports = {
     sendHowCustomer,
     sendHowYourPlatform,
     sendPleaseWriteThink,
+    sendModeUserApp,
     sendQuestionUserOrAdmin,
     sendAccountLinkVerify,
     sendModePendingDevelop,

@@ -1,4 +1,5 @@
 const receive = require('../messenger-api/receive');
+const setup = require('../messenger-api/thread-setup');
 
 class FBMessenger {
     constructor() {
@@ -6,7 +7,7 @@ class FBMessenger {
 
     async _get_test(req, res) {
         try {
-            const { type, key, url, quick_reply } = req.query;
+            const { type, key, url, quick_reply, method } = req.query;
             let attachment_id = null;
             const message = {
                 text: key,
@@ -27,10 +28,15 @@ class FBMessenger {
                 console.log("Handle postback->>>>>>>>>>>>>>>>>>>>>>>", messengerPSID, postback);
                 await receive.handleReceivePostback(messengerPSID, postback);
             }else if(type === "2"){
-                _bot.settingStartedButtonPostback();
+                console.log("Handle setup thread ->>>>>>>>>>>>>>>>>>>>>>>");
+                method === "GET" ? setup.getProfileAPI(method) : setup.setProfileAPI();
+                // _bot.settingStartedButtonPostback();
             }else if(type === "3"){
                 console.log("Handle account_linking->>>>>>>>>>>>>>>>>>>>>>>", messengerPSID, postback);
                 await receive.handleReceiveAccountLink(messengerPSID, account_linking);
+            }else if (type === "4"){
+                console.log("Handle set_personas->>>>>>>>>>>>>>>>>>>>>>>");
+                method === "GET" ? setup.getPersonas() : setup.setPersonas();
             }
             else{
                 console.log("Handle message->>>>>>>>>>>>>>>>>>>>>>>",messengerPSID, message);
@@ -71,8 +77,6 @@ class FBMessenger {
                         receive.handleReceivePostback(sender.id, postback);
                     }else if(account_linking){
                         receive.handleReceiveAccountLink(sender.id, account_linking)
-                        // { authorization_code: '5fbb8cc040dbb200049a7a62', status: 'linked' }
-                        console.log(">>>>>>>>>>>>>ACCOUNT-LINK<<<<<<<<<<<<<");
                     } else{
                         _log.err('Webhook received unknown messagingEvent: ', entry);
                     }
