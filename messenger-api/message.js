@@ -4,6 +4,69 @@
 //  * @param {String} username System username of the currently logged in user
 //  * @returns {Object} Message payload
 //  */
+const messageGetStarted = {
+    get_started: {
+        payload: 'GET_STARTED'
+    }
+}
+
+const messagePersistentMenu = {
+    persistent_menu: [
+        {
+            "locale": "default",
+            "composer_input_disabled": false,
+            "call_to_actions": [
+                {
+                    "type": "postback",
+                    "title": _mess_bot.MENU.LIST_PLATFORM,
+                    "payload": _logic.BOT.LIST_PLATFORM_MENU,
+                },
+                {
+                    "type": "postback",
+                    "title": _mess_bot.MENU.SYSTEM_BOT,
+                    "payload": _logic.BOT.MORE_USER_APP,
+                },
+            ]
+        }
+    ]
+};
+
+const messageIceBreakers = {
+    ice_breakers: _mess_bot.ICE_BREAKERS,
+}
+
+const messageGreeting = {
+    "greeting": [
+        {
+            "locale": "default",
+            "text": "Xin chào {{user_first_name}}! đây không chỉ là hệ thống nhắn tin. Mà Du sainbolt đã tận dụng nền tảng Facebook Messenger để tạo BOT thông báo cho hệ thống Sainbolt App"
+        }, {
+            "locale": "en_US",
+            "text": "Timeless apparel for the masses."
+        }
+    ],
+}
+
+const messageSettingPersonas = {
+    name: "Sainbolt BOT",
+
+    //typing
+    // response => {id: "2139908752806080"}
+    //profile_picture_url: "https://scontent.fhan2-3.fna.fbcdn.net/v/t1.0-9/137559599_1032609943890037_3547620939236355990_n.jpg?_nc_cat=108&ccb=2&_nc_sid=730e14&_nc_ohc=0FCTJSz3zqYAX8BBFF5&_nc_ht=scontent.fhan2-3.fna&oh=13c2d55b4fbc8a096f8795ee3ada2348&oe=601F34E4",
+
+    //smile
+    // response => {id: "2869200563404624"}
+    // profile_picture_url :"https://scontent.fhan2-5.fna.fbcdn.net/v/t1.0-9/136411344_1032610553889976_7659976595665175555_n.jpg?_nc_cat=107&ccb=2&_nc_sid=730e14&_nc_ohc=SAWVJqNgZLoAX8BErOW&_nc_ht=scontent.fhan2-5.fna&oh=d441430c14e7df6526c6bfd960d4e544&oe=601EB9D2",
+
+    // loading
+    // response => {id: "406642230644793"}
+    // profile_picture_url: "https://scontent.fhan2-6.fna.fbcdn.net/v/t1.0-9/135620680_1032610543889977_2190006492332162196_n.jpg?_nc_cat=104&ccb=2&_nc_sid=730e14&_nc_ohc=Kk_FAvbeydsAX-VeSwP&_nc_ht=scontent.fhan2-6.fna&oh=6231df030518f5919e0b29264e784910&oe=60201012",
+
+    //message
+    // response => {id: "526084288295131"}
+    // profile_picture_url: "https://scontent.fhan2-5.fna.fbcdn.net/v/t1.0-9/137631400_1032610827223282_842162276358314154_n.jpg?_nc_cat=107&ccb=2&_nc_sid=730e14&_nc_ohc=ShevXyMYWwIAX85D4tp&_nc_ht=scontent.fhan2-5.fna&oh=a8798e75380dbf8d06784cc872490cc3&oe=60221B34",
+}
+
 const getMessageText = (text) => {
     return {text};
 }
@@ -191,7 +254,12 @@ module.exports = {
     messageListPlatForm,
     messageImagePlatForm,
     messageActiveBotSuccess,
+    messageGetStarted,
+    messageIceBreakers,
+    messageGreeting,
+    messagePersistentMenu,
     messageModeUserApp,
+    messageSettingPersonas,
     messageAccountLink,
     messagePleaseActiveBOT,
     napMessage,
