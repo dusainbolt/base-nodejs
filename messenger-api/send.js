@@ -75,12 +75,11 @@ const sendGoodMorning = (recipientId, fullName) => {
 };
 
 const sendLearnToDay = (recipientId, fullName) => {
-    console.log(fullName);
-    // sendMessage(
-    //     recipientId,
-    //     [
-    //         messages.messageLearnToday(fullName)
-    //     ]);
+    sendMessage(
+        recipientId,
+        [
+            messages.messageLearnToday(fullName)
+        ]);
 };
 
 const sendNotLearnToDay = (recipientId, fullName) => {
