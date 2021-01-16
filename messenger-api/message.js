@@ -86,8 +86,20 @@ const getResponseMedia = (attachment_id, buttons = [], media_type = _logic.TYPE_
 //  * Fun message for saying hello to a signed in user.
 //  */
 const napMessage = {
-    text: 'Chào mừng bạn, mình là Lê Huy Du đây là hệ thống BOT tương tác tin nhắn tự động của mình. Hãy sử dụng các chức năng trong câu hỏi Menu nhé ❤',
+    text: 'Tôi đang phát triển con BOT messenger này xin lỗi vì đã làm phiền ❤',
 };
+
+const messageGoodMorning = (fullName) => {
+    return getMessageText(`Chào buổi sáng người anh em ${fullName} của tôi. Ra ngoài nhớ mặc ấm nhé. Thương ❤`);
+}
+
+const messageLearnToday = (fullName) => {
+    return getMessageText(`${fullName} bạn có lịch học vào ngày hôm nay ❤`);
+}
+
+const messageNotLearnToDay = (fullName) => {
+    return getMessageText(`${fullName} bạn không có lịch học vào ngày hôm nay ❤`);
+}
 
 const messageReviewPlatform = getMessageText(_mess_bot.LIST_PLATFORM);
 
@@ -203,6 +215,11 @@ const messageQuestionUserOrAdmin = {
     ]
 }
 
+const messageReplyInfoUser = (user_info) => {
+    console.log("<<======================>??", user_info);
+    return getMessageText(`Tên của bạn là gì ${user_info.fullName} - Công việc ${user_info.job} - Nơi làm việc ${user_info.jobAddress}`);
+};
+
 const messagePleaseWriteShortThink = getMessageText(_mess_bot.PLEASE_WRITE_SHORT_THINK);
 
 const messagePleaseActiveBOT = getMessageText(_mess_bot.PLEASE_ACTIVE_BOT);
@@ -254,6 +271,10 @@ module.exports = {
     messageListPlatForm,
     messageImagePlatForm,
     messageActiveBotSuccess,
+    messageReplyInfoUser,
+    messageGoodMorning,
+    messageLearnToday,
+    messageNotLearnToDay,
     messageGetStarted,
     messageIceBreakers,
     messageGreeting,

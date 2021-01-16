@@ -23,7 +23,9 @@ class FBMessenger {
             const account_linking = { authorization_code: '5fbb8cc040dbb200049a7a62', status: 'linked' };
             // 108642264227705
             // 4681411058600771
-            const messengerPSID = 4681411058600771;
+            // 3699306160163292 cua tuan
+            // 3630383753741535 cua luong
+            const messengerPSID = 3699306160163292;
             if(type === "1"){
                 console.log("Handle postback->>>>>>>>>>>>>>>>>>>>>>>", messengerPSID, postback);
                 await receive.handleReceivePostback(messengerPSID, postback);
@@ -97,7 +99,7 @@ class FBMessenger {
     async _get_webhook(req, res) {
         try {
             // Your verify token. Should be a random string.
-            let VERIFY_TOKEN = _config.TOKEN_BOT_MESSENGER
+            let VERIFY_TOKEN = _config.BOT_MESSENGER.TOKEN
 
             // Parse the query params
             let mode = req.query['hub.mode'];
