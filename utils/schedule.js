@@ -11,9 +11,9 @@ const run_schedule = async  () => {
 
     const rule_2 = new schedule.RecurrenceRule();
     rule_2.dayOfWeek = [0, new schedule.Range(0, 6)];
-    rule_2.hour = 12;
-    rule_2.minute = 10;
-    rule_2.second = 10;
+    rule_2.hour = 0;
+    rule_2.minute = 59;
+    rule_2.second = 20;
 
     let s_1 = schedule.scheduleJob(rule_1, async function(fireDate){
         console.log('Chay chao buoi sang cho ae', fireDate);
@@ -44,7 +44,11 @@ const run_schedule = async  () => {
             let user = list_user_bot[i];
             let isLearnToDay = user.class && user.class.listLesson ? user.class.listLesson.length : false;
             setTimeout(()=>{
-                isLearnToDay ? sendAPI.sendLearnToDay(user.messengerPSID, user.fullName) : sendAPI.sendNotLearnToDay(user.messengerPSID, user.fullName);
+                try {
+                    isLearnToDay ? sendAPI.sendLearnToDay(user.messengerPSID, user.fullName) : sendAPI.sendNotLearnToDay(user.messengerPSID, user.fullName);
+                }catch (e){
+                    _log.err(e);
+                }
             }, i * 1000);
         }
     });

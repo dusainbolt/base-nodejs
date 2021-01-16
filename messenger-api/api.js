@@ -33,39 +33,43 @@ const callAPI = (endPoint, messageDataArray, queryParams = {}, method= "POST", r
 
     // ready the first message in the array for send.
     const [messageToSend, ...queue] = _.castArray(messageDataArray);
-    console.log(messageToSend);
-    request({
-        uri: `${_config.BOT_MESSENGER.API_URL}/${endPoint}`,
-        qs: query,
-        method,
-        json: messageToSend,
-    }, (error, response, body) => {
-        if (!error && response.statusCode === 200) {
-            // Message has been successfully received by Facebook.
-            console.log(
-                `Successfully sent message to ${endPoint} endpoint: `,
-                JSON.stringify(body)
-            );
 
-            // Continue sending payloads until queue empty.
-            if (!_.isEmpty(queue)) {
-                callAPI(endPoint, queue, queryParams);
+        request({
+            uri: `${_config.BOT_MESSENGER.API_URL}/${endPoint}`,
+            qs: query,
+            method,
+            json: messageToSend,
+        }, (error, response, body) => {
+            if (!error && response.statusCode === 200) {
+                // Message has been successfully received by Facebook.
+                console.log(
+                    `Successfully sent message to ${endPoint} endpoint: `,
+                    JSON.stringify(body)
+                );
+
+                // Continue sending payloads until queue empty.
+                if (!_.isEmpty(queue)) {
+                    callAPI(endPoint, queue, queryParams);
+                }
+            } else {
+                // Message has not been successfully received by Facebook.
+                // try{
+                //     console.error(
+                //         `Failed calling Messenger API endpoint ${endPoint}`,
+                //         response.statusCode,
+                //         response.statusMessage,
+                //         body.error,
+                //         queryParams
+                //     );
+                // }catch (e){
+                //     _log.err(e);
+                // }
+                // Retry the request
+                console.error(`Retrying Request: ${retries} left`);
+                callAPI(endPoint, messageDataArray, queryParams, retries - 1);
             }
-        } else {
-            // Message has not been successfully received by Facebook.
-            console.error(
-                `Failed calling Messenger API endpoint ${endPoint}`,
-                response.statusCode,
-                response.statusMessage,
-                body.error,
-                queryParams
-            );
+        });
 
-            // Retry the request
-            console.error(`Retrying Request: ${retries} left`);
-            callAPI(endPoint, messageDataArray, queryParams, retries - 1);
-        }
-    });
 };
 
 const callMessagesAPI = (messageDataArray, queryParams = {}) => {
