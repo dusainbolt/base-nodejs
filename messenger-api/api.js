@@ -33,6 +33,7 @@ const callAPI = (endPoint, messageDataArray, queryParams = {}, method= "POST", r
 
     // ready the first message in the array for send.
     const [messageToSend, ...queue] = _.castArray(messageDataArray);
+    console.log(messageToSend);
     request({
         uri: `${_config.BOT_MESSENGER.API_URL}/${endPoint}`,
         qs: query,

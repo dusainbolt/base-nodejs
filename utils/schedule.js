@@ -1,21 +1,54 @@
-// var schedule = require('node-schedule');
-// const user_model = require('../models/user');
+const schedule = require('node-schedule');
+const user_model = require('../models/user');
+const sendAPI = require('../messenger-api/send');
+const moment = require('moment');
+const run_schedule = async  () => {
+    const rule_1 = new schedule.RecurrenceRule();
+    rule_1.dayOfWeek = [0, new schedule.Range(0, 6)];
+    rule_1.hour = 6;
+    rule_1.minute = 10;
+    rule_1.second = 0;
 
-const run_schedule =  () => {
-    // const rule = new schedule.RecurrenceRule();
-    // rule.dayOfWeek = [0, new schedule.Range(0, 6)];
-    // rule.hour = 15;
-    // rule.minute = 11;
-    // rule.second = 8;
-    //
-    // var j = schedule.scheduleJob(rule, async function(fireDate){
-    //     console.log('Time for tea!', fireDate);
-    //     console.log(await user_model.find());
-    //     const message = {
-    //         text: "hello"
-    //     }
-    //     _bot.callSendAPIFB(4681411058600771, message);
-    // });
+    const rule_2 = new schedule.RecurrenceRule();
+    rule_2.dayOfWeek = [0, new schedule.Range(0, 6)];
+    rule_2.hour = 12;
+    rule_2.minute = 10;
+    rule_2.second = 10;
+
+    let s_1 = schedule.scheduleJob(rule_1, async function(fireDate){
+        console.log('Chay chao buoi sang cho ae', fireDate);
+        const list_user_bot = await user_model.find({messengerPSID: {$ne : null}});
+        //     sendAPI.sendWelcomeMessage(3753056791420958);
+        for(let i = 1; i < list_user_bot.length; i++){
+            setTimeout(()=>{
+                sendAPI.sendGoodMorning(list_user_bot[i].messengerPSID, list_user_bot[i].fullName);
+            }, i * 2000);
+        }
+        // _bot.callSendAPIFB(4681411058600771, message);
+    });
+
+    let s_2 = schedule.scheduleJob(rule_2, async function(fireDate){
+
+        const currentDate = moment(new Date()).format("YYYY-MM-DD");
+        const startCurrentDate = new Date(`${currentDate} 00:01:00`).getTime() / 1000;
+        const endCurrentDate =  new Date(`${currentDate} 23:59:00`).getTime() / 1000;
+
+        const list_user_bot = await user_model.find({messengerPSID: {$ne : null}}).populate({
+            path: 'class',
+            populate: {
+                path: 'listLesson', match:
+                    {expectedTime: {$gte: startCurrentDate, $lte : endCurrentDate}}
+            }
+        });
+        for(let i = 1; i < list_user_bot.length; i++){
+            let user = list_user_bot[i];
+            let isLearnToDay = user.class && user.class.listLesson ? user.class.listLesson.length : false;
+            setTimeout(()=>{
+                isLearnToDay ? sendAPI.sendLearnToDay(user.messengerPSID, user.fullName) : sendAPI.sendNotLearnToDay(user.messengerPSID, user.fullName);
+            }, i * 1000);
+        }
+    });
+
 };
 
 // '*/5 * * * *', Execute a cron job every 5 Minutes = */5 * * * *

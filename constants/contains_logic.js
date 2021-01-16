@@ -61,6 +61,7 @@ module.exports = {
     MORE_USER_APP: "MORE_USER_APP",
     VIEW_MY_INFO : "VIEW_MY_INFO",
     VIEW_MY_DASHBOARD: "VIEW_MY_DASHBOARD",
+    SEND_ALL_USER: "SEND_ALL_USER"
   },
   UNICODE: {
     a: ["áàảãạăắằẳẵặâấầẩẫậåäæāąǻǎ"],

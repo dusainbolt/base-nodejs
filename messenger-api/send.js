@@ -66,6 +66,31 @@ const sendWelcomeMessage = (recipientId) => {
         ]);
 };
 
+const sendGoodMorning = (recipientId, fullName) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageGoodMorning(fullName)
+        ]);
+};
+
+const sendLearnToDay = (recipientId, fullName) => {
+    console.log(fullName);
+    // sendMessage(
+    //     recipientId,
+    //     [
+    //         messages.messageLearnToday(fullName)
+    //     ]);
+};
+
+const sendNotLearnToDay = (recipientId, fullName) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageNotLearnToDay(fullName)
+        ]);
+};
+
 const sendStartAppMessage =  (recipientId, listPlatform) => {
     sendMessage(
         recipientId,
@@ -150,12 +175,24 @@ const sendModePendingDevelop = (recipientId) => {
         ]);
 }
 
+const sendInfoUser = (recipientId, userInfo) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageReplyInfoUser(userInfo),
+        ]);
+};
+
 module.exports = {
     sendWelcomeMessage,
     sendStartAppMessage,
     sendSelectPlatform,
     sendHowCustomer,
+    sendGoodMorning,
     sendHowYourPlatform,
+    sendLearnToDay,
+    sendNotLearnToDay,
+    sendInfoUser,
     sendPleaseWriteThink,
     sendModeUserApp,
     sendQuestionUserOrAdmin,
