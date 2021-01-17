@@ -2,57 +2,91 @@ const schedule = require('node-schedule');
 const user_model = require('../models/user');
 const sendAPI = require('../messenger-api/send');
 const moment = require('moment');
-const run_schedule = async  () => {
-    const rule_1 = new schedule.RecurrenceRule();
-    rule_1.dayOfWeek = [0, new schedule.Range(0, 6)];
-    rule_1.hour = 6;
-    rule_1.minute = 10;
-    rule_1.second = 0;
 
-    const rule_2 = new schedule.RecurrenceRule();
-    rule_2.dayOfWeek = [0, new schedule.Range(0, 6)];
-    rule_2.hour = 0;
-    rule_2.minute = 59;
-    rule_2.second = 20;
 
-    let s_1 = schedule.scheduleJob(rule_1, async function(fireDate){
-        console.log('Chay chao buoi sang cho ae', fireDate);
-        const list_user_bot = await user_model.find({messengerPSID: {$ne : null}});
-        //     sendAPI.sendWelcomeMessage(3753056791420958);
-        for(let i = 1; i < list_user_bot.length; i++){
-            setTimeout(()=>{
-                sendAPI.sendGoodMorning(list_user_bot[i].messengerPSID, list_user_bot[i].fullName);
-            }, i * 2000);
+const run_schedule = () => {
+    // const ruleTest = "*/5 * * * * *";
+    // const test = user.messengerPSID === "4681411058600771";
+
+    // job good morning
+    const ruleGoodMorning = new schedule.RecurrenceRule();
+    ruleGoodMorning.dayOfWeek = [0, new schedule.Range(0, 6)];
+    ruleGoodMorning.hour = 6;
+    ruleGoodMorning.minute = 10;
+    ruleGoodMorning.second = 15;
+    handleJobGoodMorning(ruleGoodMorning);
+
+    const ruleLessonEachDay = new schedule.RecurrenceRule();
+    ruleLessonEachDay.dayOfWeek = [0, new schedule.Range(0, 6)];
+    ruleLessonEachDay.hour = 12;
+    ruleLessonEachDay.minute = 10;
+    ruleLessonEachDay.second = 15;
+    handleJobLesson(ruleLessonEachDay);
+
+    const ruleGoodNightEachDay = new schedule.RecurrenceRule();
+    ruleGoodNightEachDay.dayOfWeek = [0, new schedule.Range(0, 6)];
+    ruleGoodNightEachDay.hour = 23;
+    ruleGoodNightEachDay.minute = 30;
+    ruleGoodNightEachDay.second = 15;
+    handleJobGoodNight(ruleGoodNightEachDay);
+
+};
+
+const handleJobGoodNight = (rule) => {
+    schedule.scheduleJob(rule, async function (fireDate) {
+        const list_user_bot = await user_model.find({messengerPSID: {$ne: null}});
+        for (let i = 1; i < list_user_bot.length; i++) {
+            let user = list_user_bot[i];
+            sendAPI.sendGoodNight(user.messengerPSID, user.fullName);
         }
-        // _bot.callSendAPIFB(4681411058600771, message);
     });
+};
 
-    let s_2 = schedule.scheduleJob(rule_2, async function(fireDate){
+const handleJobLesson = (rule) => {
+    schedule.scheduleJob(rule, async function (fireDate) {
 
         const currentDate = moment(new Date()).format("YYYY-MM-DD");
         const startCurrentDate = new Date(`${currentDate} 00:01:00`).getTime() / 1000;
-        const endCurrentDate =  new Date(`${currentDate} 23:59:00`).getTime() / 1000;
+        const endCurrentDate = new Date(`${currentDate} 23:59:00`).getTime() / 1000;
 
-        const list_user_bot = await user_model.find({messengerPSID: {$ne : null}}).populate({
+        const list_user_bot = await user_model.find({messengerPSID: {$ne: null}}).populate({
             path: 'class',
             populate: {
                 path: 'listLesson', match:
-                    {expectedTime: {$gte: startCurrentDate, $lte : endCurrentDate}}
+                    {expectedTime: {$gte: startCurrentDate, $lte: endCurrentDate}}
             }
         });
-        for(let i = 1; i < list_user_bot.length; i++){
+        let lesson = null;
+        let expectedTimeLesson = null;
+        let subjectLesson = null;
+        for (let i = 1; i < list_user_bot.length; i++) {
             let user = list_user_bot[i];
             let isLearnToDay = user.class && user.class.listLesson ? user.class.listLesson.length : false;
-            setTimeout(()=>{
-                try {
-                    isLearnToDay ? sendAPI.sendLearnToDay(user.messengerPSID, user.fullName) : sendAPI.sendNotLearnToDay(user.messengerPSID, user.fullName);
-                }catch (e){
-                    _log.err(e);
-                }
-            }, i * 1000);
+            if (isLearnToDay) {
+                lesson = user.class.listLesson[0];
+                expectedTimeLesson = moment.unix(lesson.expectedTime).format("HH:mm:ss");
+                subjectLesson = lesson.title;
+                sendAPI.sendLearnToDay(user.messengerPSID, user.fullName, subjectLesson, expectedTimeLesson)
+            } else {
+                sendAPI.sendNotLearnToDay(user.messengerPSID, user.fullName);
+            }
+
         }
     });
+};
 
+const handleJobGoodMorning = (rule) => {
+    schedule.scheduleJob(rule, async function (fireDate) {
+        const list_user_bot = await user_model.find({messengerPSID: {$ne: null}});
+        for (let i = 1; i < list_user_bot.length; i++) {
+            let user = list_user_bot[i];
+            sendAPI.sendGoodMorning(user.messengerPSID, user.fullName);
+        }
+    });
+};
+
+module.exports = {
+    run_schedule: run_schedule,
 };
 
 // '*/5 * * * *', Execute a cron job every 5 Minutes = */5 * * * *
@@ -64,7 +98,3 @@ const run_schedule = async  () => {
 // rule.minute = 1;
 // rule.second = 45;
 // cac ngay trong tuan tu thu 5 -> CN luc 15h1p45s
-
-module.exports = {
-    run_schedule: run_schedule,
-};

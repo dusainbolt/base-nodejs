@@ -67,6 +67,20 @@ const messageSettingPersonas = {
     // profile_picture_url: "https://scontent.fhan2-5.fna.fbcdn.net/v/t1.0-9/137631400_1032610827223282_842162276358314154_n.jpg?_nc_cat=107&ccb=2&_nc_sid=730e14&_nc_ohc=ShevXyMYWwIAX85D4tp&_nc_ht=scontent.fhan2-5.fna&oh=a8798e75380dbf8d06784cc872490cc3&oe=60221B34",
 }
 
+const messageUploadMedia = (url = "", type = "image") => {
+    return {
+        "message": {
+            "attachment": {
+                type,
+                "payload": {
+                    "is_reusable": true,
+                    url
+                }
+            }
+        }
+    }
+};
+
 const getMessageText = (text) => {
     return {text};
 }
@@ -85,20 +99,33 @@ const getResponseMedia = (attachment_id, buttons = [], media_type = _logic.TYPE_
 // /**
 //  * Fun message for saying hello to a signed in user.
 //  */
-const napMessage = {
+const messageWork = {
     text: 'Tôi đang phát triển con BOT messenger này xin lỗi vì đã làm phiền ❤',
 };
 
-const messageGoodMorning = (fullName) => {
-    return getMessageText(`Chào buổi sáng người anh em ${fullName} của tôi. Ra ngoài nhớ mặc ấm nhé. Thương ❤`);
+const messageWelcome = {
+    text: 'Chào mừng bạn, mình là Lê Huy Du đây là hệ thống BOT tương tác tin nhắn tự động của mình. Hãy sử dụng các chức năng trong câu hỏi Menu nhé ❤'
 }
 
-const messageLearnToday = (fullName) => {
-    return getMessageText(`${fullName} bạn có lịch học vào ngày hôm nay ❤`);
+const messageGoodMorning = (fullName) => {
+    return getMessageText(`☀️ Chào buổi sáng người anh em ${fullName} của tôi. Ra ngoài nhớ mặc ấm nhé ❤`);
+}
+
+const messageGoodNight = (fullName) => {
+    return getMessageText(`Heyyy! Nhớ ngủ sớm nhé người anh em ${fullName} 😴 Giữ gìn sức khỏe để mai rèn luyện tiếp heggg 💪`);
+}
+
+const messageGoodNightImage = () => {
+    return getMessageMedia(_logic.BOT.ID_IMAGE_GOOD_NIGHT);
+}
+
+
+const messageLearnToday = (fullName, subjectLesson, expectedTime) => {
+    return getMessageText(`👉 ${fullName} hôm nay bạn có lịch học\n"💌 ${subjectLesson}"\n⏰ ${expectedTime}`);
 }
 
 const messageNotLearnToDay = (fullName) => {
-    return getMessageText(`${fullName} bạn không có lịch học vào ngày hôm nay ❤`);
+    return getMessageText(`${fullName} bạn không có lịch học vào ngày hôm nay ❤ Hãy cố gắng luyện tập nhé 🔥`);
 }
 
 const messageReviewPlatform = getMessageText(_mess_bot.LIST_PLATFORM);
@@ -266,6 +293,25 @@ const messageAccountLink = {
     }
 }
 
+const getMessageMedia = (attachment_id, type ="image") => {
+    return {
+        "attachment": {
+            type,
+            "payload": {
+                attachment_id
+            }
+        }
+    }
+};
+
+const messageImageDeveloper = () => {
+    return getMessageMedia(_logic.BOT.ID_IMAGE_DEVELOPER)
+}
+
+const messageAudioGoodNight = () => {
+    return getMessageMedia(_logic.BOT.ID_AUDIO_GOOD_NIGHT, "audio")
+}
+
 module.exports = {
     // loggedInMessage,
     messageListPlatForm,
@@ -275,6 +321,13 @@ module.exports = {
     messageGoodMorning,
     messageLearnToday,
     messageNotLearnToDay,
+    messageUploadMedia,
+    messageGoodNight,
+    messageAudioGoodNight,
+    messageImageDeveloper,
+    messageGoodNightImage,
+    messageWork,
+    messageWelcome,
     messageGetStarted,
     messageIceBreakers,
     messageGreeting,
@@ -283,7 +336,6 @@ module.exports = {
     messageSettingPersonas,
     messageAccountLink,
     messagePleaseActiveBOT,
-    napMessage,
     messageReviewPlatform,
     messageModePendingDevelop,
     messageScaleForYou,

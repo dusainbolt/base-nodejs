@@ -12,13 +12,13 @@ const request = require('request');
 const callAPI = (endPoint, messageDataArray, queryParams = {}, method= "POST", retries = 5) => {
     // Error if developer forgot to specify an endpoint to send our request to
     if (!endPoint) {
-        console.error('callAPI requires you specify an endpoint.');
+        _log.err('callAPI requires you specify an endpoint.');
         return;
     }
 
     // Error if we've run out of retries.
     if (retries < 0) {
-        console.error(
+        _log.err(
             'No more retries left.',
             {endPoint, messageDataArray, queryParams}
         );
@@ -27,9 +27,7 @@ const callAPI = (endPoint, messageDataArray, queryParams = {}, method= "POST", r
     }
 
     // ensure query parameters have a PAGE_ACCESS_TOKEN value
-    /* eslint-disable camelcase */
     const query = Object.assign({access_token: _config.BOT_MESSENGER.TOKEN}, queryParams);
-    /* eslint-enable camelcase */
 
     // ready the first message in the array for send.
     const [messageToSend, ...queue] = _.castArray(messageDataArray);
@@ -42,7 +40,7 @@ const callAPI = (endPoint, messageDataArray, queryParams = {}, method= "POST", r
         }, (error, response, body) => {
             if (!error && response.statusCode === 200) {
                 // Message has been successfully received by Facebook.
-                console.log(
+                _log.log(
                     `Successfully sent message to ${endPoint} endpoint: `,
                     JSON.stringify(body)
                 );
@@ -52,21 +50,9 @@ const callAPI = (endPoint, messageDataArray, queryParams = {}, method= "POST", r
                     callAPI(endPoint, queue, queryParams);
                 }
             } else {
-                // Message has not been successfully received by Facebook.
-                // try{
-                //     console.error(
-                //         `Failed calling Messenger API endpoint ${endPoint}`,
-                //         response.statusCode,
-                //         response.statusMessage,
-                //         body.error,
-                //         queryParams
-                //     );
-                // }catch (e){
-                //     _log.err(e);
-                // }
                 // Retry the request
-                console.error(`Retrying Request: ${retries} left`);
-                callAPI(endPoint, messageDataArray, queryParams, retries - 1);
+                _log.err(`Retrying Request: ${retries} left`);
+                callAPI(endPoint, messageDataArray, queryParams, method,retries - 1);
             }
         });
 
@@ -84,9 +70,19 @@ const callMessengerPersonasAPI = (messageDataArray, queryParams = {}, method = "
     return callAPI('personas', messageDataArray, queryParams, method);
 };
 
+const callUploadMediaAPI = (messageDataArray, queryParams = {}, method = "POST") => {
+    return callAPI('message_attachments', messageDataArray, queryParams, method);
+    // "uri": `${_config.BOT_MESSENGER.API_URL}/message_attachments`,
+    //     "qs": {"access_token": _config.BOT_MESSENGER.TOKEN},
+    // "method": "POST",
+    //     "json": {
+
+    // }
+};
 
 module.exports = {
     callMessagesAPI,
     callMessengerProfileAPI,
-    callMessengerPersonasAPI
+    callMessengerPersonasAPI,
+    callUploadMediaAPI
 }
