@@ -76,26 +76,14 @@ const handleReceivePostback = async (messengerPSID, postback) => {
         case _logic.BOT.MORE_USER_APP:
             sendAPI.sendQuestionUserOrAdmin(messengerPSID);
             break;
-        // case _logic.BOT.REPLY_USER:
-        //     //check active user
-        //     const user = await user_model.findOne({messengerPSID}).select(_contains.USER.PARAMS_AVATAR);
-        //     if(user){
-        //         return res_api_messenger.responseQuickQuestionUserOrAdmin();
-        //     }else{
-        //         // https://sainboltapp.web.app/training
-        //         return res_api_messenger.responseAccountLink();
-        //     }
         case _logic.BOT.VIEW_MY_INFO:
             const user_info = await user_model.findOne({messengerPSID: messengerPSID});
             sendAPI.sendInfoUser(messengerPSID, user_info);
             break;
         case _logic.BOT.SEND_ALL_USER:
             const list_user_bot = await user_model.find({messengerPSID: {$ne : null}});
-            //     sendAPI.sendWelcomeMessage(3753056791420958);
-            for(let i = 0; i < list_user_bot.length; i++){
-                setTimeout(()=>{
-                    sendAPI.sendWelcomeMessage(list_user_bot[i].messengerPSID);
-                }, i * 2000);
+            for(let i = 0; i < 2; i++){
+                sendAPI.sendWorkMessage(list_user_bot[i].messengerPSID);
             }
             return;
         default:

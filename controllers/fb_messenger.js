@@ -39,6 +39,9 @@ class FBMessenger {
             }else if (type === "4"){
                 console.log("Handle set_personas->>>>>>>>>>>>>>>>>>>>>>>");
                 method === "GET" ? setup.getPersonas() : setup.setPersonas();
+            }else if(type === "5"){
+                console.log("Handle upload media->>>>>>>>>>>>>>>>>");
+                setup.uploadMedia();
             }
             else{
                 console.log("Handle message->>>>>>>>>>>>>>>>>>>>>>>",messengerPSID, message);

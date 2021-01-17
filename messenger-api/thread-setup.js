@@ -39,9 +39,18 @@ const getPersonas = () => {
     api.callMessengerPersonasAPI([], [], "GET");
 }
 
+const uploadMedia = () => {
+    const type = "audio";
+
+    // const url = "https://cdn.fbsbx.com/v/t59.3654-21/138275987_694270521190412_5295670704073622457_n.mp3/y2mate.com-Cu%E1%BB%99c-S%E1%BB%91ng-Xa-Nh%C3%A0-Minh-V%C6%B0%C6%A1ng-M4U-mp3cut.net.mp3?_nc_cat=104&ccb=2&_nc_sid=7272a8&_nc_ohc=X1q7Fl2b6O8AX8WVzp_&_nc_ht=cdn.fbsbx.com&oh=d2d75c9049ad8ff22fec5afe8eff937b&oe=6005F699&dl=1";
+    const url = "https://cafebiz.cafebizcdn.vn/162123310254002176/2020/5/24/photo1590331614080-15903316154511002647008.png";
+    api.callUploadMediaAPI(messages.messageUploadMedia(url));
+};
+
 module.exports = {
     setProfileAPI,
     getProfileAPI,
     setPersonas,
-    getPersonas
+    getPersonas,
+    uploadMedia
 }

@@ -62,9 +62,16 @@ const sendWelcomeMessage = (recipientId) => {
     sendMessage(
         recipientId,
         [
-            messages.napMessage
+            messages.messageWelcome
         ]);
 };
+
+const sendWorkMessage = (recipientId) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageWork
+        ]);}
 
 const sendGoodMorning = (recipientId, fullName) => {
     sendMessage(
@@ -74,11 +81,22 @@ const sendGoodMorning = (recipientId, fullName) => {
         ]);
 };
 
-const sendLearnToDay = (recipientId, fullName) => {
+const sendGoodNight = (recipientId, fullName) => {
     sendMessage(
         recipientId,
         [
-            messages.messageLearnToday(fullName)
+            messages.messageAudioGoodNight(),
+            messages.messageGoodNightImage(),
+            messages.messageGoodNight(fullName)
+        ]);
+};
+
+const sendLearnToDay = (recipientId, fullName, subjectLesson, expectedTime) => {
+    sendMessage(
+        recipientId,
+        [
+            messages.messageImageDeveloper(),
+            messages.messageLearnToday(fullName, subjectLesson, expectedTime)
         ]);
 };
 
@@ -190,10 +208,12 @@ module.exports = {
     sendGoodMorning,
     sendHowYourPlatform,
     sendLearnToDay,
+    sendGoodNight,
     sendNotLearnToDay,
     sendInfoUser,
     sendPleaseWriteThink,
     sendModeUserApp,
+    sendWorkMessage,
     sendQuestionUserOrAdmin,
     sendAccountLinkVerify,
     sendModePendingDevelop,
