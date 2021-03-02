@@ -19,7 +19,6 @@ global._socket = require(`./constants/contains_socket`);
 global._mess_bot = require(`./constants/contains_bot`);
 global._helper = require(`./utils/helper`);
 global._bot = require(`./connection/bot_messenger`);
-
 const express = require(`express`);
 const server = express();
 const body_parser = require(`body-parser`);
@@ -31,6 +30,8 @@ const init = require(`./utils/init`);
 const mongodb = require(`./connection/mongodb`);
 const path = require(`path`);
 const schedule = require(`./utils/schedule`);
+
+global._app_root = path.resolve(__dirname);
 
 const locale = require(`yup/lib/setLocale`);
 const socket_io = require(`socket.io`);

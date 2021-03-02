@@ -72,12 +72,6 @@ const callMessengerPersonasAPI = (messageDataArray, queryParams = {}, method = "
 
 const callUploadMediaAPI = (messageDataArray, queryParams = {}, method = "POST") => {
     return callAPI('message_attachments', messageDataArray, queryParams, method);
-    // "uri": `${_config.BOT_MESSENGER.API_URL}/message_attachments`,
-    //     "qs": {"access_token": _config.BOT_MESSENGER.TOKEN},
-    // "method": "POST",
-    //     "json": {
-
-    // }
 };
 
 module.exports = {

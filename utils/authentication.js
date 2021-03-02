@@ -48,23 +48,23 @@ const setAuth = async (req, res, next) => {
 
         // check authen token
 
-        if (skipPage(req.path)) return next();
-
-        const token = authorization ? authorization.replace('Bearer ', '') : "";
-        _log.log('token_server', token);
-        const data = jwt.verify(token, _config.JWT.PRIVATE_KEY);
-        const user = await user_model.findOne({_id: data._id, 'tokens.token': token, status: _contains.USER.STATUS.ACTIVE});
-        if (!user) {
-            return res.status(401).send({error: 'Not authorized to access this resource'})
-        }
-        req.token = token;
-        req.user = user;
-        _log.log(`access_token: ${user.fullName} - ${user._id}`);
-        if (skipAdminPage(req.path)) {
-            if (user.role !== _contains.USER.ROLE.ADMIN_APP) {
-                return res.status(401).send({error: 'Not authorized to access this resource'})
-            }
-        }
+        // if (skipPage(req.path)) return next();
+        //
+        // const token = authorization ? authorization.replace('Bearer ', '') : "";
+        // _log.log('token_server', token);
+        // const data = jwt.verify(token, _config.JWT.PRIVATE_KEY);
+        // const user = await user_model.findOne({_id: data._id, 'tokens.token': token, status: _contains.USER.STATUS.ACTIVE});
+        // if (!user) {
+        //     return res.status(401).send({error: 'Not authorized to access this resource'})
+        // }
+        // req.token = token;
+        // req.user = user;
+        // _log.log(`access_token: ${user.fullName} - ${user._id}`);
+        // if (skipAdminPage(req.path)) {
+        //     if (user.role !== _contains.USER.ROLE.ADMIN_APP) {
+        //         return res.status(401).send({error: 'Not authorized to access this resource'})
+        //     }
+        // }
         return next();
     } catch (e) {
         _log.log('authentication error:', e.name);

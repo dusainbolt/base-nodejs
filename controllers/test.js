@@ -1,10 +1,19 @@
+const speechText = require('../connection/speech_text');
+const _helper = require('../utils/helper');
+
 class Example {
     constructor() {
     }
 
-    _get_(req, res) {
+    async _get_(req, res) {
         try {
             let data = `Welcome`;
+            await speechText.run('a building for human habitation');
+            _helper.getParamsUploadSound('./')
+            // const {Location} = await new Promise((resolve, reject) => {
+            //     _s3.upload(params, (err, data) => err == null ? resolve(data) : reject(err));
+            // });
+
             return res.send({
                 status: _res.STATUS.SUCCESS,
                 message: _res.MESSAGE.SUCCESS,
