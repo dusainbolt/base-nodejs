@@ -8,14 +8,26 @@ class handleSpeechText {
         const gtts = new gTTS(text, 'en');
 
         const result = await new Promise((resolve, reject) => {
-            gtts.save(_app_root + '/storage/sound/mysound.mp3', (err, data) => err == null ? resolve("Hello") : reject(err));
+            gtts.save(_app_root + '/storage/sound/mysound.mp3', (err, data) => err == null ? resolve(data) : reject(err));
             // _s3.upload(params, (err, data) => err == null ? resolve(data) : reject(err));
         });
+        const fileContent = fs.readFileSync(_app_root + '/storage/sound/mysound.mp3');
 
-        console.log(result);
+        // Setting up S3 upload parameters
+        const params = {
+            ..._config.S3.UPLOAD,
+            Key: 'my_server_sound.mp3', // File name you want to save as in S3
+            Body: fileContent
+        };
 
-
-        // const client = new textToSpeech.TextToSpeechClient();
+        // Uploading files to the bucket
+        _s3.upload(params, function(err, data) {
+            if (err) {
+                throw err;
+            }
+            console.log(`File uploaded successfully. ${data.Location}`);
+        });
+        // const ient = new textToSpeech.TextToSpeechClient();
         // const request = {
         //     input: {text: text},
         //     // Select the language and SSML voice gender (optional)
