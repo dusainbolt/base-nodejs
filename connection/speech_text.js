@@ -12,11 +12,10 @@ class handleSpeechText {
             // _s3.upload(params, (err, data) => err == null ? resolve(data) : reject(err));
         });
         const fileContent = fs.readFileSync(_app_root + '/storage/sound/mysound.mp3');
-
         // Setting up S3 upload parameters
         const params = {
             ..._config.S3.UPLOAD,
-            Key: 'my_server_sound.mp3', // File name you want to save as in S3
+            Key: 'my_sound.mp3', // File name you want to save as in S3
             Body: fileContent
         };
 
@@ -25,6 +24,7 @@ class handleSpeechText {
             if (err) {
                 throw err;
             }
+            fs.unlinkSync(_app_root + '/storage/sound/mysound.mp3');
             console.log(`File uploaded successfully. ${data.Location}`);
         });
         // const ient = new textToSpeech.TextToSpeechClient();
