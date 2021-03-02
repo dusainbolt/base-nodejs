@@ -33,6 +33,7 @@ const set_router = (server, io) => {
                         end_point = endpoint_controller + method.replace(`_`, ``);
                         method_rq =_logic.POST_METHOD;
                     }
+                    console.log(end_point, "=====>", method_rq);
                     server.route(end_point)[method_rq]((req, res) => {
                         obj[method](req, res, io);
                     });

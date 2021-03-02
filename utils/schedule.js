@@ -5,8 +5,6 @@ const moment = require('moment');
 
 
 const run_schedule = () => {
-    // const ruleTest = "*/5 * * * * *";
-    // const test = user.messengerPSID === "4681411058600771";
 
     // job good morning
     const ruleGoodMorning = new schedule.RecurrenceRule();

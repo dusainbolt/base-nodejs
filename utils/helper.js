@@ -24,6 +24,13 @@ class Helper {
         };
     }
 
+    static getParamsUploadSound = path => {
+        fs.readFile(path, function (err, data) {
+            if (err) throw err;
+            console.log(data);
+        });
+    };
+
     static deleteImageFromS3(fullPath) {
         const key = fullPath.slice(_logic.URL_S3.length, fullPath.length);
         _s3.deleteObject({
